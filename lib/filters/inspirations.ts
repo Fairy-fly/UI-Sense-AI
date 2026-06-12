@@ -4,6 +4,7 @@
  */
 
 import type { Inspiration } from "@/types";
+import { displayStyleTag, displayProjectType, displayColor, displayLayout } from "@/lib/display-labels";
 
 export interface InspirationFilters {
   search: string;
@@ -16,16 +17,27 @@ export interface InspirationFilters {
 export function filterInspirations(inspirations: Inspiration[], filters: InspirationFilters): Inspiration[] {
   let result = [...inspirations];
 
-  // Search (title, sourceUrl, notes, projectType, tag names)
+  // Search (title, sourceUrl, notes, projectType, tag names + Chinese display values)
   if (filters.search) {
     const q = filters.search.toLowerCase();
     result = result.filter((insp) => {
-      const title = insp.title.toLowerCase();
-      const source = (insp.sourceUrl ?? "").toLowerCase();
-      const notes = (insp.notes ?? "").toLowerCase();
-      const pType = (insp.projectType ?? "").toLowerCase();
-      const tagMatch = (insp.tags ?? []).some((t) => t.name.toLowerCase().includes(q));
-      return title.includes(q) || source.includes(q) || notes.includes(q) || pType.includes(q) || tagMatch;
+      const haystack = [
+        insp.title,
+        insp.sourceUrl ?? "",
+        insp.notes ?? "",
+        insp.projectType ?? "",
+        displayProjectType(insp.projectType ?? ""),
+        ...(insp.tags ?? []).flatMap((t) => [
+          t.name,
+          displayStyleTag(t.name),
+          displayColor(t.name),
+          displayLayout(t.name),
+        ]),
+      ]
+        .join(" ")
+        .toLowerCase();
+
+      return haystack.includes(q);
     });
   }
 

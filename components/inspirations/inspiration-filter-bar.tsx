@@ -9,7 +9,6 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import { displayStyleTag, displayProjectType } from "@/lib/display-labels";
@@ -85,8 +84,8 @@ export function InspirationFilterBar({ allTags, filters, onChange, resultCount }
           />
         </div>
         <Select value={filters.sort} onValueChange={(v) => update({ sort: v ?? "newest" })}>
-          <SelectTrigger className="h-8 w-[120px] rounded-[10px] text-[12px]">
-            <SelectValue />
+          <SelectTrigger className="h-8 w-[130px] rounded-[10px] text-[12px]">
+            <span>{SORT_OPTIONS.find((o) => o.value === filters.sort)?.label ?? "最新优先"}</span>
           </SelectTrigger>
           <SelectContent>
             {SORT_OPTIONS.map((o) => (
