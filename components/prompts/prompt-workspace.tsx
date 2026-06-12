@@ -12,6 +12,7 @@ import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { InspirationSelector } from "@/components/prompts/inspiration-selector";
 import { PromptCopyButton } from "@/components/prompts/prompt-copy-button";
+import { ExportMarkdownButton } from "@/components/prompts/export-markdown-button";
 import { generatePrompt, createPromptRecordFromGenerated } from "@/lib/actions/prompts";
 import { projectTypes, defaultStyleTags, defaultTechStack, dislikedStyleExamples } from "@/lib/constants";
 import type { Inspiration } from "@/types";
@@ -236,7 +237,23 @@ export function PromptWorkspace({ inspirations, recentRecords, aiConfigured }: P
         <div className="lg:sticky lg:top-24 rounded-2xl border border-border bg-card p-5 sm:p-6">
           <div className="mb-4 flex items-center justify-between">
             <h3 className="text-[14px] font-medium text-foreground">生成的 Prompt</h3>
-            <PromptCopyButton text={activeTab === "full" ? fullPrompt : activeTab === "design" ? designSystem : activeTab === "pages" ? pagePrompt : componentPrompt} disabled={!fullPrompt} />
+            <div className="flex items-center gap-2">
+              <ExportMarkdownButton
+                data={{
+                  projectName,
+                  projectType,
+                  mode: useAIEnabled ? "AI 优化" : "本地模板",
+                  referenceInspirations: selectedIds,
+                  techStack,
+                  fullPrompt,
+                  designSystemPrompt: designSystem,
+                  pageLevelPrompt: pagePrompt,
+                  componentLevelPrompt: componentPrompt,
+                }}
+                disabled={!fullPrompt}
+              />
+              <PromptCopyButton text={activeTab === "full" ? fullPrompt : activeTab === "design" ? designSystem : activeTab === "pages" ? pagePrompt : componentPrompt} disabled={!fullPrompt} />
+            </div>
           </div>
           <Separator className="mb-4" />
           {fullPrompt ? (

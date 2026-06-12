@@ -1,8 +1,8 @@
 # UI Sense AI — Project Memory
 
 > Last updated: 2026-06-12
-> Current phase: 7 ✅ (All phases complete)
-> Status: MVP delivered
+> Current version: v1.2
+> Status: Settings persistence + Markdown export complete
 
 ---
 
@@ -40,7 +40,7 @@ Next.js 15 · TypeScript · Tailwind CSS 4 · shadcn/ui · Prisma + SQLite · De
 | Local template prompt generation | ✅ |
 | DeepSeek AI prompt optimization | ✅ |
 | Prompt save/copy/history | ✅ |
-| Settings with AI config | ✅ |
+| Settings persistence + Markdown export | ✅ |
 | AI image analysis | ❌ |
 | Login / multi-user | ❌ |
 | Cloud storage | ❌ |

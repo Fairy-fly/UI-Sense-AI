@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { PageHeading } from "@/components/layout/page-heading";
 import { PromptCopyButton } from "@/components/prompts/prompt-copy-button";
+import { ExportMarkdownButton } from "@/components/prompts/export-markdown-button";
 import { DeletePromptButton } from "@/components/prompts/delete-prompt-button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getPromptRecordById } from "@/lib/actions/prompts";
@@ -26,6 +27,18 @@ export default async function PromptDetailPage({ params }: Props) {
         description={`${record.targetProject} · ${record.projectType ?? ""} · ${record.createdAt.toLocaleDateString("zh-CN", { year: "numeric", month: "long", day: "numeric" })}`}
         action={
           <div className="flex items-center gap-2">
+            <ExportMarkdownButton
+              data={{
+                projectName: record.targetProject,
+                projectType: record.projectType ?? undefined,
+                createdAt: record.createdAt.toLocaleDateString("zh-CN"),
+                mode: "历史记录",
+                fullPrompt: record.generatedPrompt,
+                designSystemPrompt: record.designSystemPrompt,
+                pageLevelPrompt: record.pageLevelPrompt,
+                componentLevelPrompt: record.componentLevelPrompt,
+              }}
+            />
             <PromptCopyButton text={record.generatedPrompt} />
             <DeletePromptButton recordId={record.id} />
           </div>
