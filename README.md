@@ -65,9 +65,9 @@ DEEPSEEK_TIMEOUT_MS="45000"
 | Dashboard with stats and recent activity | ✅ |
 | Local template-based prompt generation | ✅ |
 | DeepSeek AI prompt optimization | ✅ |
-| Prompt copy, save, and history | ✅ |
-| Settings (taste profile, AI config) | ✅ |
-| AI image analysis | ❌ (future) |
+| Settings persistence (save preferences to DB) | ✅ |
+| Prompt Markdown export | ✅ |
+| Search and filter inspirations | ✅ |
 | Login / multi-user | ❌ (future) |
 | Cloud storage | ❌ (future) |
 | Browser extension | ❌ (future) |
@@ -86,6 +86,8 @@ DEEPSEEK_TIMEOUT_MS="45000"
 | 5 — Prompt Generator | ✅ |
 | 6 — AI Interface Integration | ✅ |
 | 7 — MVP Polish & Delivery | ✅ |
+| 1.1 — Search & Filters | ✅ |
+| 1.2 — Settings Persist & MD Export | ✅ |
 
 ---
 

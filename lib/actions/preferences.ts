@@ -1,9 +1,10 @@
 /**
- * User Preference Server Actions — Phase 3
+ * User Preference Server Actions — Phase 3 + v1.2
  */
 
-import "server-only";
+"use server";
 
+import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
 import type { UserPreferences } from "@/types";
 
@@ -21,4 +22,41 @@ export async function getUserPreference(): Promise<UserPreferences | null> {
     defaultUiStyle: row.defaultUiStyle,
     updatedAt: row.updatedAt,
   };
+}
+
+export async function saveUserPreference(input: {
+  preferredStyles: string[];
+  dislikedStyles: string[];
+  preferredColors: string[];
+  preferredLayouts: string[];
+  defaultTechStack: string[];
+  defaultUiStyle: string;
+}) {
+  try {
+    const existing = await db.userPreference.findFirst();
+
+    const data = {
+      preferredStyles: JSON.stringify(input.preferredStyles),
+      dislikedStyles: JSON.stringify(input.dislikedStyles),
+      preferredColors: JSON.stringify(input.preferredColors),
+      preferredLayouts: JSON.stringify(input.preferredLayouts),
+      defaultTechStack: JSON.stringify(input.defaultTechStack),
+      defaultUiStyle: input.defaultUiStyle,
+    };
+
+    if (existing) {
+      await db.userPreference.update({ where: { id: existing.id }, data });
+    } else {
+      await db.userPreference.create({ data });
+    }
+
+    revalidatePath("/settings");
+    revalidatePath("/prompts");
+    revalidatePath("/dashboard");
+
+    return { success: true as const };
+  } catch (error) {
+    console.error("saveUserPreference error:", error);
+    return { success: false as const, error: "保存失败，请重试" };
+  }
 }
