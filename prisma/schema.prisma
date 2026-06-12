@@ -1,0 +1,112 @@
+/**
+ * UI Sense AI — Prisma Schema
+ * Phase 3 will activate this schema.
+ * Run after Phase 3 setup:
+ * npx prisma migrate dev --name init
+ * npx prisma db seed
+ */
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ---- UI 灵感 ----
+model Inspiration {
+  id             String   @id @default(uuid())
+  title          String
+  description    String?
+  sourceUrl      String?  @map("source_url")
+  imageUrl       String   @default("") @map("image_url")
+  previewVariant String   @default("linear") @map("preview_variant")
+  projectType    String?  @map("project_type")
+  rating         Int      @default(3)
+  notes          String?
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  tags     InspirationTag[]
+  analysis AiAnalysis?
+
+  @@map("inspirations")
+}
+
+// ---- 标签 ----
+model Tag {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  category  String?
+  color     String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  inspirations InspirationTag[]
+
+  @@map("tags")
+}
+
+// ---- 灵感-标签 关联表 ----
+model InspirationTag {
+  id            String   @id @default(uuid())
+  inspirationId String   @map("inspiration_id")
+  tagId         String   @map("tag_id")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  inspiration Inspiration @relation(fields: [inspirationId], references: [id], onDelete: Cascade)
+  tag         Tag         @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@unique([inspirationId, tagId])
+  @@map("inspiration_tags")
+}
+
+// ---- AI 分析结果 ----
+model AiAnalysis {
+  id                String   @id @default(uuid())
+  inspirationId     String   @unique @map("inspiration_id")
+  colorAnalysis     String?  @map("color_analysis")
+  layoutAnalysis    String?  @map("layout_analysis")
+  componentAnalysis String?  @map("component_analysis")
+  styleSummary      String?  @map("style_summary")
+  designKeywords    String?  @map("design_keywords")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  inspiration Inspiration @relation(fields: [inspirationId], references: [id], onDelete: Cascade)
+
+  @@map("ai_analysis")
+}
+
+// ---- Prompt 记录 ----
+model PromptRecord {
+  id                     String   @id @default(uuid())
+  title                  String
+  targetProject          String   @map("target_project")
+  projectType            String?  @map("project_type")
+  selectedInspirationIds String   @map("selected_inspiration_ids")
+  generatedPrompt        String   @map("generated_prompt")
+  designSystemPrompt     String?  @map("design_system_prompt")
+  pageLevelPrompt        String?  @map("page_level_prompt")
+  componentLevelPrompt   String?  @map("component_level_prompt")
+  createdAt              DateTime @default(now()) @map("created_at")
+  updatedAt              DateTime @updatedAt @map("updated_at")
+
+  @@map("prompt_records")
+}
+
+// ---- 用户偏好（单例表） ----
+model UserPreference {
+  id               String   @id @default(uuid())
+  preferredStyles  String?  @map("preferred_styles")
+  dislikedStyles   String?  @map("disliked_styles")
+  preferredColors  String?  @map("preferred_colors")
+  preferredLayouts String?  @map("preferred_layouts")
+  defaultTechStack String?  @map("default_tech_stack")
+  defaultUiStyle   String?  @map("default_ui_style")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  @@map("user_preferences")
+}
