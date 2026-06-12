@@ -1,1 +1,101 @@
-# UI-Sense-AI
+# UI Sense AI
+
+> Personal UI inspiration system for AI Agent workflows
+
+**UI Sense AI** helps you collect UI inspirations, learn your design taste, and generate structured prompts that make Claude Code / Codex produce better-looking interfaces.
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Framework | Next.js 15 (App Router) |
+| Language | TypeScript |
+| Styling | Tailwind CSS 4 + shadcn/ui |
+| Database | SQLite + Prisma |
+| AI | DeepSeek API (openai SDK, server-side only) |
+| Upload | Local filesystem (`public/uploads/YYYY-MM-DD/`) |
+| Validation | Zod |
+| Toast | Sonner |
+| Icons | Lucide React |
+
+---
+
+## Getting Started
+
+```bash
+npm install
+cp .env.example .env.local
+# Edit .env.local: add DATABASE_URL and DEEPSEEK_API_KEY
+npx prisma migrate dev --name init
+npx prisma db seed
+npm run dev
+```
+
+打开终端显示的地址（例如 http://localhost:3000 或 http://localhost:3007）。
+
+---
+
+## Environment Variables
+
+Copy `.env.example` to `.env.local` and configure:
+
+```
+DATABASE_URL="file:./dev.db"
+DEEPSEEK_API_KEY="your-key"        # Optional — Prompt generator works without it
+DEEPSEEK_BASE_URL="https://api.deepseek.com"
+DEEPSEEK_MODEL="deepseek-v4-flash"
+DEEPSEEK_TEMPERATURE="0.4"
+DEEPSEEK_MAX_TOKENS="6000"
+DEEPSEEK_TIMEOUT_MS="45000"
+```
+
+**Never commit `.env.local` — it's in `.gitignore`.**
+
+---
+
+## Features
+
+| Feature | Status |
+|---------|--------|
+| UI inspiration collection (upload, tags, rating) | ✅ |
+| Inspiration grid with search/filter | ✅ |
+| Edit and delete inspirations | ✅ |
+| Dashboard with stats and recent activity | ✅ |
+| Local template-based prompt generation | ✅ |
+| DeepSeek AI prompt optimization | ✅ |
+| Prompt copy, save, and history | ✅ |
+| Settings (taste profile, AI config) | ✅ |
+| AI image analysis | ❌ (future) |
+| Login / multi-user | ❌ (future) |
+| Cloud storage | ❌ (future) |
+| Browser extension | ❌ (future) |
+
+---
+
+## Project Phases
+
+| Phase | Status |
+|-------|--------|
+| 0 — Project Init | ✅ |
+| 1 — Design System & Layout | ✅ |
+| 2 — Static Page UIs | ✅ |
+| 3 — Database & CRUD | ✅ |
+| 4 — Upload & Inspiration CRUD | ✅ |
+| 5 — Prompt Generator | ✅ |
+| 6 — AI Interface Integration | ✅ |
+| 7 — MVP Polish & Delivery | ✅ |
+
+---
+
+## Design Direction
+
+- **Premium, not flashy** — Neutral palette, subtle borders, no heavy shadows
+- **Clean, not cluttered** — Generous spacing, clear hierarchy
+- **Modern SaaS, not admin panel** — Linear/Vercel/Raycast quality
+- **Chinese-first UI** — Natural Chinese labels with technical terms in English
+
+## License
+
+MIT
