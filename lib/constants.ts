@@ -118,4 +118,4 @@ export const MAX_UPLOAD_SIZE = 10 * 1024 * 1024; // 10MB
 export const ALLOWED_IMAGE_TYPES = ["image/png", "image/jpeg", "image/webp", "image/gif"];
 
 // ---- Current Phase Badge ----
-export const PHASE_BADGE = "Phase 1 · Local MVP";
+export const PHASE_BADGE = "v1.2 · UI Sense AI";

@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { MockPreview } from "@/components/common/mock-preview";
 import { Badge } from "@/components/ui/badge";
 import { RatingDisplay } from "@/components/inspirations/rating-display";
+import { displayProjectType, displayStyleTag } from "@/lib/display-labels";
 
 interface InspirationSelectorProps {
   inspirations: Inspiration[];
@@ -60,14 +61,14 @@ export function InspirationSelector({
               <p className="truncate text-[12px] font-medium text-foreground">{insp.title}</p>
               <div className="mt-0.5 flex flex-wrap items-center gap-1.5">
                 {insp.projectType && (
-                  <Badge variant="secondary" className="shrink-0 text-[10px]">{insp.projectType}</Badge>
+                  <Badge variant="secondary" className="shrink-0 text-[10px]">{displayProjectType(insp.projectType)}</Badge>
                 )}
                 <span className="inline-flex shrink-0 overflow-hidden">
                   <RatingDisplay rating={insp.rating} size="sm" />
                 </span>
                 {insp.tags && insp.tags.length > 0 && (
                   <span className="text-[10px] text-muted-foreground">
-                    {(insp.tags ?? []).slice(0, 2).map((t) => t.name).join(" · ")}
+                    {(insp.tags ?? []).slice(0, 2).map((t) => displayStyleTag(t.name)).join(" · ")}
                   </span>
                 )}
               </div>

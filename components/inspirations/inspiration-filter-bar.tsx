@@ -10,7 +10,6 @@ import {
   SelectItem,
   SelectTrigger,
 } from "@/components/ui/select";
-import { cn } from "@/lib/utils";
 import { displayStyleTag, displayProjectType } from "@/lib/display-labels";
 
 // Display values (Chinese)
@@ -148,8 +147,8 @@ export function InspirationFilterBar({ allTags, filters, onChange, resultCount }
             className="ml-auto h-7 rounded-[10px] gap-1 text-[11px] text-muted-foreground"
             onClick={clearAll}
           >
-            <X className="h-3 w-3" />
-            清空筛选
+            <X className="h-3 w-3 shrink-0" />
+            <span className="inline-flex items-center leading-none">清空筛选</span>
           </Button>
         )}
       </div>

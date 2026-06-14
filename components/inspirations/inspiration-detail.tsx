@@ -3,7 +3,8 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { TagPill } from "@/components/inspirations/tag-pill";
 import { RatingDisplay } from "@/components/inspirations/rating-display";
-import { cn } from "@/lib/utils";
+import { cn, getHostname } from "@/lib/utils";
+import { displayProjectType } from "@/lib/display-labels";
 
 interface InspirationDetailProps {
   inspiration: Inspiration;
@@ -40,7 +41,7 @@ export function InspirationDetail({ inspiration, className }: InspirationDetailP
           </div>
           <div className="flex items-center justify-between">
             <span className="text-[13px] text-muted-foreground">项目类型</span>
-            <Badge variant="secondary" className="text-[11px]">{projectType ?? "—"}</Badge>
+            <Badge variant="secondary" className="text-[11px]">{projectType ? displayProjectType(projectType) : "—"}</Badge>
           </div>
           <div className="flex items-center justify-between">
             <span className="text-[13px] text-muted-foreground">来源</span>
@@ -51,7 +52,7 @@ export function InspirationDetail({ inspiration, className }: InspirationDetailP
                 rel="noopener noreferrer"
                 className="text-[13px] text-foreground underline-offset-2 hover:underline"
               >
-                {new URL(sourceUrl).hostname}
+                {getHostname(sourceUrl) ?? sourceUrl}
               </a>
             ) : (
               <span className="text-[13px] text-muted-foreground">—</span>

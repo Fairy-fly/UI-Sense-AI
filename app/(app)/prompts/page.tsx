@@ -27,8 +27,7 @@ export default async function PromptsPage() {
             <Sparkles className="h-4 w-4 text-accent-foreground" />
           </div>
           <p className="text-[12px] leading-relaxed text-muted-foreground">
-            阶段 5 使用本地模板生成结构化 Prompt。阶段 6 将接入 DeepSeek API 实现 AI 驱动的智能生成。
-            当前不会调用外部 AI 服务。
+            v1.2 已支持本地模板、DeepSeek AI 优化、Prompt 保存与 Markdown 导出。生成时可选择是否使用 AI 优化。
           </p>
         </CardContent>
       </Card>
