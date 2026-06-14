@@ -14,6 +14,11 @@ function isNavActive(pathname: string, href: string): boolean {
     return pathname.startsWith("/inspirations/") && pathname !== "/inspirations/new";
   }
 
+  // /collections/[id] 详情页/编辑页匹配 Collections
+  if (href === "/collections") {
+    return pathname.startsWith("/collections/") && pathname !== "/collections/new";
+  }
+
   return false;
 }
 

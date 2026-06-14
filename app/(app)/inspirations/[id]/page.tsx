@@ -10,6 +10,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { cn, getHostname } from "@/lib/utils";
 import { displayProjectType } from "@/lib/display-labels";
 import { getInspirationById } from "@/lib/actions/inspirations";
+import { AddToCollectionPanel } from "@/components/collections/add-to-collection-panel";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -105,8 +106,9 @@ export default async function InspirationDetailPage({ params }: Props) {
 
         {/* Right: Info + Analysis */}
         <div className="lg:col-span-2">
-          <div className="lg:sticky lg:top-24">
+          <div className="flex flex-col gap-6 lg:sticky lg:top-24">
             <InspirationDetail inspiration={inspiration} />
+            <AddToCollectionPanel inspirationId={id} />
           </div>
         </div>
       </div>

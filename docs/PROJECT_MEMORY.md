@@ -1,7 +1,7 @@
 # UI Sense AI — Project Memory
 
-> Last updated: 2026-06-13  
-> Current version: v1.2  
+> Last updated: 2026-06-14  
+> Current version: v1.3  
 > Default branch: main  
 
 ---
@@ -42,6 +42,23 @@ Next.js 15 · TypeScript · Tailwind CSS 4 · shadcn/ui · Prisma + SQLite · De
 - Markdown export includes full prompt, design system, pages, components sections
 - `tsconfig.tsbuildinfo` removed from git tracking, added to `.gitignore`
 
+### v1.2.1 — Visual Regression & i18n Polish (tag: v1.2.1)
+- Updated all outdated phase labels to v1.2 (landing, sidebar, prompts, AI hint)
+- Added safe `getHostname()` to prevent URL() crash on invalid source URLs
+- Localized all user-visible tags, project types with display helpers
+- Fixed button text alignment in filter bar
+- Removed dead code in SettingsForm
+
+### v1.3 — Inspiration Collections (current)
+- New `Collection` and `InspirationCollection` tables (many-to-many)
+- Full CRUD for collections: `/collections`, `/collections/new`, `/collections/[id]`, `/collections/[id]/edit`
+- Collection cards with cover color, inspiration count, last updated
+- Add-to-collection panel on inspiration detail page
+- Add/remove inspirations from collections with instant chip UI
+- Delete collection does NOT delete inspirations
+- Prompt generator supports filtering inspirations by collection
+- Sidebar navigation updated: 总览 → UI 灵感库 → 收藏集 → 上传灵感 → Prompt 生成器 → 设置
+
 ## Feature Status
 
 | Feature | Status |
@@ -56,6 +73,7 @@ Next.js 15 · TypeScript · Tailwind CSS 4 · shadcn/ui · Prisma + SQLite · De
 | Prompt save/copy/history | ✅ |
 | Prompt Markdown export | ✅ (v1.2) |
 | Settings preferences persistence | ✅ (v1.2) |
+| Inspiration collections | ✅ (v1.3) |
 | AI image analysis | ❌ (v2.0) |
 | Login / multi-user | ❌ (v2.0) |
 | Cloud storage | ❌ (v2.0) |
@@ -70,6 +88,5 @@ Next.js 15 · TypeScript · Tailwind CSS 4 · shadcn/ui · Prisma + SQLite · De
 
 ## Recommended Next Versions
 
-- **v1.2.1**: Visual regression, mobile layout, button alignment check
-- **v1.3**: Inspiration collections, prompt templates, URL auto-fetch
+- **v1.3.1**: Prompt templates, URL auto-fetch, collection UX polish
 - **v2.0**: AI image analysis, browser extension, cloud sync, multi-user login

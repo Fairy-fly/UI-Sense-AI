@@ -38,6 +38,8 @@ Copy `.env.example` to `.env.local`. Required: `DATABASE_URL`. Optional: `DEEPSE
 | v1.0 | MVP — 7 phases complete (init, design, UI, DB, upload, prompts, AI) |
 | v1.1 | Search/filter inspirations (title, tags, type, rating, sort, Chinese display search) |
 | v1.2 | Settings persistence (save to UserPreference), Markdown export (prompt + history) |
+| v1.2.1 | Visual regression polish, Chinese i18n, URL safety fix |
+| v1.3 | Inspiration collections with add/remove/group support |
 
 ## Page Map
 
@@ -49,6 +51,10 @@ Copy `.env.example` to `.env.local`. Required: `DATABASE_URL`. Optional: `DEEPSE
 | `/inspirations/new` | Upload + RatingInput stars |
 | `/inspirations/[id]` | Detail: image, analysis, edit/delete |
 | `/inspirations/[id]/edit` | Edit form (pre-filled) |
+| `/collections` | Collection grid with cards |
+| `/collections/new` | Create collection (name, description, color) |
+| `/collections/[id]` | Collection detail with inspirations |
+| `/collections/[id]/edit` | Edit collection |
 | `/prompts` | Workspace: form, AI toggle, generate, export MD |
 | `/prompts/[id]` | Saved prompt: tabs, copy, export MD, delete |
 | `/settings` | Editable preferences + AI config card |
@@ -62,6 +68,9 @@ Copy `.env.example` to `.env.local`. Required: `DATABASE_URL`. Optional: `DEEPSE
 - **AI**: Server-side only, `getAIProviderStatus()` returns `configured: boolean`, 45s timeout fallback
 - **Search**: `lib/filters/inspirations.ts` — searches raw + Chinese display values
 - **Markdown export**: `lib/export/markdown.ts` — Blob download, UTF-8
+- **Collection actions**: `lib/actions/collections.ts` — CRUD + inspiration-collection relations
+- **Collection management**: `add-to-collection-panel.tsx` in inspiration detail page
+- **Collection filter**: `/prompts` supports filtering inspirations by collection
 - **Scroll**: `ScrollToTop` in `(app)/layout.tsx`, `data-app-scroll-container` on main
 - **No `asChild`**: Use `buttonVariants()` for Link-styled buttons
 
@@ -88,6 +97,5 @@ git push -u origin v1.x-feature-name
 
 ## Next Steps
 
-- v1.2.1: Visual regression check, mobile layout, button alignment
-- v1.3: Inspiration collections, prompt templates, URL auto-fetch
+- v1.3.1: Prompt templates, URL auto-fetch, collection UX polish
 - v2.0: AI image analysis, browser extension, cloud sync, login

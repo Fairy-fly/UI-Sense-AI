@@ -3,15 +3,25 @@ import { PageHeading } from "@/components/layout/page-heading";
 import { PromptWorkspace } from "@/components/prompts/prompt-workspace";
 import { getInspirations } from "@/lib/actions/inspirations";
 import { getRecentPromptRecords } from "@/lib/actions/prompts";
+import { getCollections, getInspirationsByCollection } from "@/lib/actions/collections";
 import { getAIProviderStatus } from "@/lib/ai/config";
 import { Card, CardContent } from "@/components/ui/card";
 
 export default async function PromptsPage() {
-  const [inspirations, recentRecords, aiStatus] = await Promise.all([
+  const [inspirations, recentRecords, aiStatus, collections] = await Promise.all([
     getInspirations(),
     getRecentPromptRecords(10),
     Promise.resolve(getAIProviderStatus()),
+    getCollections(),
   ]);
+
+  // Build collection → inspirationId[] mapping for client-side filter
+  const collectionMap = await Promise.all(
+    collections.map(async (c) => {
+      const inspList = await getInspirationsByCollection(c.id);
+      return { id: c.id, name: c.name, inspirationIds: inspList.map((i: { id: string }) => i.id) };
+    })
+  );
 
   return (
     <>
@@ -32,7 +42,12 @@ export default async function PromptsPage() {
         </CardContent>
       </Card>
 
-      <PromptWorkspace inspirations={inspirations} recentRecords={recentRecords} aiConfigured={aiStatus.configured} />
+      <PromptWorkspace
+        inspirations={inspirations}
+        recentRecords={recentRecords}
+        aiConfigured={aiStatus.configured}
+        collections={collectionMap}
+      />
     </>
   );
 }

@@ -69,6 +69,17 @@ export interface UserPreferences {
   updatedAt: Date;
 }
 
+// ---- Collections ----
+export interface Collection {
+  id: string;
+  name: string;
+  description: string | null;
+  coverColor: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+  _count?: { inspirations: number };
+}
+
 // ---- Prompt Builder Input ----
 export interface PromptBuilderInput {
   projectName: string;

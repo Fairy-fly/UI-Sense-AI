@@ -5,6 +5,7 @@ import {
   UploadCloud,
   Wand2,
   Settings,
+  FolderKanban,
 } from "lucide-react";
 
 // ---- Application ----
@@ -23,6 +24,7 @@ export interface NavItem {
 export const navItems: NavItem[] = [
   { href: "/dashboard", label: "总览", icon: LayoutDashboard },
   { href: "/inspirations", label: "UI 灵感库", icon: Images },
+  { href: "/collections", label: "收藏集", icon: FolderKanban },
   { href: "/inspirations/new", label: "上传灵感", icon: UploadCloud },
   { href: "/prompts", label: "Prompt 生成器", icon: Wand2 },
   { href: "/settings", label: "设置", icon: Settings },
