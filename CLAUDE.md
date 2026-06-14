@@ -40,6 +40,7 @@ Copy `.env.example` to `.env.local`. Required: `DATABASE_URL`. Optional: `DEEPSE
 | v1.2 | Settings persistence (save to UserPreference), Markdown export (prompt + history) |
 | v1.2.1 | Visual regression polish, Chinese i18n, URL safety fix |
 | v1.3 | Inspiration collections with add/remove/group support |
+| v1.3.1 | Collections UX polish: truncation, Select label, empty states |
 
 ## Page Map
 
