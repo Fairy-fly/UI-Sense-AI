@@ -1,7 +1,7 @@
 # UI Sense AI — Project Memory
 
 > Last updated: 2026-06-14  
-> Current version: v1.3  
+> Current version: v1.3.1  
 > Default branch: main  
 
 ---
@@ -58,6 +58,13 @@ Next.js 15 · TypeScript · Tailwind CSS 4 · shadcn/ui · Prisma + SQLite · De
 - Delete collection does NOT delete inspirations
 - Prompt generator supports filtering inspirations by collection
 - Sidebar navigation updated: 总览 → UI 灵感库 → 收藏集 → 上传灵感 → Prompt 生成器 → 设置
+
+### v1.3.1 — Collections Experience Polish (current)
+- Fixed collection card name truncation for long names
+- Fixed collection filter Select displaying UUID instead of collection name
+- Verified delete dialog clearly states inspirations are not deleted
+- Verified all empty states display natural Chinese prompts
+- Full regression: Prompt generation, save, export unaffected
 
 ## Feature Status
 

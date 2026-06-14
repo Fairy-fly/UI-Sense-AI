@@ -35,7 +35,7 @@ export function CollectionCard({ collection }: CollectionCardProps) {
 
       {/* Body */}
       <div className="flex flex-1 flex-col gap-1.5 p-4">
-        <h3 className="text-[14px] font-medium leading-snug text-foreground group-hover:text-primary/80">
+        <h3 className="truncate text-[14px] font-medium leading-snug text-foreground group-hover:text-primary/80">
           {collection.name}
         </h3>
         {collection.description && (
