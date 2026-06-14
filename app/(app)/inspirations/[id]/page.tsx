@@ -7,7 +7,8 @@ import { InspirationDetail } from "@/components/inspirations/inspiration-detail"
 import { DeleteInspirationButton } from "@/components/inspirations/delete-inspiration-button";
 import { MockPreview } from "@/components/common/mock-preview";
 import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { cn, getHostname } from "@/lib/utils";
+import { displayProjectType } from "@/lib/display-labels";
 import { getInspirationById } from "@/lib/actions/inspirations";
 
 interface Props {
@@ -31,8 +32,8 @@ export default async function InspirationDetailPage({ params }: Props) {
         title={inspiration.title}
         description={
           inspiration.sourceUrl
-            ? `${inspiration.projectType ?? ""} · ${new URL(inspiration.sourceUrl).hostname}`
-            : inspiration.projectType ?? ""
+            ? `${displayProjectType(inspiration.projectType ?? "")} · ${getHostname(inspiration.sourceUrl) ?? inspiration.sourceUrl}`
+            : displayProjectType(inspiration.projectType ?? "")
         }
         action={
           <div className="flex items-center gap-2">

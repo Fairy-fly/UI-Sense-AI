@@ -20,7 +20,7 @@ export default function NewInspirationPage() {
             <Info className="h-4 w-4 text-muted-foreground" />
             <span className="text-[14px] font-medium text-foreground">AI 分析预览</span>
             <span className="ml-2 text-[12px] text-muted-foreground">
-              AI 分析将在阶段 6 接入 DeepSeek API
+              AI 分析功能即将推出
             </span>
           </div>
           <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform group-open:rotate-180" />

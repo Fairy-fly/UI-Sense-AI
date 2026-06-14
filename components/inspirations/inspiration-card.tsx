@@ -5,6 +5,8 @@ import { RatingDisplay } from "@/components/inspirations/rating-display";
 import { TagPill } from "@/components/inspirations/tag-pill";
 import { ColorDots } from "@/components/inspirations/color-dots";
 import { MockPreview } from "@/components/common/mock-preview";
+import { getHostname } from "@/lib/utils";
+import { displayProjectType } from "@/lib/display-labels";
 
 interface InspirationCardProps {
   inspiration: Inspiration;
@@ -42,10 +44,10 @@ export function InspirationCard({ inspiration }: InspirationCardProps) {
 
         <div className="flex items-center gap-2 text-[12px] text-muted-foreground">
           {projectType && (
-            <span className="rounded-md bg-muted px-1.5 py-0.5 text-[11px]">{projectType}</span>
+            <span className="rounded-md bg-muted px-1.5 py-0.5 text-[11px]">{displayProjectType(projectType)}</span>
           )}
           {sourceUrl && (
-            <span className="truncate">{new URL(sourceUrl).hostname}</span>
+            <span className="truncate">{getHostname(sourceUrl) ?? sourceUrl}</span>
           )}
         </div>
 

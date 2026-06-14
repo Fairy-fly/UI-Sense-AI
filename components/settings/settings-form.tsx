@@ -47,10 +47,10 @@ export function SettingsForm({ initial }: SettingsFormProps) {
   const [defaultTechStack, setDefaultTechStack] = useState<string[]>(
     parseOrDefault(initial?.defaultTechStack, ["Next.js", "TypeScript", "Tailwind CSS", "shadcn/ui", "SQLite", "Prisma"])
   );
-  const [defaultUiStyle, setDefaultUiStyle] = useState(initial?.defaultUiStyle ?? "Minimal SaaS");
+  const [defaultUiStyle, setDefaultUiStyle] = useState(
+    initial?.defaultUiStyle ? displayStyleTag(initial.defaultUiStyle) : "极简 SaaS"
+  );
   const [saving, setSaving] = useState(false);
-
-  const hasChanges = true; // Always allow save — simplifies dirty tracking
 
   async function handleSave() {
     setSaving(true);
@@ -135,7 +135,7 @@ export function SettingsForm({ initial }: SettingsFormProps) {
           </div>
           <div>
             <label className="mb-1.5 block text-[13px] font-medium text-foreground">默认 UI 风格</label>
-            <Input value={defaultUiStyle} onChange={(e) => setDefaultUiStyle(e.target.value)} placeholder="Minimal SaaS" className="rounded-[10px]" />
+            <Input value={defaultUiStyle} onChange={(e) => setDefaultUiStyle(e.target.value)} placeholder="极简 SaaS" className="rounded-[10px]" />
             <p className="mt-1 text-[11px] text-muted-foreground">Prompt 生成时使用的默认视觉风格描述。</p>
           </div>
           <Separator />
