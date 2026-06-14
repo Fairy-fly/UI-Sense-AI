@@ -68,6 +68,7 @@ DEEPSEEK_TIMEOUT_MS="45000"
 | Settings persistence (save preferences to DB) | ✅ |
 | Prompt Markdown export | ✅ |
 | Search and filter inspirations | ✅ |
+| Inspiration collections (v1.3) | ✅ |
 | Login / multi-user | ❌ (future) |
 | Cloud storage | ❌ (future) |
 | Browser extension | ❌ (future) |
@@ -88,6 +89,8 @@ DEEPSEEK_TIMEOUT_MS="45000"
 | 7 — MVP Polish & Delivery | ✅ |
 | 1.1 — Search & Filters | ✅ |
 | 1.2 — Settings Persist & MD Export | ✅ |
+| 1.2.1 — Visual Regression & i18n Polish | ✅ |
+| 1.3 — Inspiration Collections | ✅ |
 
 ---
 

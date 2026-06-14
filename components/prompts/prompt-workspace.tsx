@@ -33,13 +33,15 @@ interface PromptWorkspaceProps {
   inspirations: Inspiration[];
   recentRecords: { id: string; title: string; targetProject: string; projectType: string | null; createdAt: Date }[];
   aiConfigured: boolean;
+  collections?: { id: string; name: string; inspirationIds: string[] }[];
 }
 
-export function PromptWorkspace({ inspirations, recentRecords, aiConfigured }: PromptWorkspaceProps) {
+export function PromptWorkspace({ inspirations, recentRecords, aiConfigured, collections }: PromptWorkspaceProps) {
   const [projectName, setProjectName] = useState("");
   const [projectType, setProjectType] = useState("");
   const [targetUsers, setTargetUsers] = useState("");
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [collectionFilter, setCollectionFilter] = useState("all");
   const [desiredStyle, setDesiredStyle] = useState("");
   const [avoidedStyles, setAvoidedStyles] = useState<string[]>([]);
   const [customAvoided, setCustomAvoided] = useState("");
@@ -104,6 +106,19 @@ export function PromptWorkspace({ inspirations, recentRecords, aiConfigured }: P
     }
   }
 
+  // Filter inspirations by selected collection
+  const activeCollection =
+    collectionFilter !== "all"
+      ? collections?.find((c) => c.id === collectionFilter)
+      : undefined;
+  const displayInspirations = activeCollection
+    ? inspirations.filter((insp) => activeCollection.inspirationIds.includes(insp.id))
+    : inspirations;
+
+  const collectionFilterLabel = activeCollection
+    ? `${activeCollection.name}（${activeCollection.inspirationIds.length}）`
+    : "全部灵感";
+
   return (
     <div className="grid gap-6 lg:grid-cols-5">
       {/* Left: Project Brief */}
@@ -134,10 +149,28 @@ export function PromptWorkspace({ inspirations, recentRecords, aiConfigured }: P
 
           <Separator className="my-3" />
 
+          {/* --- Collection filter --- */}
+          {collections && collections.length > 0 && (
+            <div className="mb-3">
+              <label className="mb-1 block text-[12px] font-medium text-foreground">按收藏集筛选</label>
+              <Select value={collectionFilter} onValueChange={(v) => { setCollectionFilter(v ?? "all"); setSelectedIds([]); }}>
+                <SelectTrigger className="h-8 rounded-[10px] text-[13px]">
+                  <span className="truncate">{collectionFilterLabel}</span>
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">全部灵感</SelectItem>
+                  {collections.map((c) => (
+                    <SelectItem key={c.id} value={c.id}>{c.name}（{c.inspirationIds.length}）</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+
           {/* --- Always visible: inspiration selector --- */}
           <div className="mb-3">
             <label className="mb-1.5 block text-[13px] font-medium text-foreground">选择参考灵感 ({selectedIds.length}/6)</label>
-            <InspirationSelector inspirations={inspirations} selectedIds={selectedIds} onChange={setSelectedIds} maxSelect={6} />
+            <InspirationSelector inspirations={displayInspirations} selectedIds={selectedIds} onChange={setSelectedIds} maxSelect={6} />
           </div>
 
           <Separator className="my-3" />

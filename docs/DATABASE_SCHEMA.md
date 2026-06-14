@@ -313,29 +313,56 @@ model UserPreference {
 
 ### 各表当前状态
 
-| 表 | Phase 5 状态 |
+| 表 | 当前状态 |
 |----|-------------|
 | `inspirations` | ✅ 完整 CRUD（创建、编辑、删除、查询） |
 | `tags` | ✅ getOrCreateTags，支持复用已有标签和创建新标签 |
 | `inspiration_tags` | ✅ 自动管理关联 |
-| `ai_analysis` | ⏸️ 仅 seed 数据，Phase 6 接入真实 AI 分析 |
-| `prompt_records` | ✅ 本地模板生成，完整 CRUD（生成、保存、查看、删除） |
-| `user_preferences` | ⏸️ 仅 seed 数据，Phase 6 实现设置持久化 |
+| `ai_analysis` | ⏸️ 仅 seed 数据，v2.0 接入 AI 图片分析 |
+| `prompt_records` | ✅ DeepSeek AI 优化 + 本地模板双轨，完整 CRUD |
+| `user_preferences` | ✅ v1.2 已实现 Settings 持久化（upsert） |
+| `collections` | ✅ v1.3 新增，完整 CRUD |
+| `inspiration_collections` | ✅ v1.3 新增，多对多关联，级联删除 |
 
-### PromptRecord 阶段 5 说明
+### PromptRecord 说明
 
 - `selectedInspirationIds` 使用 JSON 字符串保存选中的 inspiration id 数组，与 Inspiration 表为弱关联（非外键）
 - `generatedPrompt` 保存完整的 10 段结构化 Prompt
 - `designSystemPrompt` 保存设计系统分段（色彩/字体/间距/圆角/阴影/组件/禁止项）
 - `pageLevelPrompt` 保存页面要求分段（每页的目标/布局/内容/交互/响应式）
 - `componentLevelPrompt` 保存组件规范分段（Button/Card/Input/Badge/Sidebar/Header 等）
-- 当前 Prompt 内容由 `lib/prompt-builder.ts` 本地模板生成器生成，未接任何 AI API
-- DeepSeek API 接入留到阶段 6
+- 当前 Prompt 由本地模板生成器 + DeepSeek AI 优化双轨生成（v1.2+）
+- DeepSeek API 已于 v1.2 接入 Prompt 优化
 
 ### 未接入的功能
 
-- ❌ AI 分析（`ai_analysis` 写入）
-- ❌ AI 驱动的 Prompt 生成（当前为本地模板）
+- ❌ AI 图片分析（截图视觉分析）
 - ❌ 登录 / 多用户
 - ❌ 云存储 / 对象存储
-- ❌ 设置页真实保存
+
+---
+
+## v1.3 新增表
+
+### 7. collections — 收藏集
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `id` | UUID (String) | ✅ | 主键 |
+| `name` | String | ✅ | 收藏集名称 |
+| `description` | String? | ❌ | 描述 |
+| `cover_color` | String? | ❌ | 封面颜色 |
+| `created_at` | DateTime | ✅ | 创建时间 |
+| `updated_at` | DateTime | ✅ | 更新时间 |
+
+### 8. inspiration_collections — 灵感-收藏集关联表
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `id` | UUID (String) | ✅ | 主键 |
+| `inspiration_id` | UUID (FK) | ✅ | 关联 inspiration |
+| `collection_id` | UUID (FK) | ✅ | 关联 collection |
+| `created_at` | DateTime | ✅ | 创建时间 |
+
+**唯一约束**: (`inspiration_id`, `collection_id`)
+**删除行为**: 删除 Collection 时自动删除关联记录，不删除 Inspiration

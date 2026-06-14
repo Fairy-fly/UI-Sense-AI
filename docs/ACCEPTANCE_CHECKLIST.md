@@ -285,3 +285,35 @@
 - 浏览器插件
 - 云端同步
 - 多用户登录
+
+---
+
+## v1.2.1 视觉回归与中文化
+
+| # | 检查项 | 状态 |
+|---|--------|------|
+| 1.2.1.1 | 过时阶段文案更新（Landing、Sidebar、Prompts、AI 提示） | ✅ |
+| 1.2.1.2 | `getHostname()` 安全解析 URL，防止崩溃 | ✅ |
+| 1.2.1.3 | 灵感卡片标签中文化（TagPill displayStyleTag） | ✅ |
+| 1.2.1.4 | 灵感卡片项目类型中文化（displayProjectType） | ✅ |
+| 1.2.1.5 | Prompt 灵感选择器标签中文化 | ✅ |
+| 1.2.1.6 | Settings 默认 UI 风格中文化 | ✅ |
+| 1.2.1.7 | Filter bar 按钮文字对齐 | ✅ |
+| 1.2.1.8 | `npm run build` / `tsc` / `lint` 通过 | ✅ |
+
+---
+
+## v1.3 灵感收藏集
+
+| # | 检查项 | 状态 |
+|---|--------|------|
+| 1.3.1 | Collection + InspirationCollection 表创建 | ✅ |
+| 1.3.2 | `/collections` 页面展示所有收藏集 | ✅ |
+| 1.3.3 | `/collections/new` 创建收藏集 | ✅ |
+| 1.3.4 | `/collections/[id]` 详情页展示所属灵感 | ✅ |
+| 1.3.5 | `/collections/[id]/edit` 编辑收藏集 | ✅ |
+| 1.3.6 | 删除收藏集不删除灵感 | ✅ |
+| 1.3.7 | 灵感详情页加入/移除收藏集 | ✅ |
+| 1.3.8 | Prompt 生成器支持按收藏集筛选 | ✅ |
+| 1.3.9 | Sidebar 新增收藏集导航 | ✅ |
+| 1.3.10 | `npm run build` / `tsc` / `lint` 通过 | ✅ |

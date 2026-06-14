@@ -31,6 +31,7 @@ model Inspiration {
 
   tags     InspirationTag[]
   analysis AiAnalysis?
+  collections InspirationCollection[]
 
   @@map("inspirations")
 }
@@ -109,4 +110,32 @@ model UserPreference {
   updatedAt        DateTime @updatedAt @map("updated_at")
 
   @@map("user_preferences")
+}
+
+// ---- 收藏集 ----
+model Collection {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  coverColor  String?  @map("cover_color")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  inspirations InspirationCollection[]
+
+  @@map("collections")
+}
+
+// ---- 灵感-收藏集 关联表 ----
+model InspirationCollection {
+  id             String   @id @default(uuid())
+  inspirationId  String   @map("inspiration_id")
+  collectionId   String   @map("collection_id")
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  inspiration Inspiration @relation(fields: [inspirationId], references: [id], onDelete: Cascade)
+  collection  Collection  @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+
+  @@unique([inspirationId, collectionId])
+  @@map("inspiration_collections")
 }
