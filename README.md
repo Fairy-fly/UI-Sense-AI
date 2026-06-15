@@ -70,6 +70,7 @@ DEEPSEEK_TIMEOUT_MS="45000"
 | Search and filter inspirations | ✅ |
 | Inspiration collections (v1.3) | ✅ |
 | Prompt template presets (v1.3.2) | ✅ |
+| URL metadata auto-fill (v1.3.3) | ✅ |
 | Login / multi-user | ❌ (future) |
 | Cloud storage | ❌ (future) |
 | Browser extension | ❌ (future) |
