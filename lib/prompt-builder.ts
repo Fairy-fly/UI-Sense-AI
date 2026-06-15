@@ -75,18 +75,18 @@ ${insp.notes ? `- **可借鉴点**：${insp.notes}` : ""}`,
   const analysisRefs =
     inspWithAnalysis.length > 0
       ? `
-## 3.5. AI 基础分析参考
+## 3.5. AI 分析参考
 
-以下是对参考灵感已生成的 AI 基础分析（基于标题、标签和元信息的文本分析，非图片视觉识别），请吸收其中的风格、配色、布局和组件语言：
+请优先吸收以下设计特征，并转化为可执行 UI 方案：
 
 ${inspWithAnalysis
     .map(
       (insp) => `### ${insp.title}
-- **风格总结**：${insp.analysis!.styleSummary ?? "—"}
-- **色彩系统**：${insp.analysis!.colorAnalysis ?? "—"}
-- **布局模式**：${insp.analysis!.layoutAnalysis ?? "—"}
-- **组件语言**：${insp.analysis!.componentAnalysis ?? "—"}
-- **设计关键词**：${insp.analysis!.designKeywords ?? "—"}`,
+* **色彩与视觉氛围**：${insp.analysis!.colorAnalysis ?? "—"}
+* **布局与信息层级**：${insp.analysis!.layoutAnalysis ?? "—"}
+* **组件语言**：${insp.analysis!.componentAnalysis ?? "—"}
+* **整体风格迁移**：${insp.analysis!.styleSummary ?? "—"}
+* **可复用关键词**：${insp.analysis!.designKeywords ?? "—"}`,
     )
     .join("\n\n")}
 `
