@@ -1,7 +1,7 @@
 # UI Sense AI — Project Memory
 
 > Last updated: 2026-06-15  
-> Current version: v1.6.2  
+> Current version: v1.6.3  
 > Default branch: main  
 
 ---
@@ -154,6 +154,14 @@ Next.js 15 · TypeScript · Tailwind CSS 4 · shadcn/ui · Prisma + SQLite · De
 - Forbidden Markdown/code blocks/verbose explanations in model output
 - Resilient JSON parsing: extracts `{...}` block from surrounding text
 - Prompt Builder analysis section reformatted as actionable instructions
+- No database schema changes
+
+### v1.6.3 — Prompt Output Experience Polish (current)
+- Section 1: "角色设定" → "任务目标与角色" with explicit quality targets
+- Section 3.5: AI analysis reformatted as "可迁移设计决策" with usage guidance
+- Section 6: "页面要求" → "页面结构建议" with template-aware suggestions
+- Section 9: Development order simplified with key principles
+- Section 10: Acceptance criteria converted to checklist format
 - No database schema changes
 
 ## Feature Status

@@ -140,7 +140,7 @@ ${input.avoidedStyles.length > 0 ? input.avoidedStyles.join("、") : "廉价蓝�
 ## 技术栈
 ${input.techStack.join("、")}
 
-## 页面列表
+## 需要生成的页面
 ${input.pageList}
 
 ## 需要优化的原始 Prompt
