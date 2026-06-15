@@ -649,3 +649,19 @@
 | 1.9.1.7 | v1.8 Prompt Feedback 保存/筛选/收藏不受影响 | ✅ |
 | 1.9.1.8 | prisma validate / migrate status / build / tsc / lint 通过 | ✅ |
 | 1.9.1.9 | 安全检查通过 | ✅ |
+
+---
+
+## v2.0 本地产品化体验总回归
+
+| # | 检查项 | 状态 |
+|---|--------|------|
+| 2.0.1 | Dashboard / Inspirations / Collections / Settings / Prompts 全页回归 | ✅ |
+| 2.0.2 | 空状态 / loading / disabled / toast / 错误提示统一 | ✅ |
+| 2.0.3 | SelectableChip / Sidebar / Button 交互状态稳定 | ✅ |
+| 2.0.4 | 审美记忆（§4.5）+ 反馈洞察（§4.6）+ Prompt Feedback 闭环 | ✅ |
+| 2.0.5 | AI 分析 Provider / 视觉降级 / URL Metadata 安全正常 | ✅ |
+| 2.0.6 | 不改 schema / 无新 migration | ✅ |
+| 2.0.7 | README / CLAUDE.md / PROJECT_MEMORY 更新到 v2.0 | ✅ |
+| 2.0.8 | prisma validate / migrate status / build / tsc / lint 通过 | ✅ |
+| 2.0.9 | 安全检查通过 | ✅ |

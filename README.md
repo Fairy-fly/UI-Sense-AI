@@ -78,6 +78,7 @@ DEEPSEEK_TIMEOUT_MS="45000"
 | Aesthetic memory auto-generation (v1.7) | ✅ |
 | Prompt history feedback & favorites (v1.8) | ✅ |
 | Feedback-driven prompt strategy (v1.9) | ✅ |
+| Local product polish & full regression (v2.0) | ✅ |
 | Login / multi-user | ❌ (future) |
 | Cloud storage | ❌ (future) |
 | Browser extension | ❌ (future) |

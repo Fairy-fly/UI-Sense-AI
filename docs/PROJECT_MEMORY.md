@@ -1,7 +1,7 @@
 # UI Sense AI — Project Memory
 
 > Last updated: 2026-06-15  
-> Current version: v1.9.1  
+> Current version: v2.0  
 > Default branch: main  
 
 ---
@@ -201,7 +201,7 @@ Next.js 15 · TypeScript · Tailwind CSS 4 · shadcn/ui · Prisma + SQLite · De
 - Confirmed history list badges, filter, SelectableChip dedup and onClick
 - Zero lint warnings, zero code changes — pure validation pass
 
-### v1.9 — Feedback-Driven Prompt Strategy (current)
+### v1.9 — Feedback-Driven Prompt Strategy
 - `computePromptFeedbackInsights()` analyzes PromptRecord feedback for strategy patterns
 - `/settings` page: PromptFeedbackInsightsPanel with metrics, positive/negative tags, agent strategy
 - Prompt Builder §4.6 injects "历史 Prompt 反馈参考" when ≥2 feedback records exist
@@ -214,6 +214,13 @@ Next.js 15 · TypeScript · Tailwind CSS 4 · shadcn/ui · Prisma + SQLite · De
 - Confirmed §4.6 position between §4.5 and §5, with null guard
 - Confirmed AI and non-AI paths both receive feedbackInsights
 - Zero code changes — pure regression validation
+
+### v2.0 — Local Product Polish (current)
+- Full-page regression: Dashboard, Inspirations, Collections, Settings, Prompts
+- Empty states, loading states, disabled states, toast feedback unified
+- Three closed loops: Aesthetic Memory (§4.5), Feedback Insights (§4.6), Prompt Feedback
+- README, CLAUDE.md, PROJECT_MEMORY updated to v2.0
+- Ready for long-term local use as a stable personal tool
 
 ## Feature Status
 
