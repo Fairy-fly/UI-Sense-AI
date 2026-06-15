@@ -29,8 +29,8 @@ model Inspiration {
   createdAt      DateTime @default(now()) @map("created_at")
   updatedAt      DateTime @updatedAt @map("updated_at")
 
-  tags     InspirationTag[]
-  analysis AiAnalysis?
+  tags        InspirationTag[]
+  analysis    AiAnalysis?
   collections InspirationCollection[]
 
   @@map("inspirations")
@@ -100,14 +100,27 @@ model PromptRecord {
 
 // ---- 用户偏好（单例表） ----
 model UserPreference {
-  id               String   @id @default(uuid())
-  preferredStyles  String?  @map("preferred_styles")
-  dislikedStyles   String?  @map("disliked_styles")
-  preferredColors  String?  @map("preferred_colors")
-  preferredLayouts String?  @map("preferred_layouts")
-  defaultTechStack String?  @map("default_tech_stack")
-  defaultUiStyle   String?  @map("default_ui_style")
-  updatedAt        DateTime @updatedAt @map("updated_at")
+  id               String  @id @default(uuid())
+  preferredStyles  String? @map("preferred_styles")
+  dislikedStyles   String? @map("disliked_styles")
+  preferredColors  String? @map("preferred_colors")
+  preferredLayouts String? @map("preferred_layouts")
+  defaultTechStack String? @map("default_tech_stack")
+  defaultUiStyle   String? @map("default_ui_style")
+
+  // Aesthetic memory (v1.7) — auto-generated profile stored as JSON strings
+  aestheticSummary             String?   @map("aesthetic_summary")
+  aestheticPreferredStyles     String?   @map("aesthetic_preferred_styles")
+  aestheticPreferredColors     String?   @map("aesthetic_preferred_colors")
+  aestheticPreferredLayouts    String?   @map("aesthetic_preferred_layouts")
+  aestheticPreferredComponents String?   @map("aesthetic_preferred_components")
+  aestheticAvoidedStyles       String?   @map("aesthetic_avoided_styles")
+  aestheticKeywords            String?   @map("aesthetic_keywords")
+  aestheticAgentInstruction    String?   @map("aesthetic_agent_instruction")
+  aestheticSourceCount         Int       @default(0) @map("aesthetic_source_count")
+  aestheticGeneratedAt         DateTime? @map("aesthetic_generated_at")
+
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("user_preferences")
 }
@@ -128,10 +141,10 @@ model Collection {
 
 // ---- 灵感-收藏集 关联表 ----
 model InspirationCollection {
-  id             String   @id @default(uuid())
-  inspirationId  String   @map("inspiration_id")
-  collectionId   String   @map("collection_id")
-  createdAt      DateTime @default(now()) @map("created_at")
+  id            String   @id @default(uuid())
+  inspirationId String   @map("inspiration_id")
+  collectionId  String   @map("collection_id")
+  createdAt     DateTime @default(now()) @map("created_at")
 
   inspiration Inspiration @relation(fields: [inspirationId], references: [id], onDelete: Cascade)
   collection  Collection  @relation(fields: [collectionId], references: [id], onDelete: Cascade)

@@ -3,6 +3,7 @@ import { PageHeading } from "@/components/layout/page-heading";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { AIProviderCard } from "@/components/settings/ai-provider-card";
 import { SettingsForm } from "@/components/settings/settings-form";
+import { AestheticMemoryPanel } from "@/components/settings/aesthetic-memory-panel";
 import { getAIProviderStatus } from "@/lib/ai/config";
 import { getUserPreference } from "@/lib/actions/preferences";
 
@@ -38,6 +39,13 @@ export default async function SettingsPage() {
           />
         </CardContent>
       </Card>
+
+      {/* 审美记忆 */}
+      <div className="mt-6">
+        <AestheticMemoryPanel
+          initialData={preference ?? undefined}
+        />
+      </div>
     </>
   );
 }

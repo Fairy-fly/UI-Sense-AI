@@ -20,6 +20,16 @@ export interface PromptBuilderInput {
   pageList: string;
   additionalNotes: string;
   promptTemplateId?: string;
+  aestheticMemory?: {
+    summary: string;
+    preferredStyles: string[];
+    preferredColors: string[];
+    preferredLayouts: string[];
+    preferredComponents: string[];
+    avoidedStyles: string[];
+    keywords: string[];
+    agentInstruction?: string;
+  };
   userPreferences?: {
     preferredStyles?: string[];
     preferredColors?: string[];
@@ -48,6 +58,7 @@ export function generatePromptSections(input: PromptBuilderInput): PromptSection
     pageList,
     additionalNotes,
     promptTemplateId,
+    aestheticMemory,
     userPreferences,
   } = input;
 
@@ -178,6 +189,22 @@ ${desiredStyle || `参考以上灵感的整体风格，保持 ${prefStyles}`}
 - 主按钮深色背景
 - 次要按钮 outline + 细边框
 - hover 轻微亮度变化
+
+${aestheticMemory ? `## 4.5. 我的审美记忆
+
+以下是 UI Sense AI 根据你的灵感收藏、评分和 AI 分析自动总结的长期审美偏好：
+
+${aestheticMemory.summary ? `**审美摘要**：${aestheticMemory.summary}` : ""}
+${aestheticMemory.preferredStyles?.length ? `**偏好风格**：${aestheticMemory.preferredStyles.join("、")}` : ""}
+${aestheticMemory.preferredColors?.length ? `**偏好配色**：${aestheticMemory.preferredColors.join("、")}` : ""}
+${aestheticMemory.preferredLayouts?.length ? `**偏好布局**：${aestheticMemory.preferredLayouts.join("、")}` : ""}
+${aestheticMemory.preferredComponents?.length ? `**偏好组件**：${aestheticMemory.preferredComponents.join("、")}` : ""}
+${aestheticMemory.avoidedStyles?.length ? `**避免风格**：${aestheticMemory.avoidedStyles.join("、")}` : ""}
+
+${aestheticMemory.agentInstruction ? `**Agent 审美指令**：
+${aestheticMemory.agentInstruction}` : ""}
+
+> 这段审美记忆用于保持后续生成 UI 的一致性。请把它作为长期偏好参考，不要覆盖项目模板和当前参考灵感。` : ""}
 
 ## 5. 技术栈
 

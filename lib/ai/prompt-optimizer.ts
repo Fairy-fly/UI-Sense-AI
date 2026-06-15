@@ -24,6 +24,16 @@ export interface OptimizeInput {
   pageList: string;
   additionalNotes: string;
   promptTemplateId?: string;
+  aestheticMemory?: {
+    summary: string;
+    preferredStyles: string[];
+    preferredColors: string[];
+    preferredLayouts: string[];
+    preferredComponents: string[];
+    avoidedStyles: string[];
+    keywords: string[];
+    agentInstruction?: string;
+  };
   userPreferences?: {
     preferredStyles?: string[];
     preferredColors?: string[];
@@ -52,6 +62,7 @@ export async function optimizePromptWithAI(input: OptimizeInput): Promise<Optimi
     pageList: input.pageList,
     additionalNotes: input.additionalNotes,
     promptTemplateId: input.promptTemplateId,
+    aestheticMemory: input.aestheticMemory,
     userPreferences: input.userPreferences,
   });
 
