@@ -1,7 +1,7 @@
 # UI Sense AI — Project Memory
 
 > Last updated: 2026-06-15  
-> Current version: v1.5  
+> Current version: v1.5.1  
 > Default branch: main  
 
 ---
@@ -125,6 +125,13 @@ Next.js 15 · TypeScript · Tailwind CSS 4 · shadcn/ui · Prisma + SQLite · De
 - Image safety: only `/uploads/` local paths, ≤5MB, no base64 logging
 - `AI_ANALYSIS_MODE=text` env var for future vision model activation
 - No database schema changes; all providers write to existing AiAnalysis table
+
+### v1.5.1 — Provider & Metadata Regression Validation (current)
+- Verified URL Metadata: decodeHtmlEntities, getAutoFillTitle, readHtmlHeadLimited
+- Verified Provider: TextAnalysisProvider default, VisionAnalysisProvider safe degradation
+- Verified Prompt: "已分析" badge, AI 基础分析参考 injection, legacy filtering
+- All security boundaries intact: SSRF, localhost, private IP, redirect blocking
+- Zero code changes — pure regression validation
 
 ## Feature Status
 
