@@ -39,7 +39,7 @@ export async function generatePrompt(input: PromptFormInput & { useAI?: boolean 
     // Fetch selected inspirations
     const inspirations = await db.inspiration.findMany({
       where: { id: { in: data.selectedInspirationIds } },
-      include: { tags: { include: { tag: true } } },
+      include: { tags: { include: { tag: true } }, analysis: true },
     });
 
     if (inspirations.length === 0) {
@@ -69,6 +69,7 @@ export async function generatePrompt(input: PromptFormInput & { useAI?: boolean 
         projectType: i.projectType,
         rating: i.rating,
         notes: i.notes,
+        analysis: i.analysis as unknown as import("@/types").AiAnalysis | null,
         tags: i.tags.map((it) => ({
           id: it.tag.id,
           name: it.tag.name,

@@ -72,6 +72,7 @@ DEEPSEEK_TIMEOUT_MS="45000"
 | Prompt template presets (v1.3.2) | ✅ |
 | URL metadata auto-fill (v1.3.3) | ✅ |
 | AI analysis for inspirations (v1.4) | ✅ |
+| AI analysis enhances prompt generation (v1.4.2) | ✅ |
 | Login / multi-user | ❌ (future) |
 | Cloud storage | ❌ (future) |
 | Browser extension | ❌ (future) |

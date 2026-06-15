@@ -10,13 +10,14 @@ import "server-only";
 import { generatePromptSections, type PromptSections } from "@/lib/prompt-builder";
 import { generateWithDeepSeek, isDeepSeekConfigured } from "@/lib/ai/deepseek";
 import { getPromptTemplate } from "@/lib/prompt-templates";
+import { isLegacySeedAnalysis } from "@/lib/ai-analysis-utils";
 import type { Inspiration } from "@/types";
 
 export interface OptimizeInput {
   projectName: string;
   projectType: string;
   targetUsers: string;
-  selectedInspirations: Pick<Inspiration, "id" | "title" | "projectType" | "rating" | "notes" | "tags">[];
+  selectedInspirations: Pick<Inspiration, "id" | "title" | "projectType" | "rating" | "notes" | "tags" | "analysis">[];
   desiredStyle: string;
   avoidedStyles: string[];
   techStack: string[];
@@ -68,6 +69,29 @@ export async function optimizePromptWithAI(input: OptimizeInput): Promise<Optimi
     .map((i) => `- ${i.title} (${i.projectType ?? ""}, ${i.rating}/5): ${i.notes ?? ""}`)
     .join("\n");
 
+  // Build analysis context from inspirations that have valid AI analysis
+  const inspWithAnalysis = input.selectedInspirations.filter(
+    (i) => i.analysis && !isLegacySeedAnalysis(i.analysis),
+  );
+  const analysisContext =
+    inspWithAnalysis.length > 0
+      ? `
+## AI 基础分析参考
+以下是对部分参考灵感已生成的 AI 基础分析（基于元信息的文本分析），请在优化时吸收其风格、配色和组件语言：
+
+${inspWithAnalysis
+    .map(
+      (i) => `- ${i.title}：
+  风格：${i.analysis!.styleSummary ?? "—"}
+  配色：${i.analysis!.colorAnalysis ?? "—"}
+  布局：${i.analysis!.layoutAnalysis ?? "—"}
+  组件：${i.analysis!.componentAnalysis ?? "—"}
+  关键词：${i.analysis!.designKeywords ?? "—"}`,
+    )
+    .join("\n\n")}
+`
+      : "";
+
   const prefSummary = input.userPreferences
     ? [
         input.userPreferences.preferredStyles?.length ? `偏好风格：${input.userPreferences.preferredStyles.join("、")}` : "",
@@ -103,6 +127,7 @@ ${input.additionalNotes ? `- 补充说明：${input.additionalNotes}` : ""}
 ## 参考灵感
 ${inspSummary}
 
+${analysisContext}
 ## 审美偏好
 ${prefSummary || "极简 SaaS、中性配色、冷静高效的工具风格"}
 
