@@ -76,6 +76,7 @@ DEEPSEEK_TIMEOUT_MS="45000"
 | Vision analysis provider architecture (v1.5) | ✅ |
 | Real vision analysis via compatible API (v1.6) | ✅ |
 | Aesthetic memory auto-generation (v1.7) | ✅ |
+| Prompt history feedback & favorites (v1.8) | ✅ |
 | Login / multi-user | ❌ (future) |
 | Cloud storage | ❌ (future) |
 | Browser extension | ❌ (future) |

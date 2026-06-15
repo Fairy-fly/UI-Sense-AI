@@ -289,6 +289,7 @@ export const mockPromptRecords: PromptRecord[] = [
     componentLevelPrompt: null,
     createdAt: new Date("2026-06-08T14:30:00Z"),
     updatedAt: new Date("2026-06-08T14:30:00Z"),
+    feedbackRating: null, feedbackLabel: null, feedbackNote: null, feedbackTags: null, isFavorite: false, feedbackUpdatedAt: null,
   },
   {
     id: "pr-002",
@@ -302,6 +303,7 @@ export const mockPromptRecords: PromptRecord[] = [
     componentLevelPrompt: null,
     createdAt: new Date("2026-06-06T09:00:00Z"),
     updatedAt: new Date("2026-06-06T09:00:00Z"),
+    feedbackRating: null, feedbackLabel: null, feedbackNote: null, feedbackTags: null, isFavorite: false, feedbackUpdatedAt: null,
   },
   {
     id: "pr-003",
@@ -315,6 +317,7 @@ export const mockPromptRecords: PromptRecord[] = [
     componentLevelPrompt: null,
     createdAt: new Date("2026-06-03T16:45:00Z"),
     updatedAt: new Date("2026-06-03T16:45:00Z"),
+    feedbackRating: null, feedbackLabel: null, feedbackNote: null, feedbackTags: null, isFavorite: false, feedbackUpdatedAt: null,
   },
 ];
 

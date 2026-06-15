@@ -5,6 +5,7 @@ import { PageHeading } from "@/components/layout/page-heading";
 import { PromptCopyButton } from "@/components/prompts/prompt-copy-button";
 import { ExportMarkdownButton } from "@/components/prompts/export-markdown-button";
 import { DeletePromptButton } from "@/components/prompts/delete-prompt-button";
+import { PromptFeedbackPanel } from "@/components/prompts/prompt-feedback-panel";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getPromptRecordById } from "@/lib/actions/prompts";
 
@@ -74,6 +75,20 @@ export default async function PromptDetailPage({ params }: Props) {
             </div>
           </TabsContent>
         </Tabs>
+      </div>
+
+      {/* Feedback */}
+      <div className="mt-6">
+        <PromptFeedbackPanel
+          promptId={record.id}
+          initialData={{
+            feedbackRating: record.feedbackRating,
+            feedbackLabel: record.feedbackLabel,
+            feedbackNote: record.feedbackNote,
+            feedbackTags: record.feedbackTags,
+            isFavorite: record.isFavorite,
+          }}
+        />
       </div>
 
       <div className="mt-4">

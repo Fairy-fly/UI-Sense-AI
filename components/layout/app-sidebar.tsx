@@ -50,10 +50,10 @@ export function AppSidebar() {
               key={item.href}
               href={item.href}
               className={cn(
-                "flex items-center gap-2.5 rounded-[10px] px-3 py-2 text-[13px] font-medium transition-colors",
+                "flex items-center gap-2.5 rounded-[10px] px-3 py-2 text-[13px] font-medium transition-colors duration-150",
                 isActive
-                  ? "bg-muted text-foreground"
-                  : "text-muted-foreground hover:bg-muted/60 hover:text-foreground",
+                  ? "bg-zinc-100 text-zinc-950"
+                  : "text-zinc-500 hover:bg-zinc-100 hover:text-zinc-800",
               )}
             >
               <item.icon className="h-4 w-4 shrink-0" />
