@@ -69,7 +69,9 @@ Copy `.env.example` to `.env.local`. Required: `DATABASE_URL`. Optional: `DEEPSE
 | v2.0.1 | GitHub README showcase polish |
 | v2.0.2 | README table rendering and version display fix |
 | v2.0.3 | Move planning document to docs/ for cleaner repo root |
+| v2.0.4 | Project memory update after local tool phase completion |
 | v2.0.5 | Add reusable Agent workflow skills document |
+| v2.0.6 | README version display and milestone sync |
 
 ## Page Map
 
