@@ -43,6 +43,7 @@ Copy `.env.example` to `.env.local`. Required: `DATABASE_URL`. Optional: `DEEPSE
 | v1.3.1 | Collections UX polish: truncation, Select label, empty states |
 | v1.3.2 | Prompt template presets (6 templates, auto-suggest, AI-aware) |
 | v1.3.3 | URL metadata fetch (auto-fill title/description, favicon preview) |
+| v1.3.3.1 | URL metadata security hardening (SSRF prevention, body size limit) |
 
 ## Page Map
 

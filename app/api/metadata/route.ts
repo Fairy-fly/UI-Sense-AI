@@ -1,11 +1,20 @@
 /**
- * POST /api/metadata — v1.3.3
+ * POST /api/metadata — v1.3.3.1
  *
  * Fetch and extract metadata (title, description, favicon, og:image)
- * from a given URL.
+ * from a given URL. Security hardened:
+ * - Blocks localhost, private IPs, internal hostnames
+ * - Blocks redirects (redirect: "manual")
+ * - Limits response body to 1MB
+ * - 8s timeout
  */
 import { NextResponse } from "next/server";
-import { normalizeUrl, isSafeHttpUrl, extractMetadataFromHtml } from "@/lib/metadata";
+import {
+  normalizeUrl,
+  isSafePublicHttpUrl,
+  readResponseBodyLimited,
+  extractMetadataFromHtml,
+} from "@/lib/metadata";
 
 const FETCH_TIMEOUT_MS = 8000;
 
@@ -19,11 +28,15 @@ export async function POST(request: Request) {
     }
 
     const normalized = normalizeUrl(url);
-    if (!normalized || !isSafeHttpUrl(normalized)) {
+    if (!normalized) {
       return NextResponse.json({ success: false, error: "仅支持 http/https 链接" }, { status: 400 });
     }
 
-    // Fetch HTML with timeout
+    if (!isSafePublicHttpUrl(normalized)) {
+      return NextResponse.json({ success: false, error: "不支持访问本地或内网地址" }, { status: 400 });
+    }
+
+    // Fetch HTML with timeout, no auto-redirect
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
 
@@ -36,7 +49,7 @@ export async function POST(request: Request) {
             "Mozilla/5.0 (compatible; UISenseAI/1.0; +https://github.com/Fairy-fly/UI-Sense-AI)",
           Accept: "text/html,application/xhtml+xml",
         },
-        redirect: "follow",
+        redirect: "manual",
       });
     } catch (err) {
       clearTimeout(timeoutId);
@@ -46,6 +59,14 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: false, error: "无法访问该网页，请检查链接是否正确" }, { status: 200 });
     }
     clearTimeout(timeoutId);
+
+    // Block redirect responses
+    if (response.status >= 300 && response.status < 400) {
+      return NextResponse.json(
+        { success: false, error: "暂不支持重定向链接，请填写最终地址" },
+        { status: 200 },
+      );
+    }
 
     if (!response.ok) {
       return NextResponse.json(
@@ -60,7 +81,13 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: false, error: "该链接不是网页，请手动填写" }, { status: 200 });
     }
 
-    const html = await response.text();
+    // Read body with 1MB limit
+    const { text: html, truncated } = await readResponseBodyLimited(response);
+
+    if (truncated) {
+      return NextResponse.json({ success: false, error: "网页内容过大，请手动填写" }, { status: 200 });
+    }
+
     if (!html || html.length < 100) {
       return NextResponse.json({ success: false, error: "网页内容为空，请手动填写" }, { status: 200 });
     }
