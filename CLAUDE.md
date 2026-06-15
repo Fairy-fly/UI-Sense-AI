@@ -69,6 +69,7 @@ Copy `.env.example` to `.env.local`. Required: `DATABASE_URL`. Optional: `DEEPSE
 | v2.0.1 | GitHub README showcase polish |
 | v2.0.2 | README table rendering and version display fix |
 | v2.0.3 | Move planning document to docs/ for cleaner repo root |
+| v2.0.5 | Add reusable Agent workflow skills document |
 
 ## Page Map
 
@@ -126,6 +127,10 @@ git push -u origin v1.x-feature-name
 - ❌ Never change Chinese UI copy to English
 - ✅ Always `npm run build && npx tsc --noEmit && npm run lint` before commit
 - ✅ `main` is the default branch
+
+## Development Workflows
+
+For standard feature development, documentation-only releases, git safety, validation, UI quality review, and release checklists, follow `docs/AGENT_WORKFLOW_SKILLS.md`.
 
 ## Next Steps
 
