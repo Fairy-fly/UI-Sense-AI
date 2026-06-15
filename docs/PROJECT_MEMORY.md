@@ -1,7 +1,7 @@
 # UI Sense AI — Project Memory
 
 > Last updated: 2026-06-15  
-> Current version: v2.0.1  
+> Current version: v2.0.2  
 > Default branch: main  
 
 ---
@@ -228,6 +228,10 @@ Next.js 15 · TypeScript · Tailwind CSS 4 · shadcn/ui · Prisma + SQLite · De
 - Environment variables documented in table format; no real keys exposed
 - Version milestones and roadmap sections with future items clearly labeled
 - No code changes — documentation-only update
+
+### v2.0.2 — README Table Rendering Fix (current)
+- Fixed version badge display and milestone table formatting
+- Updated current version to v2.0.2
 
 ## Feature Status
 

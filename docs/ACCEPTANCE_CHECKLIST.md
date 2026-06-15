@@ -680,3 +680,14 @@
 | 2.0.1.6 | docs/GITHUB_ABOUT.md 新增 | ✅ |
 | 2.0.1.7 | 不改业务代码 / schema / migration | ✅ |
 | 2.0.1.8 | `npm run build` / `tsc` / `lint` 通过 | ✅ |
+
+---
+
+## v2.0.2 README 表格渲染与版本展示修复
+
+| # | 检查项 | 状态 |
+|---|--------|------|
+| 2.0.2.1 | 顶部版本号改为 v2.0.2 | ✅ |
+| 2.0.2.2 | Version Milestones 追加 v2.0.2 | ✅ |
+| 2.0.2.3 | 不改业务代码 / schema / migration | ✅ |
+| 2.0.2.4 | `npm run build` / `tsc` / `lint` 通过 | ✅ |

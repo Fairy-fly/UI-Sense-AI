@@ -63,6 +63,7 @@ Copy `.env.example` to `.env.local`. Required: `DATABASE_URL`. Optional: `DEEPSE
 | v1.9.1 | Feedback insights experience polish & regression |
 | v2.0 | Local product polish: full regression, docs, empty states, stable MVP |
 | v2.0.1 | GitHub README showcase polish |
+| v2.0.2 | README table rendering and version display fix |
 
 ## Page Map
 
