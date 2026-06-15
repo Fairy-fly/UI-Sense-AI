@@ -6,6 +6,7 @@
  */
 
 import type { Inspiration } from "@/types";
+import { getPromptTemplate } from "@/lib/prompt-templates";
 
 export interface PromptBuilderInput {
   projectName: string;
@@ -17,6 +18,7 @@ export interface PromptBuilderInput {
   techStack: string[];
   pageList: string;
   additionalNotes: string;
+  promptTemplateId?: string;
   userPreferences?: {
     preferredStyles?: string[];
     preferredColors?: string[];
@@ -44,8 +46,11 @@ export function generatePromptSections(input: PromptBuilderInput): PromptSection
     techStack,
     pageList,
     additionalNotes,
+    promptTemplateId,
     userPreferences,
   } = input;
+
+  const template = promptTemplateId ? getPromptTemplate(promptTemplateId) : undefined;
 
   const pages = pageList.split(/[,，、\n]/).map((p) => p.trim()).filter(Boolean);
 
@@ -80,6 +85,20 @@ ${insp.notes ? `- **可借鉴点**：${insp.notes}` : ""}`,
 - **项目类型**：${projectType}
 - **目标用户**：${targetUsers}
 ${additionalNotes ? `- **补充说明**：${additionalNotes}` : ""}
+
+${template ? `## 2.5. Prompt 模板：${template.name}
+
+**模板说明**：${template.description}
+
+### 结构建议
+${template.structureHints.map((h) => `- ${h}`).join("\n")}
+
+### 组件建议
+${template.componentHints.map((h) => `- ${h}`).join("\n")}
+
+### 模板提醒
+${template.avoidHints.map((h) => `- ${h}`).join("\n")}
+` : ""}
 
 ## 3. 参考灵感
 

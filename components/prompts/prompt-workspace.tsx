@@ -15,6 +15,7 @@ import { PromptCopyButton } from "@/components/prompts/prompt-copy-button";
 import { ExportMarkdownButton } from "@/components/prompts/export-markdown-button";
 import { generatePrompt, createPromptRecordFromGenerated } from "@/lib/actions/prompts";
 import { projectTypes, defaultStyleTags, defaultTechStack, dislikedStyleExamples } from "@/lib/constants";
+import { promptTemplates, getPromptTemplate, suggestTemplateId } from "@/lib/prompt-templates";
 import type { Inspiration } from "@/types";
 
 function AccordionSection({ title, defaultOpen = false, children }: { title: string; defaultOpen?: boolean; children: React.ReactNode }) {
@@ -58,6 +59,17 @@ export function PromptWorkspace({ inspirations, recentRecords, aiConfigured, col
   const [pagePrompt, setPagePrompt] = useState("");
   const [componentPrompt, setComponentPrompt] = useState("");
   const [activeTab, setActiveTab] = useState("full");
+  const [promptTemplateId, setPromptTemplateId] = useState("none");
+
+  // Auto-suggest template when project type changes
+  function handleProjectTypeChange(v: string | null) {
+    const val = v ?? "";
+    setProjectType(val);
+    const suggested = suggestTemplateId(val);
+    if (suggested && promptTemplateId === "none") {
+      setPromptTemplateId(suggested);
+    }
+  }
 
   async function handleGenerate() {
     if (!projectName.trim()) { toast.error("请输入项目名称"); return; }
@@ -68,7 +80,7 @@ export function PromptWorkspace({ inspirations, recentRecords, aiConfigured, col
     if (!pageList.trim()) { toast.error("请填写页面列表"); return; }
     setGenerating(true);
     try {
-      const result = await generatePrompt({ projectName, projectType, targetUsers, selectedInspirationIds: selectedIds, desiredStyle, avoidedStyles, techStack, pageList, additionalNotes, useAI: useAIEnabled });
+      const result = await generatePrompt({ projectName, projectType, targetUsers, selectedInspirationIds: selectedIds, desiredStyle, avoidedStyles, techStack, pageList, additionalNotes, useAI: useAIEnabled, promptTemplateId: promptTemplateId !== "none" ? promptTemplateId : undefined });
       if (!result.success) { toast.error(result.error ?? "生成失败"); return; }
       setFullPrompt(result.data!.fullPrompt);
       setDesignSystem(result.data!.designSystemPrompt);
@@ -135,7 +147,7 @@ export function PromptWorkspace({ inspirations, recentRecords, aiConfigured, col
             <div className="grid gap-3 sm:grid-cols-2">
               <div>
                 <label className="mb-1 block text-[12px] font-medium text-foreground">项目类型</label>
-                <Select value={projectType} onValueChange={(v) => setProjectType(v ?? "")}>
+                <Select value={projectType} onValueChange={handleProjectTypeChange}>
                   <SelectTrigger className="h-8 rounded-[10px] text-[13px]"><SelectValue placeholder="选择类型..." /></SelectTrigger>
                   <SelectContent>{projectTypes.map((t) => (<SelectItem key={t} value={t}>{t}</SelectItem>))}</SelectContent>
                 </Select>
@@ -166,6 +178,27 @@ export function PromptWorkspace({ inspirations, recentRecords, aiConfigured, col
               </Select>
             </div>
           )}
+
+          {/* --- Prompt template selector --- */}
+          <div className="mb-3">
+            <label className="mb-1 block text-[12px] font-medium text-foreground">Prompt 模板</label>
+            <Select value={promptTemplateId} onValueChange={(v) => setPromptTemplateId(v ?? "none")}>
+              <SelectTrigger className="h-8 rounded-[10px] text-[13px]">
+                <SelectValue placeholder="不使用模板" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="none">不使用模板</SelectItem>
+                {promptTemplates.map((t) => (
+                  <SelectItem key={t.id} value={t.id}>{t.name}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {promptTemplateId !== "none" && (
+              <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">
+                {getPromptTemplate(promptTemplateId)?.description ?? ""}
+              </p>
+            )}
+          </div>
 
           {/* --- Always visible: inspiration selector --- */}
           <div className="mb-3">
@@ -276,6 +309,7 @@ export function PromptWorkspace({ inspirations, recentRecords, aiConfigured, col
                   projectName,
                   projectType,
                   mode: useAIEnabled ? "AI 优化" : "本地模板",
+                  promptTemplateName: promptTemplateId !== "none" ? getPromptTemplate(promptTemplateId)?.name : undefined,
                   referenceInspirations: selectedIds,
                   techStack,
                   fullPrompt,

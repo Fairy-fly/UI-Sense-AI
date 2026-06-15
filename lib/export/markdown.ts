@@ -7,6 +7,7 @@ export interface PromptExportData {
   projectType?: string;
   createdAt?: string;
   mode?: string;
+  promptTemplateName?: string;
   referenceInspirations?: string[];
   techStack?: string[];
   fullPrompt: string;
@@ -26,6 +27,7 @@ export function buildPromptMarkdown(data: PromptExportData): string {
   if (data.projectType) lines.push(`- **项目类型**：${data.projectType}`);
   if (data.createdAt) lines.push(`- **生成时间**：${data.createdAt}`);
   if (data.mode) lines.push(`- **使用模式**：${data.mode}`);
+  if (data.promptTemplateName) lines.push(`- **Prompt 模板**：${data.promptTemplateName}`);
   if (data.referenceInspirations?.length) {
     lines.push(`- **参考灵感**：${data.referenceInspirations.join("、")}`);
   }

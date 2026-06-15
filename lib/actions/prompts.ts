@@ -83,6 +83,7 @@ export async function generatePrompt(input: PromptFormInput & { useAI?: boolean 
       techStack: data.techStack,
       pageList: data.pageList,
       additionalNotes: data.additionalNotes,
+      promptTemplateId: data.promptTemplateId,
       userPreferences,
       useAI: data.useAI ?? false,
     });
