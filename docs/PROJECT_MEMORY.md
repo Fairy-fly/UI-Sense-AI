@@ -1,7 +1,7 @@
 # UI Sense AI — Project Memory
 
 > Last updated: 2026-06-15  
-> Current version: v1.6  
+> Current version: v1.6.1  
 > Default branch: main  
 
 ---
@@ -142,6 +142,12 @@ Next.js 15 · TypeScript · Tailwind CSS 4 · shadcn/ui · Prisma + SQLite · De
 - `analysisMode: "vision"` vs `"text"` for quality tracking
 - Config via `VISION_MODEL` / `VISION_API_BASE_URL` / `VISION_API_KEY` env vars
 - No database schema changes
+
+### v1.6.1 — Vision Analysis Feedback (current)
+- `analyzeInspiration` now returns `analysisMode: "vision" | "text"`
+- Toast feedback: "视觉分析完成" for vision, "已使用基础文本分析" for text/degraded
+- Mode is ephemeral (not persisted) — cleared on page refresh
+- Analysis results persist normally in AiAnalysis table
 
 ## Feature Status
 

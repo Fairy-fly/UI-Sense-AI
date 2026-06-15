@@ -40,8 +40,10 @@ export async function analyzeInspiration(inspirationId: string) {
       return { success: false as const, error: result.error ?? "AI 分析生成失败" };
     }
 
+    const analysisMode = result.data.analysisMode ?? "text";
+
     // 4. Upsert to AiAnalysis table (one-to-one per inspiration)
-    await db.aiAnalysis.upsert({
+    const saved = await db.aiAnalysis.upsert({
       where: { inspirationId },
       create: {
         inspirationId,
@@ -62,7 +64,19 @@ export async function analyzeInspiration(inspirationId: string) {
 
     revalidatePath(`/inspirations/${inspirationId}`);
 
-    return { success: true as const };
+    const analysis = {
+      id: saved.id,
+      inspirationId: saved.inspirationId,
+      colorAnalysis: saved.colorAnalysis,
+      layoutAnalysis: saved.layoutAnalysis,
+      componentAnalysis: saved.componentAnalysis,
+      styleSummary: saved.styleSummary,
+      designKeywords: saved.designKeywords,
+      createdAt: saved.createdAt,
+      updatedAt: saved.updatedAt,
+    };
+
+    return { success: true as const, analysisMode, analysis };
   } catch {
     return { success: false as const, error: "AI 分析失败，请重试" };
   }
