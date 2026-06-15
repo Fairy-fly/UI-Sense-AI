@@ -92,11 +92,11 @@ export function AIAnalysisPanel({ inspirationId, analysis: initialAnalysis }: AI
               disabled={analyzing}
             >
               {analyzing ? (
-                <Loader2 className="h-3 w-3 animate-spin" />
+                <Loader2 className="h-3 w-3 shrink-0 animate-spin" />
               ) : (
-                <RefreshCw className="h-3 w-3" />
+                <RefreshCw className="h-3 w-3 shrink-0" />
               )}
-              重新分析
+              <span className="inline-flex items-center leading-none">重新分析</span>
             </Button>
           </CardTitle>
         </CardHeader>

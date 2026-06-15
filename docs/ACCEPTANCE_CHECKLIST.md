@@ -394,3 +394,18 @@
 | 1.4.8 | AI 失败 toast 中文提示 | ✅ |
 | 1.4.9 | 无新 migration / 无 schema 变更 | ✅ |
 | 1.4.10 | `npm run build` / `tsc` / `lint` 通过 | ✅ |
+
+---
+
+## v1.4.1 AI 分析体验回归
+
+| # | 检查项 | 状态 |
+|---|--------|------|
+| 1.4.1.1 | 标题"AI 基础分析" + 副标题"基础文本分析 · 非视觉识别" | ✅ |
+| 1.4.1.2 | "重新分析"按钮文字对齐 + shrink-0 图标 | ✅ |
+| 1.4.1.3 | InspirationDetail 无重复 analysis 渲染 | ✅ |
+| 1.4.1.4 | legacy seed 英文分析正确隐藏 | ✅ |
+| 1.4.1.5 | 16 条 seed description/notes 中文映射完整 | ✅ |
+| 1.4.1.6 | designKeywords chip 使用 displayKeywordList 中文化 | ✅ |
+| 1.4.1.7 | 新生成中文分析保存 + 刷新保留 | ✅ |
+| 1.4.1.8 | `npm run build` / `tsc` / `lint` 通过 | ✅ |
