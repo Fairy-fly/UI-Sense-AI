@@ -127,6 +127,31 @@ export const promptTemplates: PromptTemplate[] = [
     ],
   },
   {
+    id: "ai-model-marketplace",
+    name: "AI 模型市场",
+    description: "适合大模型广场、模型市场、AI 控制台、开发者平台。",
+    structureHints: [
+      "左侧导航 + 顶部 Tabs 或分类切换 + 主内容区",
+      "模型卡片网格展示，支持搜索、筛选、排序",
+      "顶部浅色 Banner：公告/免费额度/状态提示",
+      "推荐区 + 分类区 + 列表区，适合快速比较和选择",
+    ],
+    componentHints: [
+      "ModelCard（名称、能力标签、描述、价格/额度/状态、操作按钮）",
+      "Tabs / CategoryNav（分类导航切换模型类型）",
+      "SearchInput + FilterBar（搜索模型名称、筛选标签）",
+      "StatusBanner（免费额度提醒、公告提示）",
+      "CompareButton / TryButton（对比模型、立即体验）",
+    ],
+    avoidHints: [
+      "避免把模型市场做成聊天窗口",
+      "避免过度营销化落地页风格",
+      "避免传统后台表格过重",
+      "避免卡片信息密度失控",
+      "避免高饱和渐变堆叠",
+    ],
+  },
+  {
     id: "minimal-portfolio",
     name: "极简作品集",
     description: "适合作品集、个人主页、展示页。",
@@ -176,6 +201,11 @@ export function suggestTemplateId(projectType: string): string | undefined {
     "Admin Panel": "saas-dashboard",
     设计工具: "developer-tool",
     "Design Tool": "developer-tool",
+    // AI 模型市场 — when the project context involves model marketplace
+    "AI 模型市场": "ai-model-marketplace",
+    "大模型广场": "ai-model-marketplace",
+    模型市场: "ai-model-marketplace",
+    模型广场: "ai-model-marketplace",
   };
   return map[projectType];
 }

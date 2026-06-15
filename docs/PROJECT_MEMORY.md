@@ -1,7 +1,7 @@
 # UI Sense AI — Project Memory
 
 > Last updated: 2026-06-15  
-> Current version: v1.6.1  
+> Current version: v1.6.2  
 > Default branch: main  
 
 ---
@@ -148,6 +148,13 @@ Next.js 15 · TypeScript · Tailwind CSS 4 · shadcn/ui · Prisma + SQLite · De
 - Toast feedback: "视觉分析完成" for vision, "已使用基础文本分析" for text/degraded
 - Mode is ephemeral (not persisted) — cleared on page refresh
 - Analysis results persist normally in AiAnalysis table
+
+### v1.6.2 — Vision Analysis Quality Optimization (current)
+- Enhanced vision prompt: per-field 80-260 word range, minimum 2 visible details per field
+- Forbidden Markdown/code blocks/verbose explanations in model output
+- Resilient JSON parsing: extracts `{...}` block from surrounding text
+- Prompt Builder analysis section reformatted as actionable instructions
+- No database schema changes
 
 ## Feature Status
 

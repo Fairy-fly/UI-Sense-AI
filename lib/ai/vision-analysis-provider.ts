@@ -85,40 +85,42 @@ export class VisionAnalysisProvider implements AnalysisProvider {
     const dataUrl = `data:${mimeType};base64,${base64}`;
 
     // ---- Build prompts ----
-    const systemPrompt = `你是一名资深 UI/UX 设计分析师和前端架构顾问。你的任务是分析这张 UI 截图，生成结构化的中文设计分析报告。
+    const systemPrompt = `你是一名资深 UI/UX 设计分析师和前端架构顾问。你的任务是分析这张 UI 截图，生成一份高度具体、可执行的结构化中文设计分析报告。
 
-分析规则：
-1. 观察页面整体结构、导航方式、内容排布
-2. 识别卡片、表格、列表、按钮、输入框等 UI 组件
-3. 分析配色方案、对比度、留白、圆角、阴影等视觉特征
-4. 判断字体层级、信息密度和阅读节奏
-5. 判断整体视觉风格（SaaS、AI 工具、Dashboard、移动端、作品集等）
-6. 总结值得借鉴的设计优点
-7. 提取设计关键词
+核心原则：
+- 必须基于截图中真实可见的内容，不确定时用"可能"或"倾向于"
+- 不要编造截图中看不到的 UI 元素
+- 每个字段至少 80 字、最多 260 字，避免空泛描述
+- 优先提取可复用到 Tailwind / shadcn / Next.js 项目的具体信息
+- 参考标题和标签只能作为辅助线索，截图观察优先
 
-注意：
-- 所有输出使用简体中文
-- 分析应该具体、专业，基于截图中真实可见的内容
-- 不要编造截图中看不到的元素
-- designKeywords 使用中文关键词，允许保留 SaaS、AI、CRM、B2B 等行业缩写
-- 输出必须是合法 JSON`;
+输出格式：
+- 只输出合法 JSON，不要输出 Markdown 或代码块
+- 不要输出解释文字或 \`\`\`json 标记
+- 所有字段值使用简体中文
+- designKeywords 使用中文，允许保留 SaaS、AI、CRM、B2B 等行业缩写`;
 
     const userPrompt = `请分析这张 UI 截图的设计特征。
 
 ${input.title ? `参考标题：${input.title}` : ""}
 ${input.projectType ? `项目类型：${input.projectType}` : ""}
 ${input.tags.length > 0 ? `参考标签：${input.tags.join("、")}` : ""}
-${input.notes ? `用户备注：${input.notes}` : ""}
+${input.notes ? `用户备注：${input.notes}（辅助参考，不可当作截图事实）` : ""}
 
-请只输出合法 JSON，格式如下：
+## JSON 格式（每个字段 80-260 字）
 
 {
-  "colorAnalysis": "配色分析（50-200字简体中文）：主色调、对比度、色彩情绪、明暗模式",
-  "layoutAnalysis": "布局分析（50-200字简体中文）：整体结构、导航方式、网格系统、空间分配",
-  "componentAnalysis": "组件分析（50-200字简体中文）：关键UI组件类型及其视觉特征",
-  "styleSummary": "风格总结（50-200字简体中文）：整体美学方向、设计语言、产品气质",
-  "designKeywords": "设计关键词（使用中文逗号分隔，10-20个中文关键词，允许SaaS/AI/B2B等缩写）"
-}`;
+  "colorAnalysis": "配色分析：主背景色倾向、主/次文字颜色、品牌强调色、按钮/标签/提示状态色、对比度强弱、适配 Tailwind/shadcn 的配色建议。至少提到 2 个截图可见细节。",
+  "layoutAnalysis": "布局分析：页面整体结构（导航方式+内容区排布）、信息层级、卡片/列表/表格/筛选区排列、留白节奏、是否适配移动端。可复用的布局实现建议。至少提到 2 个截图可见细节。",
+  "componentAnalysis": "组件分析：真实可见的组件清单及视觉特征（Sidebar/Header/Card/Tabs/Badge/Button/Input/Search/Table/Toast/EmptyState 等）、圆角/边框/阴影/密度感、哪些体现高级感或廉价感。至少提到 3 个组件。",
+  "styleSummary": "风格总结：整体设计风格判断、适合什么类型产品、最值得借鉴的 3 个设计特征、对用户项目的迁移建议、偏高级克制/工具型/信息密集/营销感/移动端中的哪种。",
+  "designKeywords": "设计关键词（10-20个中文逗号分隔）：避免泛词如美观/好看/清晰，推荐：低饱和配色、卡片网格、左侧导航、轻量阴影、高信息密度、shadcn风格、SaaS仪表盘、AI工具界面、克制圆角、分组标题、状态标签、紧凑列表等"
+}
+
+注意：
+1. 每个字段至少 80 字，不确定的用"可能"或"倾向于"
+2. 不要输出 Markdown、代码块或解释文字
+3. 只输出 JSON`;
 
     // ---- Call vision API ----
     try {
@@ -168,12 +170,19 @@ ${input.notes ? `用户备注：${input.notes}` : ""}
         return this.degradeToText(input);
       }
 
-      // Parse JSON from response
-      const cleaned = content
+      // Parse JSON from response with resilience
+      let cleaned = content
         .replace(/^```json\s*/i, "")
         .replace(/^```\s*/i, "")
         .replace(/\s*```$/, "")
         .trim();
+
+      // If model wrapped JSON in extra text, extract just the { ... } block
+      const firstBrace = cleaned.indexOf("{");
+      const lastBrace = cleaned.lastIndexOf("}");
+      if (firstBrace !== -1 && lastBrace > firstBrace) {
+        cleaned = cleaned.slice(firstBrace, lastBrace + 1);
+      }
 
       const parsed = JSON.parse(cleaned);
 

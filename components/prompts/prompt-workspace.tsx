@@ -61,11 +61,20 @@ export function PromptWorkspace({ inspirations, recentRecords, aiConfigured, col
   const [activeTab, setActiveTab] = useState("full");
   const [promptTemplateId, setPromptTemplateId] = useState("none");
 
-  // Auto-suggest template when project type changes
+  // Auto-suggest template when project type or name changes
   function handleProjectTypeChange(v: string | null) {
     const val = v ?? "";
     setProjectType(val);
-    const suggested = suggestTemplateId(val);
+    let suggested = suggestTemplateId(val);
+
+    // If project name contains model marketplace keywords, prefer that template
+    if (!suggested || suggested === "ai-product") {
+      const nameKeywords = ["模型", "大模型", "模型广场", "模型市场", "Model", "Marketplace", "控制台", "Console", "开发者平台", "API", "推理", "部署"];
+      if (nameKeywords.some((kw) => projectName.includes(kw))) {
+        suggested = "ai-model-marketplace";
+      }
+    }
+
     if (suggested && promptTemplateId === "none") {
       setPromptTemplateId(suggested);
     }
@@ -131,6 +140,12 @@ export function PromptWorkspace({ inspirations, recentRecords, aiConfigured, col
     ? `${activeCollection.name}（${activeCollection.inspirationIds.length}）`
     : "全部灵感";
 
+  // Template label for display
+  const promptTemplateLabel =
+    promptTemplateId !== "none"
+      ? (getPromptTemplate(promptTemplateId)?.name ?? "")
+      : "不使用模板";
+
   return (
     <div className="grid gap-6 lg:grid-cols-5">
       {/* Left: Project Brief */}
@@ -184,7 +199,7 @@ export function PromptWorkspace({ inspirations, recentRecords, aiConfigured, col
             <label className="mb-1 block text-[12px] font-medium text-foreground">Prompt 模板</label>
             <Select value={promptTemplateId} onValueChange={(v) => setPromptTemplateId(v ?? "none")}>
               <SelectTrigger className="h-8 rounded-[10px] text-[13px]">
-                <SelectValue placeholder="不使用模板" />
+                <span className="truncate">{promptTemplateLabel}</span>
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="none">不使用模板</SelectItem>
