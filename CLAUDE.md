@@ -61,6 +61,7 @@ Copy `.env.example` to `.env.local`. Required: `DATABASE_URL`. Optional: `DEEPSE
 | v1.8.1 | Prompt feedback regression validation |
 | v1.9 | Feedback-driven prompt strategy (insights from feedback data) |
 | v1.9.1 | Feedback insights experience polish & regression |
+| v2.0 | Local product polish: full regression, docs, empty states, stable MVP |
 
 ## Page Map
 
@@ -121,4 +122,5 @@ git push -u origin v1.x-feature-name
 
 ## Next Steps
 
-- v2.0: Multimodal image analysis, browser extension, cloud sync, login
+- v2.1: Browser extension, cloud sync exploration
+- v2.2: Multi-user, authentication
