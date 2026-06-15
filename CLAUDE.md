@@ -5,7 +5,11 @@
 **UI Sense AI** — 个人 UI 灵感采集、审美偏好学习、Agent 提示词生成平台。
 核心流程：收藏 UI 截图 → 分析设计风格 → 学习个人审美 → 生成 Claude Code / Codex 可执行的高质量 UI 开发 Prompt。
 
+**当前版本：v2.0.3** · 个人本地工具阶段已基本完成。
+
 目标：减少 AI Agent 生成项目时的廉价感、AI 味、普通后台感。
+
+> 这不是商业化 SaaS 产品。登录、多用户、云同步、浏览器插件仍是未来方向。
 
 ## Tech Stack
 
@@ -125,5 +129,10 @@ git push -u origin v1.x-feature-name
 
 ## Next Steps
 
-- v2.1: Browser extension, cloud sync exploration
-- v2.2: Multi-user, authentication
+项目已进入真实使用阶段，建议：
+
+- 用 UI Sense AI 为下一个真实项目生成 UI Prompt
+- 持续收集 10-20 个喜欢/不喜欢的 UI 案例
+- 观察审美记忆和 Feedback Insights 是否随使用越来越准
+- v2.1 可考虑 Demo 数据 + 演示截图 + Prompt 质量报告
+- v3.0+ 可考虑可选云同步、多用户、浏览器插件（长期未来方向）
