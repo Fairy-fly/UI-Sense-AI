@@ -1,7 +1,7 @@
 # UI Sense AI — Project Memory
 
 > Last updated: 2026-06-15  
-> Current version: v1.7  
+> Current version: v1.7.1  
 > Default branch: main  
 
 ---
@@ -171,6 +171,13 @@ Next.js 15 · TypeScript · Tailwind CSS 4 · shadcn/ui · Prisma + SQLite · De
 - Profile chips: preferred styles, colors, layouts, components, avoided styles
 - Agent instruction paragraph generated for Prompt Builder §4.5 injection
 - Data threshold: requires ≥3 high-rated (≥4) inspirations
+
+### v1.7.1 — Aesthetic Memory Experience Polish (current)
+- Unified data threshold text to "3 个以上" matching code logic
+- Enforced chip limits: 8 per category in UI and data layer
+- Summary capped at 180 chars, Agent instruction at 200 chars
+- Array limits: styles/colors/layouts/components/avoided ≤8, keywords ≤12
+- No schema changes or migrations
 
 ## Feature Status
 

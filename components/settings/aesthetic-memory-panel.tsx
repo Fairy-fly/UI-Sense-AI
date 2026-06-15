@@ -92,7 +92,7 @@ export function AestheticMemoryPanel({ initialData }: AestheticMemoryPanelProps)
         </CardHeader>
         <CardContent>
           <p className="mb-4 text-[12px] leading-relaxed text-muted-foreground">
-            还没有足够灵感生成审美记忆。建议先收藏 5 个以上 UI 灵感，并给它们评分或生成 AI 分析。
+            还没有足够灵感生成审美记忆。建议先收藏 3 个以上 UI 灵感，并给它们评分或生成 AI 分析。
           </p>
           <Button
             variant="outline"
@@ -153,7 +153,7 @@ export function AestheticMemoryPanel({ initialData }: AestheticMemoryPanelProps)
               <div>
                 <p className="mb-1 text-[11px] font-medium text-muted-foreground">偏好风格</p>
                 <div className="flex flex-wrap gap-1">
-                  {profile.preferredStyles.map((s) => (
+                  {profile.preferredStyles.slice(0, 8).map((s) => (
                     <Badge key={s} variant="secondary" className="text-[11px]">{s}</Badge>
                   ))}
                 </div>
@@ -163,7 +163,7 @@ export function AestheticMemoryPanel({ initialData }: AestheticMemoryPanelProps)
               <div>
                 <p className="mb-1 text-[11px] font-medium text-muted-foreground">偏好配色</p>
                 <div className="flex flex-wrap gap-1">
-                  {profile.preferredColors.map((c) => (
+                  {profile.preferredColors.slice(0, 8).map((c) => (
                     <Badge key={c} variant="secondary" className="text-[11px]">{c}</Badge>
                   ))}
                 </div>
@@ -173,7 +173,7 @@ export function AestheticMemoryPanel({ initialData }: AestheticMemoryPanelProps)
               <div>
                 <p className="mb-1 text-[11px] font-medium text-muted-foreground">偏好布局</p>
                 <div className="flex flex-wrap gap-1">
-                  {profile.preferredLayouts.map((l) => (
+                  {profile.preferredLayouts.slice(0, 8).map((l) => (
                     <Badge key={l} variant="secondary" className="text-[11px]">{l}</Badge>
                   ))}
                 </div>
@@ -183,7 +183,7 @@ export function AestheticMemoryPanel({ initialData }: AestheticMemoryPanelProps)
               <div>
                 <p className="mb-1 text-[11px] font-medium text-muted-foreground">偏好组件</p>
                 <div className="flex flex-wrap gap-1">
-                  {profile.preferredComponents.map((c) => (
+                  {profile.preferredComponents.slice(0, 8).map((c) => (
                     <Badge key={c} variant="secondary" className="text-[11px]">{c}</Badge>
                   ))}
                 </div>
@@ -193,7 +193,7 @@ export function AestheticMemoryPanel({ initialData }: AestheticMemoryPanelProps)
               <div>
                 <p className="mb-1 text-[11px] font-medium text-muted-foreground">避免风格</p>
                 <div className="flex flex-wrap gap-1">
-                  {profile.avoidedStyles.map((s) => (
+                  {profile.avoidedStyles.slice(0, 8).map((s) => (
                     <Badge key={s} variant="outline" className="text-[11px] text-muted-foreground">{s}</Badge>
                   ))}
                 </div>
