@@ -21,6 +21,16 @@ export async function getUserPreference(): Promise<UserPreferences | null> {
     defaultTechStack: row.defaultTechStack,
     defaultUiStyle: row.defaultUiStyle,
     updatedAt: row.updatedAt,
+    aestheticSummary: row.aestheticSummary,
+    aestheticPreferredStyles: row.aestheticPreferredStyles,
+    aestheticPreferredColors: row.aestheticPreferredColors,
+    aestheticPreferredLayouts: row.aestheticPreferredLayouts,
+    aestheticPreferredComponents: row.aestheticPreferredComponents,
+    aestheticAvoidedStyles: row.aestheticAvoidedStyles,
+    aestheticKeywords: row.aestheticKeywords,
+    aestheticAgentInstruction: row.aestheticAgentInstruction,
+    aestheticGeneratedAt: row.aestheticGeneratedAt,
+    aestheticSourceCount: row.aestheticSourceCount,
   };
 }
 

@@ -1,7 +1,7 @@
 # UI Sense AI — Project Memory
 
 > Last updated: 2026-06-15  
-> Current version: v1.6.3  
+> Current version: v1.7  
 > Default branch: main  
 
 ---
@@ -163,6 +163,14 @@ Next.js 15 · TypeScript · Tailwind CSS 4 · shadcn/ui · Prisma + SQLite · De
 - Section 9: Development order simplified with key principles
 - Section 10: Acceptance criteria converted to checklist format
 - No database schema changes
+
+### v1.7 — Aesthetic Memory (current)
+- Extended `UserPreference` with aesthetic memory fields (migration: add_aesthetic_memory)
+- `buildAestheticMemory()`: rule-based profile from high-rated inspirations, AI analysis, tags
+- `/settings` page: AestheticMemoryPanel with generate/regenerate button
+- Profile chips: preferred styles, colors, layouts, components, avoided styles
+- Agent instruction paragraph generated for Prompt Builder §4.5 injection
+- Data threshold: requires ≥3 high-rated (≥4) inspirations
 
 ## Feature Status
 

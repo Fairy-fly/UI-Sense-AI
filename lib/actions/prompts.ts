@@ -59,6 +59,20 @@ export async function generatePrompt(input: PromptFormInput & { useAI?: boolean 
         }
       : undefined;
 
+    // Extract aesthetic memory from UserPreference
+    const aestheticMemory = pref?.aestheticSummary
+      ? {
+          summary: pref.aestheticSummary,
+          preferredStyles: safeParse(pref.aestheticPreferredStyles),
+          preferredColors: safeParse(pref.aestheticPreferredColors),
+          preferredLayouts: safeParse(pref.aestheticPreferredLayouts),
+          preferredComponents: safeParse(pref.aestheticPreferredComponents),
+          avoidedStyles: safeParse(pref.aestheticAvoidedStyles),
+          keywords: safeParse(pref.aestheticKeywords),
+          agentInstruction: pref.aestheticAgentInstruction ?? undefined,
+        }
+      : undefined;
+
     const sections = await optimizePromptWithAI({
       projectName: data.projectName,
       projectType: data.projectType,
@@ -85,6 +99,7 @@ export async function generatePrompt(input: PromptFormInput & { useAI?: boolean 
       pageList: data.pageList,
       additionalNotes: data.additionalNotes,
       promptTemplateId: data.promptTemplateId,
+      aestheticMemory,
       userPreferences,
       useAI: data.useAI ?? false,
     });

@@ -67,6 +67,17 @@ export interface UserPreferences {
   defaultTechStack: string | null;
   defaultUiStyle: string | null;
   updatedAt: Date;
+  // Aesthetic memory (v1.7)
+  aestheticSummary: string | null;
+  aestheticPreferredStyles: string | null;
+  aestheticPreferredColors: string | null;
+  aestheticPreferredLayouts: string | null;
+  aestheticPreferredComponents: string | null;
+  aestheticAvoidedStyles: string | null;
+  aestheticKeywords: string | null;
+  aestheticAgentInstruction: string | null;
+  aestheticSourceCount: number | null;
+  aestheticGeneratedAt: Date | null;
 }
 
 // ---- Collections ----
