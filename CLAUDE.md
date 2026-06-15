@@ -58,6 +58,7 @@ Copy `.env.example` to `.env.local`. Required: `DATABASE_URL`. Optional: `DEEPSE
 | v1.7.1 | Aesthetic memory experience polish (chip limits, text consistency) |
 | v1.7.2 | Full regression validation (all links intact) |
 | v1.8 | Prompt history feedback with ratings, labels, favorites |
+| v1.8.1 | Prompt feedback regression validation |
 
 ## Page Map
 

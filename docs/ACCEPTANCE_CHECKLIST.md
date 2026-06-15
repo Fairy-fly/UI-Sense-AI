@@ -600,3 +600,20 @@
 | 1.8.10 | 旧 Prompt 无反馈不崩溃 | ✅ |
 | 1.8.11 | 不影响 Prompt 生成/导出/复制/审美记忆 | ✅ |
 | 1.8.12 | `npm run build` / `tsc` / `lint` 通过 | ✅ |
+
+---
+
+## v1.8.1 Prompt Feedback 体验回归
+
+| # | 检查项 | 状态 |
+|---|--------|------|
+| 1.8.1.1 | PromptRecord 新字段 + migration 兼容旧记录 | ✅ |
+| 1.8.1.2 | updatePromptFeedback Zod 校验 + revalidatePath | ✅ |
+| 1.8.1.3 | PromptFeedbackPanel 回显 / 保存 / 刷新 | ✅ |
+| 1.8.1.4 | /prompts 历史列表反馈状态 + 筛选 | ✅ |
+| 1.8.1.5 | SelectableChip 5 变体统一 | ✅ |
+| 1.8.1.6 | 全站标签去重 / toggle / onClick 正常 | ✅ |
+| 1.8.1.7 | 复制 / 导出 / 保存历史正常 | ✅ |
+| 1.8.1.8 | 不影响 Prompt 生成 / 审美记忆 / 视觉分析 | ✅ |
+| 1.8.1.9 | prisma validate / migrate status / build / tsc / lint 通过 | ✅ |
+| 1.8.1.10 | 安全检查通过 | ✅ |

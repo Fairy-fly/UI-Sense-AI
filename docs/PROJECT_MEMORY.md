@@ -1,7 +1,7 @@
 # UI Sense AI — Project Memory
 
 > Last updated: 2026-06-15  
-> Current version: v1.8  
+> Current version: v1.8.1  
 > Default branch: main  
 
 ---
@@ -194,6 +194,12 @@ Next.js 15 · TypeScript · Tailwind CSS 4 · shadcn/ui · Prisma + SQLite · De
 - Bookmark button for marking prompts as favorites
 - All feedback fields nullable with safe defaults — old records don't break
 - No impact on prompt generation, Markdown export, or aesthetic memory
+
+### v1.8.1 — Prompt Feedback Regression Validation (current)
+- Verified all feedback fields backward-compatible with old Prompt records
+- Confirmed Zod validation, save/refresh round-trip, feedback panel states
+- Confirmed history list badges, filter, SelectableChip dedup and onClick
+- Zero lint warnings, zero code changes — pure validation pass
 
 ## Feature Status
 
