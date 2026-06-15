@@ -564,3 +564,20 @@
 | 1.7.1.7 | 不改 schema / 无 migration | ✅ |
 | 1.7.1.8 | Settings 原有偏好保存正常 | ✅ |
 | 1.7.1.9 | `npm run build` / `tsc` / `lint` 通过 | ✅ |
+
+---
+
+## v1.7.2 全链路回归
+
+| # | 检查项 | 状态 |
+|---|--------|------|
+| 1.7.2.1 | Dashboard / Inspirations / Collections 正常 | ✅ |
+| 1.7.2.2 | Settings 偏好保存 + AI 测试按钮正常 | ✅ |
+| 1.7.2.3 | 审美记忆区域三种状态正常 | ✅ |
+| 1.7.2.4 | Prompt 生成器 + 模板 + 收藏集筛选正常 | ✅ |
+| 1.7.2.5 | Prompt  §4.5 审美记忆注入正常 | ✅ |
+| 1.7.2.6 | Markdown 导出 / 复制 / 保存历史正常 | ✅ |
+| 1.7.2.7 | AI 分析 Provider + 视觉降级正常 | ✅ |
+| 1.7.2.8 | URL Metadata + SSRF 防护正常 | ✅ |
+| 1.7.2.9 | prisma validate / migrate status / build / tsc / lint 通过 | ✅ |
+| 1.7.2.10 | 安全检查通过 | ✅ |

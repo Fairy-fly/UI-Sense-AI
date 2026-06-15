@@ -56,6 +56,7 @@ Copy `.env.example` to `.env.local`. Required: `DATABASE_URL`. Optional: `DEEPSE
 | v1.6.3 | Prompt output polish (actionable Agent instructions, checklist format) |
 | v1.7 | Aesthetic memory generation (auto profile from inspirations + analysis) |
 | v1.7.1 | Aesthetic memory experience polish (chip limits, text consistency) |
+| v1.7.2 | Full regression validation (all links intact) |
 
 ## Page Map
 
