@@ -6,6 +6,7 @@ import { MockPreview } from "@/components/common/mock-preview";
 import { Badge } from "@/components/ui/badge";
 import { RatingDisplay } from "@/components/inspirations/rating-display";
 import { displayProjectType, displayStyleTag } from "@/lib/display-labels";
+import { isLegacySeedAnalysis } from "@/lib/ai-analysis-utils";
 
 interface InspirationSelectorProps {
   inspirations: Inspiration[];
@@ -41,6 +42,7 @@ export function InspirationSelector({
       {inspirations.map((insp) => {
         const isSelected = selectedIds.includes(insp.id);
         const previewVariant = insp.previewVariant ?? "linear";
+        const hasAnalysis = insp.analysis && !isLegacySeedAnalysis(insp.analysis);
 
         return (
           <button
@@ -58,7 +60,12 @@ export function InspirationSelector({
               <MockPreview variant={previewVariant} className="h-full w-full rounded-none" />
             </div>
             <div className="min-w-0 flex-1">
-              <p className="truncate text-[12px] font-medium text-foreground">{insp.title}</p>
+              <div className="flex items-center gap-1.5">
+                <p className="truncate text-[12px] font-medium text-foreground">{insp.title}</p>
+                {hasAnalysis && (
+                  <Badge variant="secondary" className="shrink-0 text-[10px] leading-none">已分析</Badge>
+                )}
+              </div>
               <div className="mt-0.5 flex flex-wrap items-center gap-1.5">
                 {insp.projectType && (
                   <Badge variant="secondary" className="shrink-0 text-[10px]">{displayProjectType(insp.projectType)}</Badge>
