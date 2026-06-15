@@ -46,6 +46,7 @@ Copy `.env.example` to `.env.local`. Required: `DATABASE_URL`. Optional: `DEEPSE
 | v1.3.3.1 | URL metadata security hardening (SSRF prevention, body size limit) |
 | v1.4 | AI analysis for inspirations (text-based, metadata-driven) |
 | v1.4.1 | AI analysis UX polish (button alignment, subtitle clarity) |
+| v1.4.2 | AI analysis feeds into prompt generation (local + DeepSeek) |
 
 ## Page Map
 

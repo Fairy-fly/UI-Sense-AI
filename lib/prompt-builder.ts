@@ -7,12 +7,13 @@
 
 import type { Inspiration } from "@/types";
 import { getPromptTemplate } from "@/lib/prompt-templates";
+import { isLegacySeedAnalysis } from "@/lib/ai-analysis-utils";
 
 export interface PromptBuilderInput {
   projectName: string;
   projectType: string;
   targetUsers: string;
-  selectedInspirations: Pick<Inspiration, "id" | "title" | "projectType" | "rating" | "notes" | "tags">[];
+  selectedInspirations: Pick<Inspiration, "id" | "title" | "projectType" | "rating" | "notes" | "tags" | "analysis">[];
   desiredStyle: string;
   avoidedStyles: string[];
   techStack: string[];
@@ -66,6 +67,31 @@ ${insp.notes ? `- **可借鉴点**：${insp.notes}` : ""}`,
     )
     .join("\n\n");
 
+  // ---- Helper: format AI analysis from inspirations ----
+  const inspWithAnalysis = selectedInspirations.filter(
+    (insp) => insp.analysis && !isLegacySeedAnalysis(insp.analysis),
+  );
+
+  const analysisRefs =
+    inspWithAnalysis.length > 0
+      ? `
+## 3.5. AI 基础分析参考
+
+以下是对参考灵感已生成的 AI 基础分析（基于标题、标签和元信息的文本分析，非图片视觉识别），请吸收其中的风格、配色、布局和组件语言：
+
+${inspWithAnalysis
+    .map(
+      (insp) => `### ${insp.title}
+- **风格总结**：${insp.analysis!.styleSummary ?? "—"}
+- **色彩系统**：${insp.analysis!.colorAnalysis ?? "—"}
+- **布局模式**：${insp.analysis!.layoutAnalysis ?? "—"}
+- **组件语言**：${insp.analysis!.componentAnalysis ?? "—"}
+- **设计关键词**：${insp.analysis!.designKeywords ?? "—"}`,
+    )
+    .join("\n\n")}
+`
+      : "";
+
   // ---- Helper: format preferences ----
   const prefStyles = userPreferences?.preferredStyles?.join("、") || "极简 SaaS、中性配色、冷静高效的工具风格";
   const prefColors = userPreferences?.preferredColors?.join("、") || "Slate、Neutral、Zinc";
@@ -106,6 +132,7 @@ ${template.avoidHints.map((h) => `- ${h}`).join("\n")}
 
 ${inspRefs}
 
+${analysisRefs}
 ## 4. 视觉风格定位
 
 ### 整体方向

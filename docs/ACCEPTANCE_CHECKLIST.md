@@ -409,3 +409,18 @@
 | 1.4.1.6 | designKeywords chip 使用 displayKeywordList 中文化 | ✅ |
 | 1.4.1.7 | 新生成中文分析保存 + 刷新保留 | ✅ |
 | 1.4.1.8 | `npm run build` / `tsc` / `lint` 通过 | ✅ |
+
+---
+
+## v1.4.2 AI 分析接入 Prompt 生成
+
+| # | 检查项 | 状态 |
+|---|--------|------|
+| 1.4.2.1 | getInspirations / actions/prompts 包含 analysis | ✅ |
+| 1.4.2.2 | 本地 Prompt 生成包含 "AI 基础分析参考" 段 | ✅ |
+| 1.4.2.3 | DeepSeek AI 优化包含分析上下文 | ✅ |
+| 1.4.2.4 | isLegacySeedAnalysis 过滤旧英文分析 | ✅ |
+| 1.4.2.5 | 无分析的灵感不显示空字段 | ✅ |
+| 1.4.2.6 | 收藏集筛选 / Prompt 模板不受影响 | ✅ |
+| 1.4.2.7 | 保存 / 复制 / 导出正常 | ✅ |
+| 1.4.2.8 | `npm run build` / `tsc` / `lint` 通过 | ✅ |

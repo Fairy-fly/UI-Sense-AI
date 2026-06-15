@@ -1,7 +1,7 @@
 # UI Sense AI — Project Memory
 
 > Last updated: 2026-06-15  
-> Current version: v1.4  
+> Current version: v1.4.2  
 > Default branch: main  
 
 ---
@@ -104,6 +104,13 @@ Next.js 15 · TypeScript · Tailwind CSS 4 · shadcn/ui · Prisma + SQLite · De
 - Verified no duplicate analysis rendering in InspirationDetail
 - Verified 16 seed descriptions/notes fully mapped to Chinese
 - Full regression: analysis generation, persistence, legacy filtering intact
+
+### v1.4.2 — AI Analysis → Prompt Generation (current)
+- AI analysis results feed into both local template and DeepSeek AI prompt generation
+- "AI 基础分析参考" section added to generated prompts when inspirations have analysis
+- Legacy seed English analysis filtered via `isLegacySeedAnalysis` before prompt injection
+- Analysis context includes: styleSummary, colorAnalysis, layoutAnalysis, componentAnalysis, designKeywords
+- `getInspirations()` and `actions/prompts.ts` now include `analysis: true` in queries
 
 ## Feature Status
 
