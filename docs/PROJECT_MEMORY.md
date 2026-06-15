@@ -1,7 +1,7 @@
 # UI Sense AI — Project Memory
 
 > Last updated: 2026-06-15  
-> Current version: v1.4.2  
+> Current version: v1.4.3  
 > Default branch: main  
 
 ---
@@ -111,6 +111,11 @@ Next.js 15 · TypeScript · Tailwind CSS 4 · shadcn/ui · Prisma + SQLite · De
 - Legacy seed English analysis filtered via `isLegacySeedAnalysis` before prompt injection
 - Analysis context includes: styleSummary, colorAnalysis, layoutAnalysis, componentAnalysis, designKeywords
 - `getInspirations()` and `actions/prompts.ts` now include `analysis: true` in queries
+
+### v1.4.3 — Prompt Analysis Enhancement Indicators (current)
+- "已分析" badge on inspiration cards in prompt workspace selector
+- Light hint text: "已生成 AI 基础分析的灵感会自动增强 Prompt 质量。"
+- Legacy seed English analysis excluded from badge display
 
 ## Feature Status
 

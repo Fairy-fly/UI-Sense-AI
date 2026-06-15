@@ -204,6 +204,9 @@ export function PromptWorkspace({ inspirations, recentRecords, aiConfigured, col
           <div className="mb-3">
             <label className="mb-1.5 block text-[13px] font-medium text-foreground">选择参考灵感 ({selectedIds.length}/6)</label>
             <InspirationSelector inspirations={displayInspirations} selectedIds={selectedIds} onChange={setSelectedIds} maxSelect={6} />
+            <p className="mt-1.5 text-[11px] leading-relaxed text-muted-foreground">
+              已生成 AI 基础分析的灵感会自动增强 Prompt 质量。
+            </p>
           </div>
 
           <Separator className="my-3" />
