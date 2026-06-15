@@ -98,6 +98,13 @@ Next.js 15 · TypeScript · Tailwind CSS 4 · shadcn/ui · Prisma + SQLite · De
 - Structured for future multimodal model upgrade in `lib/ai/image-analysis.ts`
 - No database schema changes needed
 
+### v1.4.1 — AI Analysis Experience Polish (current)
+- Button alignment fix: "重新分析" icon `shrink-0` + text `<span>` wrapper
+- Verified "AI 基础分析" title + "基础文本分析 · 非视觉识别" subtitle clarity
+- Verified no duplicate analysis rendering in InspirationDetail
+- Verified 16 seed descriptions/notes fully mapped to Chinese
+- Full regression: analysis generation, persistence, legacy filtering intact
+
 ## Feature Status
 
 | Feature | Status |
