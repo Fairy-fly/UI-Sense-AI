@@ -11,6 +11,9 @@ import { cn, getHostname } from "@/lib/utils";
 import { displayProjectType } from "@/lib/display-labels";
 import { getInspirationById } from "@/lib/actions/inspirations";
 import { AddToCollectionPanel } from "@/components/collections/add-to-collection-panel";
+import { AIAnalysisPanel } from "@/components/inspirations/ai-analysis-panel";
+import { isLegacySeedAnalysis } from "@/lib/ai-analysis-utils";
+import { displayLegacyText } from "@/lib/display-content";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -26,6 +29,9 @@ export default async function InspirationDetailPage({ params }: Props) {
 
   const previewVariant = inspiration.previewVariant ?? "linear";
   const hasRealImage = inspiration.imageUrl && inspiration.imageUrl.length > 0;
+
+  // Filter out legacy English seed analysis — treat as "no analysis"
+  const visibleAnalysis = isLegacySeedAnalysis(inspiration.analysis) ? null : (inspiration.analysis ?? null);
 
   return (
     <>
@@ -78,7 +84,7 @@ export default async function InspirationDetailPage({ params }: Props) {
           <div className="rounded-2xl border border-border bg-card p-5 sm:p-6">
             <h3 className="mb-3 text-[14px] font-medium text-foreground">描述</h3>
             <p className="text-[13px] leading-relaxed text-muted-foreground">
-              {inspiration.description}
+              {displayLegacyText(inspiration.description)}
             </p>
             <div className="mt-4 flex items-center gap-4 text-[12px] text-muted-foreground">
               {inspiration.sourceUrl && (
@@ -107,6 +113,7 @@ export default async function InspirationDetailPage({ params }: Props) {
         {/* Right: Info + Analysis */}
         <div className="lg:col-span-2">
           <div className="flex flex-col gap-6 lg:sticky lg:top-24">
+            <AIAnalysisPanel inspirationId={id} analysis={visibleAnalysis} />
             <InspirationDetail inspiration={inspiration} />
             <AddToCollectionPanel inspirationId={id} />
           </div>

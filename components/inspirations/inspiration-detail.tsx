@@ -5,6 +5,7 @@ import { TagPill } from "@/components/inspirations/tag-pill";
 import { RatingDisplay } from "@/components/inspirations/rating-display";
 import { cn, getHostname } from "@/lib/utils";
 import { displayProjectType } from "@/lib/display-labels";
+import { displayLegacyText } from "@/lib/display-content";
 
 interface InspirationDetailProps {
   inspiration: Inspiration;
@@ -26,7 +27,7 @@ function getColorClass(tagColor: string | null): string {
 }
 
 export function InspirationDetail({ inspiration, className }: InspirationDetailProps) {
-  const { tags, rating, projectType, sourceUrl, notes, createdAt, analysis } = inspiration;
+  const { tags, rating, projectType, sourceUrl, notes, createdAt } = inspiration;
 
   const uniqueColors = [...new Set((tags ?? []).map((t) => t.color).filter(Boolean))];
 
@@ -86,55 +87,6 @@ export function InspirationDetail({ inspiration, className }: InspirationDetailP
         </CardContent>
       </Card>
 
-      {/* Analysis cards */}
-      {analysis && (
-        <>
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-[13px] font-medium">色彩系统</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-[12px] leading-relaxed text-muted-foreground">
-                {analysis.colorAnalysis}
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-[13px] font-medium">布局模式</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-[12px] leading-relaxed text-muted-foreground">
-                {analysis.layoutAnalysis}
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-[13px] font-medium">组件语言</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-[12px] leading-relaxed text-muted-foreground">
-                {analysis.componentAnalysis}
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-[13px] font-medium">风格总结</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-[12px] leading-relaxed text-muted-foreground">
-                {analysis.styleSummary}
-              </p>
-            </CardContent>
-          </Card>
-        </>
-      )}
-
       {/* Notes */}
       {notes && (
         <Card>
@@ -142,23 +94,7 @@ export function InspirationDetail({ inspiration, className }: InspirationDetailP
             <CardTitle className="text-[13px] font-medium">个人备注</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-[13px] leading-relaxed text-muted-foreground">{notes}</p>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Design Keywords */}
-      {analysis?.designKeywords && (
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-[13px] font-medium">设计关键词</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex flex-wrap gap-1.5">
-              {analysis.designKeywords.split(", ").map((kw) => (
-                <Badge key={kw} variant="secondary" className="text-[11px]">{kw}</Badge>
-              ))}
-            </div>
+            <p className="text-[13px] leading-relaxed text-muted-foreground">{displayLegacyText(notes)}</p>
           </CardContent>
         </Card>
       )}
