@@ -75,18 +75,21 @@ ${insp.notes ? `- **可借鉴点**：${insp.notes}` : ""}`,
   const analysisRefs =
     inspWithAnalysis.length > 0
       ? `
-## 3.5. AI 分析参考
-
-请优先吸收以下设计特征，并转化为可执行 UI 方案：
+## 3.5. AI 分析参考：请转化为 UI 实现决策
 
 ${inspWithAnalysis
     .map(
       (insp) => `### ${insp.title}
+
+#### 可迁移设计决策
 * **色彩与视觉氛围**：${insp.analysis!.colorAnalysis ?? "—"}
 * **布局与信息层级**：${insp.analysis!.layoutAnalysis ?? "—"}
 * **组件语言**：${insp.analysis!.componentAnalysis ?? "—"}
 * **整体风格迁移**：${insp.analysis!.styleSummary ?? "—"}
-* **可复用关键词**：${insp.analysis!.designKeywords ?? "—"}`,
+* **可复用关键词**：${insp.analysis!.designKeywords ?? "—"}
+
+#### 使用方式
+请不要逐字照搬参考图，而是吸收其布局组织方式、组件密度、配色节奏、卡片和导航语言、信息层级处理方式，转化为你自己的 UI 实现。`,
     )
     .join("\n\n")}
 `
@@ -101,9 +104,15 @@ ${inspWithAnalysis
   // ---- 1. Full Prompt ----
   const fullPrompt = `# UI 开发提示词 —— ${projectName}
 
-## 1. 角色设定
+## 1. 任务目标与角色
 
-你是一名高级 UI/UX 设计师和 ${techStack[0] ?? "Next.js"} 前端工程师。请根据以下设计要求，生成符合现代 SaaS 产品气质的高质量前端界面。
+你是一名高级 UI/UX 设计师和 ${techStack[0] ?? "Next.js"} 前端工程师。你的任务是：基于以下项目背景、参考灵感和设计约束，开发一个可落地的高质量前端界面。
+
+**关键目标**：
+- 输出应接近 Linear、Vercel、Raycast 的产品质感，而非传统后台模板
+- 配色克制、留白舒适、信息层级清晰
+- 组件语言统一，交互状态完整
+- 可直接复制到 Claude Code / Codex 执行
 
 ## 2. 项目背景
 
@@ -174,14 +183,22 @@ ${desiredStyle || `参考以上灵感的整体风格，保持 ${prefStyles}`}
 
 ${techStack.map((t) => `- ${t}`).join("\n")}
 
-## 6. 页面要求
+## 6. 页面结构建议
+
+根据项目类型${template ? `（${template.name}）` : ""}，请按以下结构实现页面：
 
 ${pages.map((p, i) => `### 页面 ${i + 1}：${p}
-- 清晰的信息层级
-- 统一的卡片风格
-- 空状态友好提示
-- 加载状态自然过渡
-- 响应式适配`).join("\n\n")}
+- 明确此页面的核心目标和用户任务
+- 使用 AppShell 统一布局（Sidebar + Header + Content）
+- 内容区 max-width: 1280px，合理留白
+- 顶部放 PageHeading（标题 + 描述 + 操作按钮）
+- 按信息层级组织内容区块，优先展示最重要的数据
+- 空状态：虚线边框卡片 + 引导文案 + 行动按钮
+- 加载状态：Skeleton 占位，避免闪烁
+- 响应式：桌面优先，移动端基本可用`).join("\n\n")}
+
+${template ? `### 模板专属建议
+${template.structureHints.map((h) => `- ${h}`).join("\n")}` : ""}
 
 ## 7. 组件风格要求
 
@@ -207,35 +224,43 @@ ${disStyles.length > 0 ? disStyles.map((s) => `- ❌ ${s}`).join("\n") : `- ❌ 
 
 ## 9. 开发顺序
 
+按以下顺序逐步实现，先保证视觉统一再补细节：
+
 1. 搭建全局设计 Token（色彩、字体、间距、圆角）
-2. 构建基础布局组件（AppShell、Sidebar、Header）
+2. 构建布局骨架（AppShell、Sidebar、Header、内容区）
 3. 实现各页面静态 UI（先用 mock 数据打磨视觉）
-4. 接入数据库和数据读写
-5. 添加交互细节（hover、过渡动画、toast）
-6. 响应式适配和细节打磨
-7. 最终视觉走查和一致性校验
+4. 实现核心组件（卡片、按钮、输入框、标签、空状态等）
+5. 接入数据读写和交互逻辑
+6. 补全交互状态（hover、loading、empty、error、toast）
+7. 响应式适配和最终视觉走查
+
+**关键原则**：
+- 先做静态 UI 再连数据，不要在组件里混写数据获取逻辑
+- 保持组件职责单一，props 类型清晰
+- 所有状态（loading/empty/error）都要有对应 UI
 
 ## 10. 验收标准
 
-### 视觉标准
-- 整体风格接近 Linear、Vercel、Raycast 的产品质感
-- 不像传统后台管理系统
-- 不像学生项目或默认模板
-- 配色克制，留白舒适
-- 卡片、按钮、标签风格统一
+### 视觉验收
+- [ ] 不像传统后台管理系统或默认模板
+- [ ] 有明确视觉层级，信息密度合理
+- [ ] 卡片、按钮、标签风格统一
+- [ ] 配色低饱和且克制，留白舒适
+- [ ] 整体接近 Linear、Vercel、Raycast 的产品质感
 
-### 代码标准
-- TypeScript strict 模式
-- 组件可复用、props 类型清晰
-- 使用 shadcn/ui 组件
-- Tailwind CSS 类名统一
+### 代码验收
+- [ ] TypeScript strict 模式，类型清晰
+- [ ] 组件可复用，props 接口明确
+- [ ] 使用 shadcn/ui 组件，不重复造轮
+- [ ] Tailwind CSS 类名统一，不混用内联样式
 
-### 交互标准
-- hover 状态自然
-- loading 状态优雅
-- 空状态有引导
-- 错误提示友好
-- toast 通知及时
+### 交互验收
+- [ ] hover 状态自然过渡
+- [ ] loading 状态优雅（Skeleton 优先）
+- [ ] 空状态有引导文案和行动按钮
+- [ ] 错误提示友好，支持重试
+- [ ] toast 通知及时且不打断操作
+- [ ] 响应式布局基本可用
 
 ---
 

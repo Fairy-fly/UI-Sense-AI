@@ -19,8 +19,8 @@ export const promptFormSchema = z.object({
   techStack: z.array(z.string()).min(1, "请至少填写一个技术栈").max(12, "技术栈最多 12 个"),
   pageList: z
     .string()
-    .min(1, "请填写页面列表")
-    .max(600, "页面列表最多 600 个字符"),
+    .min(1, "请填写需要生成的页面")
+    .max(600, "页面描述最多 600 个字符"),
   additionalNotes: z
     .string()
     .max(1000, "补充说明最多 1000 个字符")

@@ -86,7 +86,7 @@ export function PromptWorkspace({ inspirations, recentRecords, aiConfigured, col
     if (!targetUsers.trim()) { toast.error("请填写目标用户"); return; }
     if (selectedIds.length === 0) { toast.error("请至少选择一个参考灵感"); return; }
     if (techStack.length === 0) { toast.error("请至少填写一个技术栈"); return; }
-    if (!pageList.trim()) { toast.error("请填写页面列表"); return; }
+    if (!pageList.trim()) { toast.error("请填写需要生成的页面"); return; }
     setGenerating(true);
     try {
       const result = await generatePrompt({ projectName, projectType, targetUsers, selectedInspirationIds: selectedIds, desiredStyle, avoidedStyles, techStack, pageList, additionalNotes, useAI: useAIEnabled, promptTemplateId: promptTemplateId !== "none" ? promptTemplateId : undefined });
@@ -263,7 +263,7 @@ export function PromptWorkspace({ inspirations, recentRecords, aiConfigured, col
           <AccordionSection title="高级要求">
             <div className="space-y-3">
               <div>
-                <label className="mb-1 block text-[12px] font-medium text-foreground">页面列表</label>
+                <label className="mb-1 block text-[12px] font-medium text-foreground">需要生成的页面</label>
                 <Textarea value={pageList} onChange={(e) => setPageList(e.target.value)} placeholder="仪表盘、设置、项目详情...（逗号或换行分隔）" className="min-h-[50px] rounded-[10px] text-[13px]" />
               </div>
               <div>

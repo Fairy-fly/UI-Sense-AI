@@ -53,6 +53,7 @@ Copy `.env.example` to `.env.local`. Required: `DATABASE_URL`. Optional: `DEEPSE
 | v1.6 | Real vision analysis via OpenAI-compatible API (Bailian) |
 | v1.6.1 | Vision analysis feedback (toast distinguishes vision vs text) |
 | v1.6.2 | Vision analysis quality: detailed prompts, JSON resilience, builder integration |
+| v1.6.3 | Prompt output polish (actionable Agent instructions, checklist format) |
 
 ## Page Map
 
