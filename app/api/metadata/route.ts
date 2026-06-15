@@ -12,7 +12,7 @@ import { NextResponse } from "next/server";
 import {
   normalizeUrl,
   isSafePublicHttpUrl,
-  readResponseBodyLimited,
+  readHtmlHeadLimited,
   extractMetadataFromHtml,
 } from "@/lib/metadata";
 
@@ -81,18 +81,29 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: false, error: "该链接不是网页，请手动填写" }, { status: 200 });
     }
 
-    // Read body with 1MB limit
-    const { text: html, truncated } = await readResponseBodyLimited(response);
+    // Read body with 1MB limit, stopping early at </head>
+    const { html, truncated } = await readHtmlHeadLimited(response);
 
-    if (truncated) {
-      return NextResponse.json({ success: false, error: "网页内容过大，请手动填写" }, { status: 200 });
-    }
-
+    // Extract metadata from whatever we got
     if (!html || html.length < 100) {
+      if (truncated) {
+        return NextResponse.json(
+          { success: false, error: "网页内容过大，且未能解析出网页信息，请手动填写" },
+          { status: 200 },
+        );
+      }
       return NextResponse.json({ success: false, error: "网页内容为空，请手动填写" }, { status: 200 });
     }
 
     const metadata = extractMetadataFromHtml(html, normalized);
+
+    // Only fail if we couldn't extract anything useful AND the page was truncated
+    if (truncated && !metadata.title && !metadata.description) {
+      return NextResponse.json(
+        { success: false, error: "网页内容过大，且未能解析出网页信息，请手动填写" },
+        { status: 200 },
+      );
+    }
 
     return NextResponse.json({ success: true, data: metadata });
   } catch {

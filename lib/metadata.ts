@@ -120,12 +120,18 @@ export function getFallbackFaviconUrl(hostname: string): string {
 
 const MAX_BODY_BYTES = 1_048_576; // 1MB
 
-export async function readResponseBodyLimited(response: Response): Promise<{ text: string; truncated: boolean }> {
+/**
+ * Read response body as text, limited to MAX_BODY_BYTES.
+ * Prefers to stop early at </head> for metadata extraction,
+ * but still enforces the hard 1MB cap.
+ * Returns whatever HTML was read — the caller decides if it's sufficient.
+ */
+export async function readHtmlHeadLimited(response: Response): Promise<{ html: string; truncated: boolean }> {
   const reader = response.body?.getReader();
   if (!reader) {
-    // Fallback: no stream available
     const text = await response.text();
-    return { text: text.slice(0, MAX_BODY_BYTES), truncated: text.length > MAX_BODY_BYTES };
+    const limited = text.slice(0, MAX_BODY_BYTES);
+    return { html: limited, truncated: text.length > MAX_BODY_BYTES };
   }
 
   const decoder = new TextDecoder();
@@ -135,22 +141,110 @@ export async function readResponseBodyLimited(response: Response): Promise<{ tex
   while (true) {
     const { done, value } = await reader.read();
     if (done) break;
+
     totalBytes += value.length;
+
     if (totalBytes > MAX_BODY_BYTES) {
-      // Read only up to the limit
+      // Read remaining bytes up to the limit
       const remaining = MAX_BODY_BYTES - (totalBytes - value.length);
       if (remaining > 0) {
         result += decoder.decode(value.slice(0, remaining), { stream: true });
       }
       reader.cancel();
-      return { text: result, truncated: true };
+      return { html: result, truncated: true };
     }
+
     result += decoder.decode(value, { stream: true });
+
+    // Early stop: if we've read past </head>, we have the metadata
+    if (result.includes("</head>") && totalBytes < MAX_BODY_BYTES) {
+      reader.cancel();
+      // Final flush
+      result += decoder.decode();
+      return { html: result.slice(0, MAX_BODY_BYTES), truncated: false };
+    }
   }
 
   // Final flush
   result += decoder.decode();
-  return { text: result.slice(0, MAX_BODY_BYTES), truncated: false };
+  return { html: result.slice(0, MAX_BODY_BYTES), truncated: false };
+}
+
+/** @deprecated Use readHtmlHeadLimited instead. */
+export async function readResponseBodyLimited(response: Response): Promise<{ text: string; truncated: boolean }> {
+  const { html, truncated } = await readHtmlHeadLimited(response);
+  return { text: html, truncated };
+}
+
+// ---- HTML entity decoding ----
+
+const HTML_ENTITIES: Record<string, string> = {
+  "&amp;": "&",
+  "&lt;": "<",
+  "&gt;": ">",
+  "&quot;": '"',
+  "&apos;": "'",
+  "&#39;": "'",
+  "&#x27;": "'",
+  "&nbsp;": " ",
+};
+
+/** Decode common HTML entities. */
+export function decodeHtmlEntities(input: string): string {
+  return input.replace(/&[#\w]+;/g, (match) => HTML_ENTITIES[match] ?? match);
+}
+
+/**
+ * Get a concise title for auto-filling form fields.
+ * Always tries to strip marketing taglines at " — " / " – " / " - ",
+ * then falls back to smartTruncateTitle if still too long.
+ */
+export function getAutoFillTitle(title: string, maxLength = 80): string {
+  const decoded = decodeHtmlEntities(title).trim();
+
+  // Always try to strip trailing taglines after em-dash / en-dash / hyphen
+  // These typically separate page title from site name or marketing text.
+  // " | " is NOT cut here because it often joins meaningful parts (e.g. "App | Platform").
+  const taglineSeps = [" — ", " – ", " - "];
+  for (const sep of taglineSeps) {
+    const idx = decoded.indexOf(sep);
+    if (idx > 0) {
+      const prefix = decoded.slice(0, idx).trim();
+      if (prefix.length > 0) {
+        return prefix.length <= maxLength ? prefix : smartTruncateTitle(prefix, maxLength);
+      }
+    }
+  }
+
+  // No tagline separator found — use smart truncation if needed
+  return smartTruncateTitle(decoded, maxLength);
+}
+
+/** Smart-truncate a title to fit within maxLength, preferring natural break points. */
+export function smartTruncateTitle(title: string, maxLength = 80): string {
+  const decoded = decodeHtmlEntities(title).trim();
+  if (decoded.length <= maxLength) return decoded;
+
+  // Try to break at natural separators in order of preference
+  const separators = [" — ", " | ", " - ", " · ", " – "];
+  for (const sep of separators) {
+    const idx = decoded.lastIndexOf(sep);
+    if (idx > 0) {
+      const prefix = decoded.slice(0, idx).trim();
+      if (prefix.length <= maxLength) return prefix;
+    }
+  }
+
+  // Try to find first separator and take up to it
+  for (const sep of separators) {
+    const idx = decoded.indexOf(sep);
+    if (idx > 0 && idx <= maxLength) {
+      return decoded.slice(0, idx).trim();
+    }
+  }
+
+  // Fallback: hard truncate
+  return decoded.slice(0, maxLength - 3).trim() + "...";
 }
 
 // ---- Metadata extraction ----
@@ -169,8 +263,9 @@ export function extractMetadataFromHtml(html: string, baseUrl: string): UrlMetad
   const metaDescription = getMetaContent(html, "name", "description");
   const ogImage = getMetaContent(html, "property", "og:image");
 
-  const title = ogTitle || rawTitle || hostname;
+  const title = decodeHtmlEntities(ogTitle || rawTitle || hostname);
   const description = ogDescription || metaDescription || null;
+  const decodedDescription = description ? decodeHtmlEntities(description) : null;
 
   // Extract favicon
   let faviconUrl: string | null = null;
@@ -187,8 +282,8 @@ export function extractMetadataFromHtml(html: string, baseUrl: string): UrlMetad
   }
 
   return {
-    title: title.slice(0, 200),
-    description: description?.slice(0, 500) ?? null,
+    title: decodeHtmlEntities(title).slice(0, 200),
+    description: decodedDescription?.slice(0, 500) ?? null,
     hostname,
     faviconUrl,
     ogImage: ogImage ? resolveUrl(baseUrl, ogImage) : null,

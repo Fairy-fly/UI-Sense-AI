@@ -73,6 +73,7 @@ DEEPSEEK_TIMEOUT_MS="45000"
 | URL metadata auto-fill (v1.3.3) | ✅ |
 | AI analysis for inspirations (v1.4) | ✅ |
 | AI analysis enhances prompt generation (v1.4.2) | ✅ |
+| Vision analysis provider architecture (v1.5) | ✅ |
 | Login / multi-user | ❌ (future) |
 | Cloud storage | ❌ (future) |
 | Browser extension | ❌ (future) |

@@ -438,3 +438,20 @@
 | 1.4.3.5 | 无分析灵感不显示 badge / 不生成空段 | ✅ |
 | 1.4.3.6 | 收藏集筛选 / Prompt 模板 / 保存 / 导出正常 | ✅ |
 | 1.4.3.7 | `npm run build` / `tsc` / `lint` 通过 | ✅ |
+
+---
+
+## v1.5 多模态图片分析接入准备版
+
+| # | 检查项 | 状态 |
+|---|--------|------|
+| 1.5.1 | AnalysisProvider 抽象接口 + TextAnalysisProvider | ✅ |
+| 1.5.2 | VisionAnalysisProvider 降级逻辑 | ✅ |
+| 1.5.3 | `AI_ANALYSIS_MODE=text` 默认配置 | ✅ |
+| 1.5.4 | 无 vision 配置时自动降级文本分析 | ✅ |
+| 1.5.5 | 图片安全：仅允许 /uploads/ 路径 + ≤5MB | ✅ |
+| 1.5.6 | 原有文本分析功能保持不变 | ✅ |
+| 1.5.7 | Prompt 生成器仍正常使用 AiAnalysis | ✅ |
+| 1.5.8 | legacy seed 过滤 / 中文化正常 | ✅ |
+| 1.5.9 | `.env.example` 新增 AI_ANALYSIS_MODE | ✅ |
+| 1.5.10 | `npm run build` / `tsc` / `lint` 通过 | ✅ |

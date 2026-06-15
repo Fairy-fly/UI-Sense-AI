@@ -29,6 +29,8 @@ export async function analyzeInspiration(inspirationId: string) {
       tags: inspiration.tags.map((it) => it.tag.name),
       notes: inspiration.notes,
       sourceUrl: inspiration.sourceUrl,
+      // Only pass local upload paths for vision analysis safety
+      imagePath: inspiration.imageUrl?.startsWith("/uploads/") ? inspiration.imageUrl : undefined,
     };
 
     // 3. Generate analysis via AI
