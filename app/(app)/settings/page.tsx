@@ -4,6 +4,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { AIProviderCard } from "@/components/settings/ai-provider-card";
 import { SettingsForm } from "@/components/settings/settings-form";
 import { AestheticMemoryPanel } from "@/components/settings/aesthetic-memory-panel";
+import { PromptFeedbackInsightsPanel } from "@/components/settings/prompt-feedback-insights-panel";
 import { getAIProviderStatus } from "@/lib/ai/config";
 import { getUserPreference } from "@/lib/actions/preferences";
 
@@ -45,6 +46,11 @@ export default async function SettingsPage() {
         <AestheticMemoryPanel
           initialData={preference ?? undefined}
         />
+      </div>
+
+      {/* Prompt 反馈洞察 */}
+      <div className="mt-6">
+        <PromptFeedbackInsightsPanel />
       </div>
     </>
   );

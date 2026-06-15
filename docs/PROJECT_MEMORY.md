@@ -1,7 +1,7 @@
 # UI Sense AI — Project Memory
 
 > Last updated: 2026-06-15  
-> Current version: v1.8.1  
+> Current version: v1.9  
 > Default branch: main  
 
 ---
@@ -200,6 +200,13 @@ Next.js 15 · TypeScript · Tailwind CSS 4 · shadcn/ui · Prisma + SQLite · De
 - Confirmed Zod validation, save/refresh round-trip, feedback panel states
 - Confirmed history list badges, filter, SelectableChip dedup and onClick
 - Zero lint warnings, zero code changes — pure validation pass
+
+### v1.9 — Feedback-Driven Prompt Strategy (current)
+- `computePromptFeedbackInsights()` analyzes PromptRecord feedback for strategy patterns
+- `/settings` page: PromptFeedbackInsightsPanel with metrics, positive/negative tags, agent strategy
+- Prompt Builder §4.6 injects "历史 Prompt 反馈参考" when ≥2 feedback records exist
+- Pure rule-based: no AI calls, no schema changes, no PromptRecord modifications
+- Does NOT embed old Prompt text — only summarizes user-preferred Prompt characteristics
 
 ## Feature Status
 
