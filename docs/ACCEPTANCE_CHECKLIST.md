@@ -455,3 +455,19 @@
 | 1.5.8 | legacy seed 过滤 / 中文化正常 | ✅ |
 | 1.5.9 | `.env.example` 新增 AI_ANALYSIS_MODE | ✅ |
 | 1.5.10 | `npm run build` / `tsc` / `lint` 通过 | ✅ |
+
+---
+
+## v1.5.1 Provider 与 Metadata 回归验证
+
+| # | 检查项 | 状态 |
+|---|--------|------|
+| 1.5.1.1 | URL Metadata: decodeHtmlEntities + getAutoFillTitle 正常 | ✅ |
+| 1.5.1.2 | readHtmlHeadLimited: </head> 提前停止 + Linear 大页读取正常 | ✅ |
+| 1.5.1.3 | Mobbin 标题自动简化 + 不覆盖手动输入 | ✅ |
+| 1.5.1.4 | URL 安全: localhost/内网/非法协议拒绝 | ✅ |
+| 1.5.1.5 | Provider: AI_ANALYSIS_MODE=text 默认正常 | ✅ |
+| 1.5.1.6 | Provider: vision 无配置时降级文本分析 | ✅ |
+| 1.5.1.7 | Prompt: "已分析" badge + AI 基础分析参考注入 | ✅ |
+| 1.5.1.8 | legacy seed 过滤 / 中文化 / 保存 / 导出正常 | ✅ |
+| 1.5.1.9 | `npm run build` / `tsc` / `lint` 通过 | ✅ |
