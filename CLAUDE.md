@@ -48,6 +48,7 @@ Copy `.env.example` to `.env.local`. Required: `DATABASE_URL`. Optional: `DEEPSE
 | v1.4.1 | AI analysis UX polish (button alignment, subtitle clarity) |
 | v1.4.2 | AI analysis feeds into prompt generation (local + DeepSeek) |
 | v1.4.3 | Prompt analysis enhancement indicators (badge + hint) |
+| v1.5 | Vision analysis provider foundation (pluggable architecture) |
 
 ## Page Map
 
@@ -81,7 +82,7 @@ Copy `.env.example` to `.env.local`. Required: `DATABASE_URL`. Optional: `DEEPSE
 - **Collection filter**: `/prompts` supports filtering inspirations by collection
 - **Prompt templates**: `lib/prompt-templates.ts` — 6 presets with structure/component/avoid hints, auto-suggest by project type
 - **URL metadata**: `lib/metadata.ts` + `POST /api/metadata` — auto-fill title/description from webpage, favicon preview
-- **AI analysis**: `lib/ai/image-analysis.ts` + `lib/actions/ai-analysis.ts` — text-based UI analysis, upsert to AiAnalysis table
+- **AI analysis**: `lib/ai/analysis-provider.ts` (factory) + `text-analysis-provider.ts` + `vision-analysis-provider.ts` — pluggable architecture, auto-degrade vision→text
 - **Scroll**: `ScrollToTop` in `(app)/layout.tsx`, `data-app-scroll-container` on main
 - **No `asChild`**: Use `buttonVariants()` for Link-styled buttons
 
@@ -108,5 +109,4 @@ git push -u origin v1.x-feature-name
 
 ## Next Steps
 
-- v1.4.1: AI analysis UX polish, "重新分析" flow, better empty states
 - v2.0: Multimodal image analysis, browser extension, cloud sync, login

@@ -22,6 +22,7 @@ import { createInspiration, updateInspiration } from "@/lib/actions/inspirations
 import { RatingInput } from "@/components/inspirations/rating-input";
 import { projectTypes, defaultStyleTags } from "@/lib/constants";
 import type { UrlMetadata } from "@/lib/metadata";
+import { getAutoFillTitle } from "@/lib/metadata";
 
 interface InspirationFormProps {
   mode: "create" | "edit";
@@ -78,9 +79,9 @@ export function InspirationForm({ mode, initialData }: InspirationFormProps) {
       const meta = data.data as UrlMetadata;
       setMetaResult(meta);
 
-      // Auto-fill title only if empty
+      // Auto-fill title only if empty, with tagline stripping + smart truncation
       if (!title.trim() && meta.title) {
-        setTitle(meta.title);
+        setTitle(getAutoFillTitle(meta.title, 80));
       }
 
       // Auto-fill notes with description only if empty
