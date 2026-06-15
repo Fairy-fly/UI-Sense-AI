@@ -44,7 +44,10 @@ export default async function PromptsPage() {
 
       <PromptWorkspace
         inspirations={inspirations}
-        recentRecords={recentRecords}
+        recentRecords={recentRecords.map((r) => ({
+          id: r.id, title: r.title, targetProject: r.targetProject, projectType: r.projectType, createdAt: r.createdAt,
+          feedbackLabel: r.feedbackLabel, feedbackRating: r.feedbackRating, isFavorite: r.isFavorite,
+        }))}
         aiConfigured={aiStatus.configured}
         collections={collectionMap}
       />

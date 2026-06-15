@@ -55,6 +55,13 @@ export interface PromptRecord {
   componentLevelPrompt: string | null;
   createdAt: Date;
   updatedAt: Date;
+  // Feedback (v1.8)
+  feedbackRating: number | null;
+  feedbackLabel: string | null;
+  feedbackNote: string | null;
+  feedbackTags: string | null;
+  isFavorite: boolean;
+  feedbackUpdatedAt: Date | null;
 }
 
 // ---- User Preferences ----

@@ -1,7 +1,7 @@
 # UI Sense AI — Project Memory
 
 > Last updated: 2026-06-15  
-> Current version: v1.7.2  
+> Current version: v1.8  
 > Default branch: main  
 
 ---
@@ -186,6 +186,14 @@ Next.js 15 · TypeScript · Tailwind CSS 4 · shadcn/ui · Prisma + SQLite · De
 - AI analysis: Provider chain, vision degradation, text fallback
 - URL Metadata: SSRF protection, entity decode, large page head reading
 - Zero code changes — pure validation pass
+
+### v1.8 — Prompt History Feedback (current)
+- Extended `PromptRecord` with 6 feedback fields (migration: add_prompt_feedback)
+- `updatePromptFeedback` action: rating (1-5), label (useful/average/needs_improvement), tags, notes, favorites
+- `/prompts/[id]` detail page: PromptFeedbackPanel with star ratings, quick labels, tag chips, notes
+- Bookmark button for marking prompts as favorites
+- All feedback fields nullable with safe defaults — old records don't break
+- No impact on prompt generation, Markdown export, or aesthetic memory
 
 ## Feature Status
 

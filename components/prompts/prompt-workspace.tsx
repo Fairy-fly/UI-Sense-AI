@@ -32,7 +32,7 @@ function AccordionSection({ title, defaultOpen = false, children }: { title: str
 
 interface PromptWorkspaceProps {
   inspirations: Inspiration[];
-  recentRecords: { id: string; title: string; targetProject: string; projectType: string | null; createdAt: Date }[];
+  recentRecords: { id: string; title: string; targetProject: string; projectType: string | null; createdAt: Date; feedbackLabel: string | null; feedbackRating: number | null; isFavorite: boolean }[];
   aiConfigured: boolean;
   collections?: { id: string; name: string; inspirationIds: string[] }[];
 }
@@ -60,6 +60,7 @@ export function PromptWorkspace({ inspirations, recentRecords, aiConfigured, col
   const [componentPrompt, setComponentPrompt] = useState("");
   const [activeTab, setActiveTab] = useState("full");
   const [promptTemplateId, setPromptTemplateId] = useState("none");
+  const [historyFilter, setHistoryFilter] = useState("all"); // all | favorite | useful | needs_improvement
 
   // Auto-suggest template when project type or name changes
   function handleProjectTypeChange(v: string | null) {
@@ -230,7 +231,13 @@ export function PromptWorkspace({ inspirations, recentRecords, aiConfigured, col
           <AccordionSection title="期望风格">
             <div className="mb-2 flex flex-wrap gap-1.5">
               {defaultStyleTags.slice(0, 6).map((tag) => (
-                <Badge key={tag} variant="outline" className="cursor-pointer text-[11px] hover:bg-muted" onClick={() => setDesiredStyle((prev) => prev ? `${prev}、${tag}` : tag)}>{tag}</Badge>
+                <Badge key={tag} variant={desiredStyle.split(/[,，、]/).map(s => s.trim()).filter(Boolean).includes(tag) ? "secondary" : "outline"} className="cursor-pointer text-[11px] hover:bg-muted" onClick={() => setDesiredStyle((prev) => {
+                  const tokens = prev ? prev.split(/[,，、]/).map(s => s.trim()).filter(Boolean) : [];
+                  if (tokens.includes(tag)) {
+                    return tokens.filter(t => t !== tag).join("、");
+                  }
+                  return tokens.length > 0 ? `${tokens.join("、")}、${tag}` : tag;
+                })}>{tag}</Badge>
               ))}
             </div>
             <Input value={desiredStyle} onChange={(e) => setDesiredStyle(e.target.value)} placeholder="或自定义输入..." className="h-8 rounded-[10px] text-[12px]" />
@@ -243,8 +250,8 @@ export function PromptWorkspace({ inspirations, recentRecords, aiConfigured, col
               ))}
             </div>
             <div className="flex gap-2">
-              <Input value={customAvoided} onChange={(e) => setCustomAvoided(e.target.value)} placeholder="自定义..." className="h-7 rounded-[10px] text-[12px]" onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); if (customAvoided.trim()) { setAvoidedStyles([...avoidedStyles, customAvoided.trim()]); setCustomAvoided(""); } } }} />
-              <Button type="button" variant="outline" size="sm" className="h-7 rounded-[10px] text-[11px]" onClick={() => { if (customAvoided.trim()) { setAvoidedStyles([...avoidedStyles, customAvoided.trim()]); setCustomAvoided(""); } }}>添加</Button>
+              <Input value={customAvoided} onChange={(e) => setCustomAvoided(e.target.value)} placeholder="自定义..." className="h-7 rounded-[10px] text-[12px]" onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); const v = customAvoided.trim(); if (v && !avoidedStyles.includes(v)) { setAvoidedStyles([...avoidedStyles, v]); setCustomAvoided(""); } } }} />
+              <Button type="button" variant="outline" size="sm" className="h-7 rounded-[10px] text-[11px]" onClick={() => { const v = customAvoided.trim(); if (v && !avoidedStyles.includes(v)) { setAvoidedStyles([...avoidedStyles, v]); setCustomAvoided(""); } }}>添加</Button>
             </div>
           </AccordionSection>
 
@@ -255,8 +262,8 @@ export function PromptWorkspace({ inspirations, recentRecords, aiConfigured, col
               ))}
             </div>
             <div className="flex gap-2">
-              <Input value={customTech} onChange={(e) => setCustomTech(e.target.value)} placeholder="添加技术..." className="h-7 rounded-[10px] text-[12px]" onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); if (customTech.trim()) { setTechStack([...techStack, customTech.trim()]); setCustomTech(""); } } }} />
-              <Button type="button" variant="outline" size="sm" className="h-7 rounded-[10px] text-[11px]" onClick={() => { if (customTech.trim()) { setTechStack([...techStack, customTech.trim()]); setCustomTech(""); } }}>添加</Button>
+              <Input value={customTech} onChange={(e) => setCustomTech(e.target.value)} placeholder="添加技术..." className="h-7 rounded-[10px] text-[12px]" onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); const v = customTech.trim(); if (v && !techStack.includes(v)) { setTechStack([...techStack, v]); setCustomTech(""); } } }} />
+              <Button type="button" variant="outline" size="sm" className="h-7 rounded-[10px] text-[11px]" onClick={() => { const v = customTech.trim(); if (v && !techStack.includes(v)) { setTechStack([...techStack, v]); setCustomTech(""); } }}>添加</Button>
             </div>
           </AccordionSection>
 
@@ -379,11 +386,58 @@ export function PromptWorkspace({ inspirations, recentRecords, aiConfigured, col
 
           {recentRecords.length > 0 && (
             <div className="mt-4 border-t border-border pt-3">
-              <h4 className="mb-2 text-[12px] font-medium text-muted-foreground">最近记录</h4>
+              <div className="mb-2 flex items-center justify-between">
+                <h4 className="text-[12px] font-medium text-muted-foreground">最近记录</h4>
+                <div className="flex gap-0.5 rounded-lg bg-zinc-100 p-1">
+                  {(["all", "favorite", "useful", "needs_improvement"] as const).map((f) => (
+                    <button
+                      key={f}
+                      onClick={() => setHistoryFilter(f)}
+                      className={`rounded-md px-2.5 py-1 text-[11px] font-medium transition-colors duration-150 ${
+                        historyFilter === f
+                          ? "bg-white text-zinc-900 shadow-sm ring-1 ring-zinc-200"
+                          : "text-zinc-500 hover:text-zinc-900 hover:bg-white/60"
+                      }`}
+                    >
+                      {f === "all" ? "全部" : f === "favorite" ? "已收藏" : f === "useful" ? "好用" : "需要改进"}
+                    </button>
+                  ))}
+                </div>
+              </div>
               <div className="space-y-0.5">
-                {recentRecords.slice(0, 5).map((rec) => (
+                {recentRecords
+                  .filter((rec) => {
+                    if (historyFilter === "all") return true;
+                    if (historyFilter === "favorite") return rec.isFavorite;
+                    if (historyFilter === "useful") return rec.feedbackLabel === "useful";
+                    if (historyFilter === "needs_improvement") return rec.feedbackLabel === "needs_improvement";
+                    return true;
+                  })
+                  .slice(0, 5).map((rec) => (
                   <a key={rec.id} href={`/prompts/${rec.id}`} className="flex items-center justify-between rounded-lg px-2.5 py-1.5 text-[12px] transition-colors hover:bg-muted/50">
-                    <span className="truncate text-foreground">{rec.title}</span>
+                    <div className="min-w-0 flex-1">
+                      <span className="truncate text-foreground">{rec.title}</span>
+                      <div className="mt-0.5 flex items-center gap-1.5">
+                        {rec.isFavorite && (
+                          <span className="text-[10px] text-amber-500">已收藏</span>
+                        )}
+                        {rec.feedbackLabel === "useful" && (
+                          <span className="text-[10px] text-emerald-600">好用</span>
+                        )}
+                        {rec.feedbackLabel === "average" && (
+                          <span className="text-[10px] text-muted-foreground">一般</span>
+                        )}
+                        {rec.feedbackLabel === "needs_improvement" && (
+                          <span className="text-[10px] text-amber-600">需要改进</span>
+                        )}
+                        {rec.feedbackRating && (
+                          <span className="text-[10px] text-muted-foreground">{rec.feedbackRating} 分</span>
+                        )}
+                        {!rec.feedbackLabel && !rec.feedbackRating && !rec.isFavorite && (
+                          <span className="text-[10px] text-muted-foreground/50">未反馈</span>
+                        )}
+                      </div>
+                    </div>
                     <span className="ml-2 shrink-0 text-muted-foreground">{rec.createdAt.toLocaleDateString("zh-CN", { month: "short", day: "numeric" })}</span>
                   </a>
                 ))}

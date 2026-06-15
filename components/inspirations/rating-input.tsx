@@ -30,8 +30,8 @@ export function RatingInput({ value, onChange, max = 5, disabled }: RatingInputP
               onClick={() => onChange(star)}
               onMouseEnter={() => !disabled && setHovered(star)}
               className={cn(
-                "rounded p-0.5 transition-colors",
-                disabled ? "cursor-default" : "cursor-pointer hover:text-amber-400",
+                "rounded p-0.5 transition-colors duration-150",
+                disabled ? "cursor-default" : "cursor-pointer",
               )}
             >
               <Star

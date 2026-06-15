@@ -6,6 +6,7 @@
 
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
+import { z } from "zod";
 import { promptFormSchema, type PromptFormInput } from "@/lib/validations/prompt";
 import { optimizePromptWithAI } from "@/lib/ai/prompt-optimizer";
 import { getUserPreference } from "@/lib/actions/preferences";
@@ -225,6 +226,55 @@ export async function deletePromptRecord(id: string) {
   }
 }
 
+// ---- Prompt Feedback (v1.8) ----
+
+const feedbackSchema = z.object({
+  feedbackRating: z.number().int().min(1, "评分最低 1 分").max(5, "评分最高 5 分").optional(),
+  feedbackLabel: z.enum(["useful", "average", "needs_improvement"]).optional(),
+  feedbackNote: z.string().max(500, "备注最多 500 字").optional(),
+  feedbackTags: z.array(z.string().max(20, "每个标签最多 20 字")).max(10, "标签最多 10 个").optional(),
+  isFavorite: z.boolean().optional(),
+});
+
+export async function updatePromptFeedback(id: string, rawInput: {
+  feedbackRating?: number;
+  feedbackLabel?: string;
+  feedbackNote?: string;
+  feedbackTags?: string[];
+  isFavorite?: boolean;
+}) {
+  try {
+    const parsed = feedbackSchema.safeParse(rawInput);
+    if (!parsed.success) {
+      return { success: false as const, error: parsed.error.errors[0]?.message ?? "输入不合法" };
+    }
+
+    const input = parsed.data;
+
+    const existing = await db.promptRecord.findUnique({ where: { id } });
+    if (!existing) {
+      return { success: false as const, error: "记录不存在" };
+    }
+
+    const data: Record<string, unknown> = {};
+    if (input.feedbackRating !== undefined) data.feedbackRating = input.feedbackRating;
+    if (input.feedbackLabel !== undefined) data.feedbackLabel = input.feedbackLabel;
+    if (input.feedbackNote !== undefined) data.feedbackNote = input.feedbackNote;
+    if (input.feedbackTags !== undefined) data.feedbackTags = JSON.stringify(input.feedbackTags);
+    if (input.isFavorite !== undefined) data.isFavorite = input.isFavorite;
+    data.feedbackUpdatedAt = new Date();
+
+    await db.promptRecord.update({ where: { id }, data });
+
+    revalidatePath("/prompts");
+    revalidatePath(`/prompts/${id}`);
+
+    return { success: true as const };
+  } catch {
+    return { success: false as const, error: "保存反馈失败，请重试" };
+  }
+}
+
 // ---- Mapper ----
 
 function mapPromptRecord(row: {
@@ -239,6 +289,12 @@ function mapPromptRecord(row: {
   componentLevelPrompt: string | null;
   createdAt: Date;
   updatedAt: Date;
+  feedbackRating: number | null;
+  feedbackLabel: string | null;
+  feedbackNote: string | null;
+  feedbackTags: string | null;
+  isFavorite: boolean;
+  feedbackUpdatedAt: Date | null;
 }): PromptRecord {
   return {
     id: row.id,
@@ -252,6 +308,12 @@ function mapPromptRecord(row: {
     componentLevelPrompt: row.componentLevelPrompt,
     createdAt: row.createdAt,
     updatedAt: row.updatedAt,
+    feedbackRating: row.feedbackRating,
+    feedbackLabel: row.feedbackLabel,
+    feedbackNote: row.feedbackNote,
+    feedbackTags: row.feedbackTags,
+    isFavorite: row.isFavorite,
+    feedbackUpdatedAt: row.feedbackUpdatedAt,
   };
 }
 

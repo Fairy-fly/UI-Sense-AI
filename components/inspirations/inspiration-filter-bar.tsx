@@ -104,7 +104,11 @@ export function InspirationFilterBar({ allTags, filters, onChange, resultCount }
           <Badge
             key={type}
             variant={filters.projectType === type ? "secondary" : "outline"}
-            className="cursor-pointer text-[11px] transition-colors hover:bg-muted"
+            className={`cursor-pointer text-[11px] transition-colors duration-150 ${
+              filters.projectType === type
+                ? "!bg-indigo-50 !border-indigo-300 !text-indigo-800 ring-1 ring-indigo-500/20 font-medium"
+                : "hover:bg-zinc-50 hover:border-zinc-300"
+            }`}
             onClick={() => toggleProjectType(type)}
           >
             {displayProjectType(type)}
@@ -119,7 +123,11 @@ export function InspirationFilterBar({ allTags, filters, onChange, resultCount }
           <Badge
             key={name}
             variant={filters.tagNames.includes(name) ? "secondary" : "outline"}
-            className="cursor-pointer text-[11px] transition-colors hover:bg-muted"
+            className={`cursor-pointer text-[11px] transition-colors duration-150 ${
+              filters.tagNames.includes(name)
+                ? "!bg-indigo-50 !border-indigo-300 !text-indigo-800 ring-1 ring-indigo-500/20 font-medium"
+                : "hover:bg-zinc-50 hover:border-zinc-300"
+            }`}
             onClick={() => toggleTag(name)}
           >
             {displayStyleTag(name)}
@@ -134,8 +142,11 @@ export function InspirationFilterBar({ allTags, filters, onChange, resultCount }
           <Badge
             key={r.value}
             variant={String(filters.minRating) === r.value ? "secondary" : "outline"}
-            className="cursor-pointer text-[11px] transition-colors hover:bg-muted"
-            onClick={() => update({ minRating: Number(r.value) })}
+            className={`cursor-pointer text-[11px] transition-colors duration-150 ${
+              String(filters.minRating) === r.value
+                ? "!bg-indigo-50 !border-indigo-300 !text-indigo-800 ring-1 ring-indigo-500/20 font-medium"
+                : "hover:bg-zinc-50 hover:border-zinc-300"
+            }`}
           >
             {r.label}
           </Badge>

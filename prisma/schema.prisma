@@ -83,17 +83,25 @@ model AiAnalysis {
 
 // ---- Prompt 记录 ----
 model PromptRecord {
-  id                     String   @id @default(uuid())
+  id                     String    @id @default(uuid())
   title                  String
-  targetProject          String   @map("target_project")
-  projectType            String?  @map("project_type")
-  selectedInspirationIds String   @map("selected_inspiration_ids")
-  generatedPrompt        String   @map("generated_prompt")
-  designSystemPrompt     String?  @map("design_system_prompt")
-  pageLevelPrompt        String?  @map("page_level_prompt")
-  componentLevelPrompt   String?  @map("component_level_prompt")
-  createdAt              DateTime @default(now()) @map("created_at")
-  updatedAt              DateTime @updatedAt @map("updated_at")
+  targetProject          String    @map("target_project")
+  projectType            String?   @map("project_type")
+  selectedInspirationIds String    @map("selected_inspiration_ids")
+  generatedPrompt        String    @map("generated_prompt")
+  designSystemPrompt     String?   @map("design_system_prompt")
+  pageLevelPrompt        String?   @map("page_level_prompt")
+  componentLevelPrompt   String?   @map("component_level_prompt")
+  createdAt              DateTime  @default(now()) @map("created_at")
+  updatedAt              DateTime  @updatedAt @map("updated_at")
+
+  // Prompt feedback (v1.8)
+  feedbackRating     Int?      @map("feedback_rating")
+  feedbackLabel      String?   @map("feedback_label")
+  feedbackNote       String?   @map("feedback_note")
+  feedbackTags       String?   @map("feedback_tags")
+  isFavorite         Boolean   @default(false) @map("is_favorite")
+  feedbackUpdatedAt  DateTime? @map("feedback_updated_at")
 
   @@map("prompt_records")
 }

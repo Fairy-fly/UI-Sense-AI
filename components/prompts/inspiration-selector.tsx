@@ -50,10 +50,10 @@ export function InspirationSelector({
             type="button"
             onClick={() => toggle(insp.id)}
             className={cn(
-              "flex w-full items-center gap-3 rounded-xl border px-3 py-2.5 text-left transition-all",
+              "flex w-full items-center gap-3 rounded-xl border px-3 py-2.5 text-left transition-all duration-150",
               isSelected
-                ? "border-ring/50 bg-muted/30 ring-1 ring-ring/10"
-                : "border-border bg-card hover:border-ring/20 hover:bg-muted/20",
+                ? "border-indigo-300 bg-indigo-50/50 ring-1 ring-indigo-500/20"
+                : "border-zinc-200 bg-white hover:border-zinc-300 hover:bg-zinc-50 hover:shadow-sm",
             )}
           >
             <div className="h-11 w-[66px] shrink-0 overflow-hidden rounded-lg border border-border">

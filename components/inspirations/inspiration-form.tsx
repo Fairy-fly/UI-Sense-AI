@@ -20,6 +20,7 @@ import { Separator } from "@/components/ui/separator";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { createInspiration, updateInspiration } from "@/lib/actions/inspirations";
 import { RatingInput } from "@/components/inspirations/rating-input";
+import { SelectableChip } from "@/components/ui/selectable-chip";
 import { projectTypes, defaultStyleTags } from "@/lib/constants";
 import type { UrlMetadata } from "@/lib/metadata";
 import { getAutoFillTitle } from "@/lib/metadata";
@@ -346,14 +347,14 @@ export function InspirationForm({ mode, initialData }: InspirationFormProps) {
               {/* Quick-pick tags */}
               <div className="mb-2 flex flex-wrap gap-1.5">
                 {defaultStyleTags.slice(0, 10).map((tag) => (
-                  <Badge
+                  <SelectableChip
                     key={tag}
-                    variant={tags.includes(tag) ? "secondary" : "outline"}
-                    className="cursor-pointer text-[11px] transition-colors hover:bg-muted"
+                    selected={tags.includes(tag)}
                     onClick={() => (tags.includes(tag) ? removeTag(tag) : addTag(tag))}
+                    variant="indigo"
                   >
                     {tag}
-                  </Badge>
+                  </SelectableChip>
                 ))}
               </div>
               {/* Custom tag input */}

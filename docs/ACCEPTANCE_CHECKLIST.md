@@ -581,3 +581,22 @@
 | 1.7.2.8 | URL Metadata + SSRF 防护正常 | ✅ |
 | 1.7.2.9 | prisma validate / migrate status / build / tsc / lint 通过 | ✅ |
 | 1.7.2.10 | 安全检查通过 | ✅ |
+
+---
+
+## v1.8 Prompt 历史与反馈增强
+
+| # | 检查项 | 状态 |
+|---|--------|------|
+| 1.8.1 | PromptRecord 新增 6 个反馈字段 + migration | ✅ |
+| 1.8.2 | updatePromptFeedback action（评分/标签/备注/收藏） | ✅ |
+| 1.8.3 | /prompts/[id] 详情页 PromptFeedbackPanel | ✅ |
+| 1.8.4 | 快捷反馈：好用/一般/需要改进 | ✅ |
+| 1.8.5 | 1-5 星评分 | ✅ |
+| 1.8.6 | 8 个常用反馈标签 | ✅ |
+| 1.8.7 | 收藏/取消收藏优质 Prompt | ✅ |
+| 1.8.8 | 备注输入（≤500 字） | ✅ |
+| 1.8.9 | 保存按钮 loading + disabled + toast | ✅ |
+| 1.8.10 | 旧 Prompt 无反馈不崩溃 | ✅ |
+| 1.8.11 | 不影响 Prompt 生成/导出/复制/审美记忆 | ✅ |
+| 1.8.12 | `npm run build` / `tsc` / `lint` 通过 | ✅ |
