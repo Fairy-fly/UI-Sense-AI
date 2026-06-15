@@ -1,7 +1,7 @@
 # UI Sense AI — Project Memory
 
 > Last updated: 2026-06-15  
-> Current version: v1.3.3  
+> Current version: v1.3.3.1  
 > Default branch: main  
 
 ---
@@ -82,6 +82,13 @@ Next.js 15 · TypeScript · Tailwind CSS 4 · shadcn/ui · Prisma + SQLite · De
 - Preview card shows favicon, hostname, title, description
 - Error handling: structured Chinese error messages, no crashes
 - No database changes — metadata used only for form pre-fill
+
+### v1.3.3.1 — URL Metadata Security Hardening (current)
+- SSRF prevention: block localhost, 127.0.0.1, ::1, 0.0.0.0, all private IPv4 ranges
+- Block internal hostnames: .local, .internal, .lan
+- `redirect: "manual"` — no automatic redirect following; 3xx returns user-friendly prompt
+- Response body capped at 1MB via `readResponseBodyLimited()` streaming reader
+- Existing functionality preserved: https://linear.app still works normally
 
 ## Feature Status
 
