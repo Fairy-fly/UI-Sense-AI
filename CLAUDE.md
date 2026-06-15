@@ -42,6 +42,7 @@ Copy `.env.example` to `.env.local`. Required: `DATABASE_URL`. Optional: `DEEPSE
 | v1.3 | Inspiration collections with add/remove/group support |
 | v1.3.1 | Collections UX polish: truncation, Select label, empty states |
 | v1.3.2 | Prompt template presets (6 templates, auto-suggest, AI-aware) |
+| v1.3.3 | URL metadata fetch (auto-fill title/description, favicon preview) |
 
 ## Page Map
 
@@ -74,6 +75,7 @@ Copy `.env.example` to `.env.local`. Required: `DATABASE_URL`. Optional: `DEEPSE
 - **Collection management**: `add-to-collection-panel.tsx` in inspiration detail page
 - **Collection filter**: `/prompts` supports filtering inspirations by collection
 - **Prompt templates**: `lib/prompt-templates.ts` — 6 presets with structure/component/avoid hints, auto-suggest by project type
+- **URL metadata**: `lib/metadata.ts` + `POST /api/metadata` — auto-fill title/description from webpage, favicon preview
 - **Scroll**: `ScrollToTop` in `(app)/layout.tsx`, `data-app-scroll-container` on main
 - **No `asChild`**: Use `buttonVariants()` for Link-styled buttons
 

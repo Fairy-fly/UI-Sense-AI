@@ -1,7 +1,7 @@
 # UI Sense AI — Project Memory
 
 > Last updated: 2026-06-15  
-> Current version: v1.3.2  
+> Current version: v1.3.3  
 > Default branch: main  
 
 ---
@@ -73,6 +73,15 @@ Next.js 15 · TypeScript · Tailwind CSS 4 · shadcn/ui · Prisma + SQLite · De
 - Template info embedded in generated prompt and passed to DeepSeek AI context
 - Template name included in Markdown export
 - No database changes — pure code constants in `lib/prompt-templates.ts`
+
+### v1.3.3 — URL Metadata Fetch (current)
+- `POST /api/metadata` fetches webpage title, description, favicon, og:image
+- Safe URL validation: http/https only, 8s timeout, User-Agent header
+- `/inspirations/new` "读取网页信息" button with loading state
+- Auto-fills title only when empty; never overwrites user input
+- Preview card shows favicon, hostname, title, description
+- Error handling: structured Chinese error messages, no crashes
+- No database changes — metadata used only for form pre-fill
 
 ## Feature Status
 

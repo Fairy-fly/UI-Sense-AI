@@ -3,7 +3,7 @@
 import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { Upload, Sparkles, X } from "lucide-react";
+import { Upload, Sparkles, X, Globe, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,6 +21,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { createInspiration, updateInspiration } from "@/lib/actions/inspirations";
 import { RatingInput } from "@/components/inspirations/rating-input";
 import { projectTypes, defaultStyleTags } from "@/lib/constants";
+import type { UrlMetadata } from "@/lib/metadata";
 
 interface InspirationFormProps {
   mode: "create" | "edit";
@@ -51,6 +52,49 @@ export function InspirationForm({ mode, initialData }: InspirationFormProps) {
   const [imageUrl] = useState(initialData?.imageUrl ?? "");
   const [previewUrl, setPreviewUrl] = useState(initialData?.imageUrl ?? "");
   const [saving, setSaving] = useState(false);
+
+  // URL metadata fetching
+  const [fetchingMeta, setFetchingMeta] = useState(false);
+  const [metaResult, setMetaResult] = useState<UrlMetadata | null>(null);
+
+  async function handleFetchMetadata() {
+    if (!sourceUrl.trim()) {
+      toast.error("请先填写来源链接");
+      return;
+    }
+    setFetchingMeta(true);
+    setMetaResult(null);
+    try {
+      const res = await fetch("/api/metadata", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url: sourceUrl.trim() }),
+      });
+      const data = await res.json();
+      if (!data.success) {
+        toast.error(data.error ?? "读取失败，请手动填写");
+        return;
+      }
+      const meta = data.data as UrlMetadata;
+      setMetaResult(meta);
+
+      // Auto-fill title only if empty
+      if (!title.trim() && meta.title) {
+        setTitle(meta.title);
+      }
+
+      // Auto-fill notes with description only if empty
+      if (!notes.trim() && meta.description) {
+        setNotes(meta.description);
+      }
+
+      toast.success("已读取网页信息");
+    } catch {
+      toast.error("读取失败，请手动填写");
+    } finally {
+      setFetchingMeta(false);
+    }
+  }
 
   // File selected → show local preview
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -220,12 +264,60 @@ export function InspirationForm({ mode, initialData }: InspirationFormProps) {
 
             <div>
               <label className="mb-1.5 block text-[13px] font-medium text-foreground">来源链接</label>
-              <Input
-                value={sourceUrl}
-                onChange={(e) => setSourceUrl(e.target.value)}
-                placeholder="https://linear.app/..."
-                className="rounded-[10px]"
-              />
+              <div className="flex gap-2">
+                <Input
+                  value={sourceUrl}
+                  onChange={(e) => setSourceUrl(e.target.value)}
+                  placeholder="https://linear.app/..."
+                  className="flex-1 rounded-[10px]"
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  className="shrink-0 gap-1 rounded-[10px]"
+                  onClick={handleFetchMetadata}
+                  disabled={fetchingMeta || !sourceUrl.trim()}
+                >
+                  {fetchingMeta ? (
+                    <Loader2 className="h-3.5 w-3.5 shrink-0 animate-spin" />
+                  ) : (
+                    <Globe className="h-3.5 w-3.5 shrink-0" />
+                  )}
+                  <span className="inline-flex items-center leading-none">
+                    {fetchingMeta ? "正在读取..." : "读取网页信息"}
+                  </span>
+                </Button>
+              </div>
+
+              {/* Preview card */}
+              {metaResult && (
+                <div className="mt-3 flex items-start gap-3 rounded-xl border border-border bg-muted/30 px-4 py-3">
+                  {/* Favicon */}
+                  {metaResult.faviconUrl && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={metaResult.faviconUrl}
+                      alt=""
+                      className="mt-0.5 h-4 w-4 shrink-0 rounded-sm"
+                      onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+                    />
+                  )}
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-[12px] font-medium text-foreground">
+                      {metaResult.title}
+                    </p>
+                    <p className="text-[11px] text-muted-foreground">
+                      {metaResult.hostname}
+                    </p>
+                    {metaResult.description && (
+                      <p className="mt-0.5 line-clamp-2 text-[11px] leading-relaxed text-muted-foreground">
+                        {metaResult.description}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
