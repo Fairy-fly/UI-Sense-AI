@@ -1,7 +1,7 @@
 # UI Sense AI — Project Memory
 
 > Last updated: 2026-06-15  
-> Current version: v2.0.2  
+> Current version: v2.0.3  
 > Default branch: main  
 
 ---
@@ -232,6 +232,9 @@ Next.js 15 · TypeScript · Tailwind CSS 4 · shadcn/ui · Prisma + SQLite · De
 ### v2.0.2 — README Table Rendering Fix (current)
 - Fixed version badge display and milestone table formatting
 - Updated current version to v2.0.2
+
+### v2.0.3 — Docs Archive Polish (current)
+- Moved project planning DOCX from repository root to docs/ for cleaner GitHub showcase
 
 ## Feature Status
 
