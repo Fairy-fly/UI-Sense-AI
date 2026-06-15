@@ -69,6 +69,7 @@ DEEPSEEK_TIMEOUT_MS="45000"
 | Prompt Markdown export | ✅ |
 | Search and filter inspirations | ✅ |
 | Inspiration collections (v1.3) | ✅ |
+| Prompt template presets (v1.3.2) | ✅ |
 | Login / multi-user | ❌ (future) |
 | Cloud storage | ❌ (future) |
 | Browser extension | ❌ (future) |

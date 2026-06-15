@@ -1,7 +1,7 @@
 # UI Sense AI — Project Memory
 
-> Last updated: 2026-06-14  
-> Current version: v1.3.1  
+> Last updated: 2026-06-15  
+> Current version: v1.3.2  
 > Default branch: main  
 
 ---
@@ -65,6 +65,14 @@ Next.js 15 · TypeScript · Tailwind CSS 4 · shadcn/ui · Prisma + SQLite · De
 - Verified delete dialog clearly states inspirations are not deleted
 - Verified all empty states display natural Chinese prompts
 - Full regression: Prompt generation, save, export unaffected
+
+### v1.3.2 — Prompt Template Presets (current)
+- 6 template presets: SaaS Dashboard, Landing Page, Mobile App, Developer Tool, AI Product, Minimal Portfolio
+- Each template provides structure hints, component suggestions, and style avoidance guidance
+- Template selector in `/prompts` with auto-suggest based on project type
+- Template info embedded in generated prompt and passed to DeepSeek AI context
+- Template name included in Markdown export
+- No database changes — pure code constants in `lib/prompt-templates.ts`
 
 ## Feature Status
 

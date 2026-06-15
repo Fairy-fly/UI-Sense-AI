@@ -27,6 +27,7 @@ export const promptFormSchema = z.object({
     .optional()
     .default(""),
   useAI: z.boolean().optional().default(false),
+  promptTemplateId: z.string().optional(),
 });
 
 export type PromptFormInput = z.infer<typeof promptFormSchema>;

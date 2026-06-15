@@ -9,6 +9,7 @@ import "server-only";
 
 import { generatePromptSections, type PromptSections } from "@/lib/prompt-builder";
 import { generateWithDeepSeek, isDeepSeekConfigured } from "@/lib/ai/deepseek";
+import { getPromptTemplate } from "@/lib/prompt-templates";
 import type { Inspiration } from "@/types";
 
 export interface OptimizeInput {
@@ -21,6 +22,7 @@ export interface OptimizeInput {
   techStack: string[];
   pageList: string;
   additionalNotes: string;
+  promptTemplateId?: string;
   userPreferences?: {
     preferredStyles?: string[];
     preferredColors?: string[];
@@ -48,6 +50,7 @@ export async function optimizePromptWithAI(input: OptimizeInput): Promise<Optimi
     techStack: input.techStack,
     pageList: input.pageList,
     additionalNotes: input.additionalNotes,
+    promptTemplateId: input.promptTemplateId,
     userPreferences: input.userPreferences,
   });
 
@@ -102,6 +105,9 @@ ${inspSummary}
 
 ## 审美偏好
 ${prefSummary || "极简 SaaS、中性配色、冷静高效的工具风格"}
+
+${input.promptTemplateId ? `## Prompt 模板
+${(() => { const t = getPromptTemplate(input.promptTemplateId); return t ? `使用模板：${t.name} — ${t.description}` : ""; })()}` : ""}
 
 ## 避免风格
 ${input.avoidedStyles.length > 0 ? input.avoidedStyles.join("、") : "廉价蓝白后台、过度渐变、大阴影"}
