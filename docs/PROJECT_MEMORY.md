@@ -1,7 +1,7 @@
 # UI Sense AI — Project Memory
 
 > Last updated: 2026-06-15  
-> Current version: v1.5.1  
+> Current version: v1.6  
 > Default branch: main  
 
 ---
@@ -132,6 +132,16 @@ Next.js 15 · TypeScript · Tailwind CSS 4 · shadcn/ui · Prisma + SQLite · De
 - Verified Prompt: "已分析" badge, AI 基础分析参考 injection, legacy filtering
 - All security boundaries intact: SSRF, localhost, private IP, redirect blocking
 - Zero code changes — pure regression validation
+
+### v1.6 — Real Vision Analysis via Bailian (current)
+- `VisionAnalysisProvider` now calls OpenAI-compatible vision API with real image analysis
+- Supports any OpenAI-compatible multimodal endpoint (Alibaba Bailian, OpenAI, etc.)
+- Image safety: only `/uploads/` local images, ≤5MB, MIME whitelist (png/jpeg/webp)
+- Base64 data URL encoding with no logging of image content
+- 9 degradation paths: missing config, no image, invalid path, file not found, too large, bad MIME, API errors (400/401/429/500), model unsupported, JSON parse failure
+- `analysisMode: "vision"` vs `"text"` for quality tracking
+- Config via `VISION_MODEL` / `VISION_API_BASE_URL` / `VISION_API_KEY` env vars
+- No database schema changes
 
 ## Feature Status
 
