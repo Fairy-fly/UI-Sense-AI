@@ -30,6 +30,7 @@ export interface PromptBuilderInput {
     keywords: string[];
     agentInstruction?: string;
   };
+  feedbackInsights?: import("@/lib/prompt-feedback-insights").PromptFeedbackInsights;
   userPreferences?: {
     preferredStyles?: string[];
     preferredColors?: string[];
@@ -59,6 +60,7 @@ export function generatePromptSections(input: PromptBuilderInput): PromptSection
     additionalNotes,
     promptTemplateId,
     aestheticMemory,
+    feedbackInsights,
     userPreferences,
   } = input;
 
@@ -205,6 +207,17 @@ ${aestheticMemory.agentInstruction ? `**Agent 审美指令**：
 ${aestheticMemory.agentInstruction}` : ""}
 
 > 这段审美记忆用于保持后续生成 UI 的一致性。请把它作为长期偏好参考，不要覆盖项目模板和当前参考灵感。` : ""}
+
+${feedbackInsights ? `## 4.6. 历史 Prompt 反馈参考
+
+以下是 UI Sense AI 根据你对历史 Prompt 的评分、收藏和反馈标签总结出的提示词偏好：
+
+${feedbackInsights.strategySummary ? `**反馈摘要**：${feedbackInsights.strategySummary}` : ""}
+${feedbackInsights.positiveTags?.length ? `**偏好的 Prompt 特征**：${feedbackInsights.positiveTags.join("、")}` : ""}
+${feedbackInsights.negativeTags?.length ? `**需要避免的问题**：${feedbackInsights.negativeTags.join("、")}` : ""}
+${feedbackInsights.agentInstruction ? `**Agent 生成策略**：${feedbackInsights.agentInstruction}` : ""}
+
+> 这段反馈只用于优化提示词表达方式，不覆盖当前项目需求、Prompt 模板和参考灵感。` : ""}
 
 ## 5. 技术栈
 

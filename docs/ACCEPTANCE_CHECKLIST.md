@@ -617,3 +617,19 @@
 | 1.8.1.8 | 不影响 Prompt 生成 / 审美记忆 / 视觉分析 | ✅ |
 | 1.8.1.9 | prisma validate / migrate status / build / tsc / lint 通过 | ✅ |
 | 1.8.1.10 | 安全检查通过 | ✅ |
+
+---
+
+## v1.9 反馈反哺 Prompt 生成策略
+
+| # | 检查项 | 状态 |
+|---|--------|------|
+| 1.9.1 | computePromptFeedbackInsights() 纯规则总结 | ✅ |
+| 1.9.2 | /settings 新增 PromptFeedbackInsightsPanel | ✅ |
+| 1.9.3 | 反馈不足时友好空状态 | ✅ |
+| 1.9.4 | Prompt Builder §4.6 可选注入 | ✅ |
+| 1.9.5 | 不塞旧 Prompt 原文 | ✅ |
+| 1.9.6 | 不影响 §4.5 审美记忆 | ✅ |
+| 1.9.7 | 不影响 Prompt Feedback 保存/筛选/收藏 | ✅ |
+| 1.9.8 | 不改 schema / 无 migration | ✅ |
+| 1.9.9 | `npm run build` / `tsc` / `lint` 通过 | ✅ |

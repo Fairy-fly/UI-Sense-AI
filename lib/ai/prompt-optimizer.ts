@@ -34,6 +34,7 @@ export interface OptimizeInput {
     keywords: string[];
     agentInstruction?: string;
   };
+  feedbackInsights?: import("@/lib/prompt-feedback-insights").PromptFeedbackInsights;
   userPreferences?: {
     preferredStyles?: string[];
     preferredColors?: string[];
@@ -63,6 +64,7 @@ export async function optimizePromptWithAI(input: OptimizeInput): Promise<Optimi
     additionalNotes: input.additionalNotes,
     promptTemplateId: input.promptTemplateId,
     aestheticMemory: input.aestheticMemory,
+    feedbackInsights: input.feedbackInsights,
     userPreferences: input.userPreferences,
   });
 

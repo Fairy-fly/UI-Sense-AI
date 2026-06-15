@@ -8,6 +8,7 @@ import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
 import { z } from "zod";
 import { promptFormSchema, type PromptFormInput } from "@/lib/validations/prompt";
+import { computePromptFeedbackInsights } from "@/lib/prompt-feedback-insights";
 import { optimizePromptWithAI } from "@/lib/ai/prompt-optimizer";
 import { getUserPreference } from "@/lib/actions/preferences";
 import type { PromptRecord } from "@/types";
@@ -74,6 +75,9 @@ export async function generatePrompt(input: PromptFormInput & { useAI?: boolean 
         }
       : undefined;
 
+    // Fetch feedback insights for prompt strategy
+    const feedbackInsights = await computePromptFeedbackInsights();
+
     const sections = await optimizePromptWithAI({
       projectName: data.projectName,
       projectType: data.projectType,
@@ -101,6 +105,7 @@ export async function generatePrompt(input: PromptFormInput & { useAI?: boolean 
       additionalNotes: data.additionalNotes,
       promptTemplateId: data.promptTemplateId,
       aestheticMemory,
+      feedbackInsights: feedbackInsights ?? undefined,
       userPreferences,
       useAI: data.useAI ?? false,
     });
