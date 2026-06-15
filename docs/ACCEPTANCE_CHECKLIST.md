@@ -471,3 +471,20 @@
 | 1.5.1.7 | Prompt: "已分析" badge + AI 基础分析参考注入 | ✅ |
 | 1.5.1.8 | legacy seed 过滤 / 中文化 / 保存 / 导出正常 | ✅ |
 | 1.5.1.9 | `npm run build` / `tsc` / `lint` 通过 | ✅ |
+
+---
+
+## v1.6 真实视觉模型接入
+
+| # | 检查项 | 状态 |
+|---|--------|------|
+| 1.6.1 | VisionAnalysisProvider 调用 OpenAI-compatible vision API | ✅ |
+| 1.6.2 | 图片读取安全：/uploads/ + ≤5MB + MIME 白名单 | ✅ |
+| 1.6.3 | base64 data URL 编码，不打印日志 | ✅ |
+| 1.6.4 | 无配置 / 无图片 / API 失败 → 降级 TextAnalysisProvider | ✅ |
+| 1.6.5 | 400 状态码（模型不支持图片）→ 自动降级 | ✅ |
+| 1.6.6 | JSON 解析失败 → 降级文本分析 | ✅ |
+| 1.6.7 | .env.example 文档化 vision 模型建议 | ✅ |
+| 1.6.8 | 所有分析保存到现有 AiAnalysis 表 | ✅ |
+| 1.6.9 | Prompt 生成器仍正常吸收分析结果 | ✅ |
+| 1.6.10 | `npm run build` / `tsc` / `lint` 通过 | ✅ |

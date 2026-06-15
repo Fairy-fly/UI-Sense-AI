@@ -50,6 +50,7 @@ Copy `.env.example` to `.env.local`. Required: `DATABASE_URL`. Optional: `DEEPSE
 | v1.4.3 | Prompt analysis enhancement indicators (badge + hint) |
 | v1.5 | Vision analysis provider foundation (pluggable architecture) |
 | v1.5.1 | Provider + metadata regression validation |
+| v1.6 | Real vision analysis via OpenAI-compatible API (Bailian) |
 
 ## Page Map
 
