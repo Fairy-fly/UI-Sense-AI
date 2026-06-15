@@ -1,7 +1,7 @@
 # UI Sense AI — Project Memory
 
 > Last updated: 2026-06-15  
-> Current version: v2.0  
+> Current version: v2.0.1  
 > Default branch: main  
 
 ---
@@ -221,6 +221,13 @@ Next.js 15 · TypeScript · Tailwind CSS 4 · shadcn/ui · Prisma + SQLite · De
 - Three closed loops: Aesthetic Memory (§4.5), Feedback Insights (§4.6), Prompt Feedback
 - README, CLAUDE.md, PROJECT_MEMORY updated to v2.0
 - Ready for long-term local use as a stable personal tool
+
+### v2.0.1 — GitHub README Showcase Polish (current)
+- Rewrote README.md with product overview, workflow, features, setup, safety
+- Added `docs/GITHUB_ABOUT.md` with repo description and topic suggestions
+- Environment variables documented in table format; no real keys exposed
+- Version milestones and roadmap sections with future items clearly labeled
+- No code changes — documentation-only update
 
 ## Feature Status
 
