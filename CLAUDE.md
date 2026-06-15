@@ -44,6 +44,7 @@ Copy `.env.example` to `.env.local`. Required: `DATABASE_URL`. Optional: `DEEPSE
 | v1.3.2 | Prompt template presets (6 templates, auto-suggest, AI-aware) |
 | v1.3.3 | URL metadata fetch (auto-fill title/description, favicon preview) |
 | v1.3.3.1 | URL metadata security hardening (SSRF prevention, body size limit) |
+| v1.4 | AI analysis for inspirations (text-based, metadata-driven) |
 
 ## Page Map
 
@@ -77,6 +78,7 @@ Copy `.env.example` to `.env.local`. Required: `DATABASE_URL`. Optional: `DEEPSE
 - **Collection filter**: `/prompts` supports filtering inspirations by collection
 - **Prompt templates**: `lib/prompt-templates.ts` — 6 presets with structure/component/avoid hints, auto-suggest by project type
 - **URL metadata**: `lib/metadata.ts` + `POST /api/metadata` — auto-fill title/description from webpage, favicon preview
+- **AI analysis**: `lib/ai/image-analysis.ts` + `lib/actions/ai-analysis.ts` — text-based UI analysis, upsert to AiAnalysis table
 - **Scroll**: `ScrollToTop` in `(app)/layout.tsx`, `data-app-scroll-container` on main
 - **No `asChild`**: Use `buttonVariants()` for Link-styled buttons
 
@@ -103,5 +105,5 @@ git push -u origin v1.x-feature-name
 
 ## Next Steps
 
-- v1.3.1: Prompt templates, URL auto-fetch, collection UX polish
-- v2.0: AI image analysis, browser extension, cloud sync, login
+- v1.4.1: AI analysis UX polish, "重新分析" flow, better empty states
+- v2.0: Multimodal image analysis, browser extension, cloud sync, login

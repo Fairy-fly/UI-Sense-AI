@@ -1,7 +1,7 @@
 # UI Sense AI — Project Memory
 
 > Last updated: 2026-06-15  
-> Current version: v1.3.3.1  
+> Current version: v1.4  
 > Default branch: main  
 
 ---
@@ -89,6 +89,14 @@ Next.js 15 · TypeScript · Tailwind CSS 4 · shadcn/ui · Prisma + SQLite · De
 - `redirect: "manual"` — no automatic redirect following; 3xx returns user-friendly prompt
 - Response body capped at 1MB via `readResponseBodyLimited()` streaming reader
 - Existing functionality preserved: https://linear.app still works normally
+
+### v1.4 — AI Analysis for Inspirations (current)
+- Text-based AI analysis using inspiration metadata (title, tags, notes, project type)
+- Reuses existing `AiAnalysis` table (colorAnalysis, layoutAnalysis, componentAnalysis, styleSummary, designKeywords)
+- "开始 AI 分析" button on inspiration detail page; analysis persists after refresh
+- "重新分析" support for updating existing analysis
+- Structured for future multimodal model upgrade in `lib/ai/image-analysis.ts`
+- No database schema changes needed
 
 ## Feature Status
 
