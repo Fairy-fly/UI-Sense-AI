@@ -1,7 +1,7 @@
 # UI Sense AI — Project Memory
 
 > Last updated: 2026-06-15  
-> Current version: v1.9  
+> Current version: v1.9.1  
 > Default branch: main  
 
 ---
@@ -207,6 +207,13 @@ Next.js 15 · TypeScript · Tailwind CSS 4 · shadcn/ui · Prisma + SQLite · De
 - Prompt Builder §4.6 injects "历史 Prompt 反馈参考" when ≥2 feedback records exist
 - Pure rule-based: no AI calls, no schema changes, no PromptRecord modifications
 - Does NOT embed old Prompt text — only summarizes user-preferred Prompt characteristics
+
+### v1.9.1 — Feedback Insights Experience Polish (current)
+- Verified `computePromptFeedbackInsights` safety: no generatedPrompt read, JSON parse guarded
+- Confirmed Settings panel three states: loading, empty, populated
+- Confirmed §4.6 position between §4.5 and §5, with null guard
+- Confirmed AI and non-AI paths both receive feedbackInsights
+- Zero code changes — pure regression validation
 
 ## Feature Status
 

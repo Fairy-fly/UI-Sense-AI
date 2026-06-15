@@ -633,3 +633,19 @@
 | 1.9.7 | 不影响 Prompt Feedback 保存/筛选/收藏 | ✅ |
 | 1.9.8 | 不改 schema / 无 migration | ✅ |
 | 1.9.9 | `npm run build` / `tsc` / `lint` 通过 | ✅ |
+
+---
+
+## v1.9.1 反馈洞察体验回归
+
+| # | 检查项 | 状态 |
+|---|--------|------|
+| 1.9.1.1 | computePromptFeedbackInsights 不读 generatedPrompt，JSON parse 安全 | ✅ |
+| 1.9.1.2 | Settings 面板 loading / 空状态 / 数据态三种状态 | ✅ |
+| 1.9.1.3 | 无 NaN / undefined / null 泄露 | ✅ |
+| 1.9.1.4 | §4.6 位置正确（§4.5 后、§5 前） | ✅ |
+| 1.9.1.5 | 反馈不足时不显示 §4.6 | ✅ |
+| 1.9.1.6 | AI/非 AI 路径均接入 feedbackInsights | ✅ |
+| 1.9.1.7 | v1.8 Prompt Feedback 保存/筛选/收藏不受影响 | ✅ |
+| 1.9.1.8 | prisma validate / migrate status / build / tsc / lint 通过 | ✅ |
+| 1.9.1.9 | 安全检查通过 | ✅ |
