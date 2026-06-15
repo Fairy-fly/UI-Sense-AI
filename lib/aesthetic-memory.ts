@@ -67,20 +67,20 @@ export async function buildAestheticMemory(): Promise<AestheticProfile | null> {
   const avoidedStyles = extractAvoided(pref);
   const keywords = Object.keys(keywordFreq).slice(0, 15);
 
-  // 5. Build summary
-  const summary = `基于 ${inspirations.length} 个高评分灵感和 ${inspirations.filter((i) => i.analysis).length} 条 AI 分析生成的审美画像。偏好风格倾向于${preferredStyles.slice(0, 3).join("、")}，配色偏好${preferredColors.slice(0, 3).join("、")}，布局偏好${preferredLayouts.slice(0, 2).join("、")}。`;
+  // 5. Build summary (80-160 chars)
+  const summary = `${inspirations.length} 个高评分灵感、${inspirations.filter((i) => i.analysis).length} 条 AI 分析生成。偏好风格倾向于${preferredStyles.slice(0, 3).join("、")}，配色偏好${preferredColors.slice(0, 3).join("、")}，布局偏好${preferredLayouts.slice(0, 2).join("、")}。`.slice(0, 180);
 
-  // 6. Build Agent instruction
-  const agentInstruction = `请优先采用${preferredColors.slice(0, 2).join("、")}、${preferredLayouts.slice(0, 2).join("、")}、克制圆角、轻量阴影。${avoidedStyles.length > 0 ? `避免${avoidedStyles.slice(0, 3).join("、")}。` : ""}整体应接近 Linear / Vercel / Raycast 的高级工具感，不要廉价后台模板风格。`;
+  // 6. Build Agent instruction (80-180 chars)
+  const agentInstruction = `请优先采用${preferredColors.slice(0, 2).join("、")}、${preferredLayouts.slice(0, 2).join("、")}、克制圆角、轻量阴影。${avoidedStyles.length > 0 ? `避免${avoidedStyles.slice(0, 3).join("、")}。` : ""}整体应接近 Linear / Vercel / Raycast 的高级工具感，不要廉价后台模板风格。`.slice(0, 200);
 
   return {
     summary,
-    preferredStyles,
-    preferredColors,
-    preferredLayouts,
-    preferredComponents,
-    avoidedStyles,
-    keywords,
+    preferredStyles: preferredStyles.slice(0, 8),
+    preferredColors: preferredColors.slice(0, 8),
+    preferredLayouts: preferredLayouts.slice(0, 8),
+    preferredComponents: preferredComponents.slice(0, 8),
+    avoidedStyles: avoidedStyles.slice(0, 8),
+    keywords: keywords.slice(0, 12),
     agentInstruction,
     sourceCount: inspirations.length,
   };

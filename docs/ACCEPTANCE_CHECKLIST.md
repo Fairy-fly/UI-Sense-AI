@@ -548,3 +548,19 @@
 | 1.7.8 | 数据不足时友好提示 | ✅ |
 | 1.7.9 | 不影响视觉分析/URL Metadata/收藏集 | ✅ |
 | 1.7.10 | `npm run build` / `tsc` / `lint` 通过 | ✅ |
+
+---
+
+## v1.7.1 审美记忆体验回归
+
+| # | 检查项 | 状态 |
+|---|--------|------|
+| 1.7.1.1 | 数据不足文案统一为"3 个以上" | ✅ |
+| 1.7.1.2 | chips 每类限制 8 个 | ✅ |
+| 1.7.1.3 | 数组长度强制（styles/colors/layouts/components/avoided 各 ≤8, keywords ≤12） | ✅ |
+| 1.7.1.4 | summary 限 180 字, agentInstruction 限 200 字 | ✅ |
+| 1.7.1.5 | 移除"基于 基于"重复 | ✅ |
+| 1.7.1.6 | undefined/null/空数组不显示 | ✅ |
+| 1.7.1.7 | 不改 schema / 无 migration | ✅ |
+| 1.7.1.8 | Settings 原有偏好保存正常 | ✅ |
+| 1.7.1.9 | `npm run build` / `tsc` / `lint` 通过 | ✅ |
