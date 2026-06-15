@@ -2,7 +2,7 @@
 
 > Design memory for AI agents — 本地优先的 UI 灵感、审美记忆与 Agent Prompt 生成工具。
 
-**v2.0.2** · README 渲染与版本展示修复版
+**v2.0.6** · README 版本展示同步版
 
 UI Sense AI 帮你收集优质 UI 界面、分析设计语言、沉淀个人审美偏好，并生成可直接交给 Claude Code / Codex 执行的高质量 UI 开发 Prompt。核心目标：让 AI Agent 生成的前端界面更高级、更统一、更贴近你的审美，不再像廉价后台模板。
 
@@ -170,6 +170,10 @@ types/            # TypeScript type definitions
 | v2.0 | Local product polish, full regression, stable release |
 | v2.0.1 | README / GitHub showcase polish |
 | v2.0.2 | README table rendering and version display fix |
+| v2.0.3 | Move planning DOCX into docs/ |
+| v2.0.4 | Project memory update after local tool phase completion |
+| v2.0.5 | Add reusable Agent workflow skills and clean project memory |
+| v2.0.6 | README version display and milestone sync |
 
 ---
 

@@ -1,7 +1,7 @@
 ﻿# UI Sense AI — Project Memory
 
 > Last updated: 2026-06-16  
-> Current version: v2.0.5  
+> Current version: v2.0.6  
 > Default branch: main  
 > Status: Personal local tool — core feature set complete
 
@@ -39,7 +39,8 @@ Next.js 15 · TypeScript · Tailwind CSS 4 · shadcn/ui · Prisma + SQLite · De
 | v2.0.2  | README rendering and version display fix |
 | v2.0.3  | Move planning DOCX into docs/ |
 | v2.0.4  | Project memory update after local tool phase completion |
-| v2.0.5  | Add reusable Agent workflow skills document |
+| v2.0.5  | Add reusable Agent workflow skills and clean project memory |
+| v2.0.6  | README version display and milestone sync |
 
 ## Feature Status
 
