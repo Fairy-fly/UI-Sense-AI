@@ -488,3 +488,17 @@
 | 1.6.8 | 所有分析保存到现有 AiAnalysis 表 | ✅ |
 | 1.6.9 | Prompt 生成器仍正常吸收分析结果 | ✅ |
 | 1.6.10 | `npm run build` / `tsc` / `lint` 通过 | ✅ |
+
+---
+
+## v1.6.1 视觉分析状态提示
+
+| # | 检查项 | 状态 |
+|---|--------|------|
+| 1.6.1.1 | analyzeInspiration 返回 analysisMode | ✅ |
+| 1.6.1.2 | vision 成功 → toast "视觉分析完成" | ✅ |
+| 1.6.1.3 | text/降级 → toast "已使用基础文本分析" | ✅ |
+| 1.6.1.4 | 失败 → toast error 不变 | ✅ |
+| 1.6.1.5 | 不影响 AiAnalysis 保存和刷新 | ✅ |
+| 1.6.1.6 | 不改数据库 schema | ✅ |
+| 1.6.1.7 | `npm run build` / `tsc` / `lint` 通过 | ✅ |

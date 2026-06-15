@@ -17,7 +17,7 @@ interface AIAnalysisPanelProps {
 
 export function AIAnalysisPanel({ inspirationId, analysis: initialAnalysis }: AIAnalysisPanelProps) {
   const [analyzing, setAnalyzing] = useState(false);
-  const analysis = initialAnalysis;
+  const [analysis, setAnalysis] = useState<AiAnalysis | null>(initialAnalysis);
 
   async function handleAnalyze() {
     setAnalyzing(true);
@@ -27,10 +27,17 @@ export function AIAnalysisPanel({ inspirationId, analysis: initialAnalysis }: AI
         toast.error(result.error ?? "AI 分析失败");
         return;
       }
-      toast.success("AI 分析完成");
 
-      // Reload the page to get fresh data with analysis
-      window.location.reload();
+      if (result.analysisMode === "vision") {
+        toast.success("视觉分析完成");
+      } else {
+        toast.success("已使用基础文本分析");
+      }
+
+      // Update local state immediately — no page reload needed
+      if (result.analysis) {
+        setAnalysis(result.analysis);
+      }
     } catch {
       toast.error("AI 分析失败，请重试");
     } finally {
