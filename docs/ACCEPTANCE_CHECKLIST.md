@@ -665,3 +665,18 @@
 | 2.0.7 | README / CLAUDE.md / PROJECT_MEMORY 更新到 v2.0 | ✅ |
 | 2.0.8 | prisma validate / migrate status / build / tsc / lint 通过 | ✅ |
 | 2.0.9 | 安全检查通过 | ✅ |
+
+---
+
+## v2.0.1 GitHub README 展示优化
+
+| # | 检查项 | 状态 |
+|---|--------|------|
+| 2.0.1.1 | README 首屏重写：定位、功能、技术栈 | ✅ |
+| 2.0.1.2 | 本地启动步骤完整可直接复制 | ✅ |
+| 2.0.1.3 | 环境变量表格化说明，无真实 key | ✅ |
+| 2.0.1.4 | 数据与安全说明 | ✅ |
+| 2.0.1.5 | 版本里程碑 + Roadmap (future 标注) | ✅ |
+| 2.0.1.6 | docs/GITHUB_ABOUT.md 新增 | ✅ |
+| 2.0.1.7 | 不改业务代码 / schema / migration | ✅ |
+| 2.0.1.8 | `npm run build` / `tsc` / `lint` 通过 | ✅ |
