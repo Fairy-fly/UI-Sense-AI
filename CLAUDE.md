@@ -127,6 +127,8 @@ git push -u origin v1.x-feature-name
 - ❌ Never expose DEEPSEEK_API_KEY to frontend, docs, or git
 - ❌ Never use `asChild` on shadcn components
 - ❌ Never change Chinese UI copy to English
+- ✅ Always render user-visible built-in labels (styles, colors, layouts, components) through `displayLabel()` — never show raw English internal values
+- ✅ Technical terms (AI, Prompt, URL, GitHub, Claude Code, Codex, DeepSeek, API) may remain in English
 - ✅ Always `npm run build && npx tsc --noEmit && npm run lint` before commit
 - ✅ `main` is the default branch
 

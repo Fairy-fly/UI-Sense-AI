@@ -52,6 +52,32 @@ const projectTypeMap: Record<string, string> = {
   "Developer Tool": "开发者工具",
 };
 
+const componentMap: Record<string, string> = {
+  Card: "卡片",
+  Button: "按钮",
+  Badge: "徽标",
+  Tabs: "标签页",
+  Sidebar: "侧边栏",
+  Header: "顶栏",
+  SearchInput: "搜索输入",
+  FilterBar: "筛选栏",
+  Dialog: "弹窗",
+  EmptyState: "空状态",
+  Skeleton: "骨架屏",
+  Table: "表格",
+  Toast: "轻提示",
+  Banner: "横幅提示",
+  StatCard: "统计卡片",
+  Input: "输入框",
+  Textarea: "文本区域",
+  Select: "选择器",
+};
+
+/** Try all category maps; returns the input if no mapping found. */
+export function displayLabel(value: string): string {
+  return styleTagMap[value] ?? colorMap[value] ?? layoutMap[value] ?? componentMap[value] ?? value;
+}
+
 export function displayStyleTag(tag: string): string {
   return styleTagMap[tag] ?? tag;
 }
@@ -66,4 +92,28 @@ export function displayLayout(layout: string): string {
 
 export function displayProjectType(type: string): string {
   return projectTypeMap[type] ?? type;
+}
+
+// ---- Text-inline replacement ----
+
+/** Merged map of all display labels for text replacement. Sorted longest key first to avoid partial matches. */
+const ALL_LABELS: Record<string, string> = { ...styleTagMap, ...colorMap, ...layoutMap, ...componentMap };
+
+const SORTED_LABEL_ENTRIES = Object.entries(ALL_LABELS).sort(
+  (a, b) => b[0].length - a[0].length,
+);
+
+/**
+ * Replace known English internal values in a text string with Chinese display labels.
+ * Longest-key-first to prevent "Card" from replacing within "Card Grid".
+ * NOTE: This function is intended for controlled aesthetic memory text (summary, agent instruction).
+ * Do NOT use on arbitrary user content or full-length prompt text.
+ */
+export function displayLabelInText(text: string): string {
+  let result = text;
+  for (const [raw, label] of SORTED_LABEL_ENTRIES) {
+    // Use global replace with word-boundary awareness for short keys
+    result = result.split(raw).join(label);
+  }
+  return result;
 }

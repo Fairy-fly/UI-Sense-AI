@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { generateAestheticMemory } from "@/lib/actions/aesthetic-memory";
+import { displayLabel, displayLabelInText } from "@/lib/display-labels";
 import type { UserPreferences } from "@/types";
 import type { AestheticProfile } from "@/lib/aesthetic-memory";
 
@@ -144,7 +145,7 @@ export function AestheticMemoryPanel({ initialData }: AestheticMemoryPanelProps)
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Summary */}
-        <p className="text-[12px] leading-relaxed text-muted-foreground">{displaySummary}</p>
+        <p className="text-[12px] leading-relaxed text-muted-foreground">{displayLabelInText(displaySummary)}</p>
 
         {/* Profile chips */}
         {profile && (
@@ -154,7 +155,7 @@ export function AestheticMemoryPanel({ initialData }: AestheticMemoryPanelProps)
                 <p className="mb-1 text-[11px] font-medium text-muted-foreground">偏好风格</p>
                 <div className="flex flex-wrap gap-1">
                   {profile.preferredStyles.slice(0, 8).map((s) => (
-                    <Badge key={s} variant="secondary" className="text-[11px]">{s}</Badge>
+                    <Badge key={s} variant="secondary" className="text-[11px]">{displayLabel(s)}</Badge>
                   ))}
                 </div>
               </div>
@@ -164,7 +165,7 @@ export function AestheticMemoryPanel({ initialData }: AestheticMemoryPanelProps)
                 <p className="mb-1 text-[11px] font-medium text-muted-foreground">偏好配色</p>
                 <div className="flex flex-wrap gap-1">
                   {profile.preferredColors.slice(0, 8).map((c) => (
-                    <Badge key={c} variant="secondary" className="text-[11px]">{c}</Badge>
+                    <Badge key={c} variant="secondary" className="text-[11px]">{displayLabel(c)}</Badge>
                   ))}
                 </div>
               </div>
@@ -174,7 +175,7 @@ export function AestheticMemoryPanel({ initialData }: AestheticMemoryPanelProps)
                 <p className="mb-1 text-[11px] font-medium text-muted-foreground">偏好布局</p>
                 <div className="flex flex-wrap gap-1">
                   {profile.preferredLayouts.slice(0, 8).map((l) => (
-                    <Badge key={l} variant="secondary" className="text-[11px]">{l}</Badge>
+                    <Badge key={l} variant="secondary" className="text-[11px]">{displayLabel(l)}</Badge>
                   ))}
                 </div>
               </div>
@@ -184,7 +185,7 @@ export function AestheticMemoryPanel({ initialData }: AestheticMemoryPanelProps)
                 <p className="mb-1 text-[11px] font-medium text-muted-foreground">偏好组件</p>
                 <div className="flex flex-wrap gap-1">
                   {profile.preferredComponents.slice(0, 8).map((c) => (
-                    <Badge key={c} variant="secondary" className="text-[11px]">{c}</Badge>
+                    <Badge key={c} variant="secondary" className="text-[11px]">{displayLabel(c)}</Badge>
                   ))}
                 </div>
               </div>
@@ -194,7 +195,7 @@ export function AestheticMemoryPanel({ initialData }: AestheticMemoryPanelProps)
                 <p className="mb-1 text-[11px] font-medium text-muted-foreground">避免风格</p>
                 <div className="flex flex-wrap gap-1">
                   {profile.avoidedStyles.slice(0, 8).map((s) => (
-                    <Badge key={s} variant="outline" className="text-[11px] text-muted-foreground">{s}</Badge>
+                    <Badge key={s} variant="outline" className="text-[11px] text-muted-foreground">{displayLabel(s)}</Badge>
                   ))}
                 </div>
               </div>
@@ -206,7 +207,7 @@ export function AestheticMemoryPanel({ initialData }: AestheticMemoryPanelProps)
         {displayInstruction && (
           <div className="rounded-xl border border-border bg-muted/20 px-3 py-2.5">
             <p className="text-[11px] font-medium text-muted-foreground">Agent 审美指令</p>
-            <p className="mt-1 text-[12px] leading-relaxed text-foreground">{displayInstruction}</p>
+            <p className="mt-1 text-[12px] leading-relaxed text-foreground">{displayLabelInText(displayInstruction)}</p>
           </div>
         )}
 
