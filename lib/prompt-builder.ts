@@ -8,6 +8,7 @@
 import type { Inspiration } from "@/types";
 import { getPromptTemplate } from "@/lib/prompt-templates";
 import { isLegacySeedAnalysis } from "@/lib/ai-analysis-utils";
+import { type DevelopmentPhase, type ScopeGuardResult, classifyPageItems, developmentPhases } from "@/lib/scope-guard";
 
 export interface PromptBuilderInput {
   projectName: string;
@@ -20,6 +21,10 @@ export interface PromptBuilderInput {
   pageList: string;
   additionalNotes: string;
   promptTemplateId?: string;
+  /** v2.1a: Development phase for scope guard */
+  developmentPhase?: DevelopmentPhase;
+  /** v2.1a: Pre-computed scope guard results (generated from pageList + phase) */
+  scopeGuard?: ScopeGuardResult;
   aestheticMemory?: {
     summary: string;
     preferredStyles: string[];
@@ -59,6 +64,8 @@ export function generatePromptSections(input: PromptBuilderInput): PromptSection
     pageList,
     additionalNotes,
     promptTemplateId,
+    developmentPhase,
+    scopeGuard,
     aestheticMemory,
     feedbackInsights,
     userPreferences,
@@ -114,9 +121,79 @@ ${inspWithAnalysis
   const prefLayouts = userPreferences?.preferredLayouts?.join("、") || "Sidebar + Content、Card Grid";
   const disStyles = [...new Set([...(avoidedStyles ?? []), ...(userPreferences?.dislikedStyles ?? [])])];
 
+  // ---- Helper: build §0 Scope Guard section (v2.1a) ----
+  function buildScopeSection(): string {
+    if (!developmentPhase && !scopeGuard) return "";
+
+    const sg = scopeGuard ?? classifyPageItems(pageList, developmentPhase);
+    const phaseLabel = developmentPhase
+      ? (developmentPhases.find((p) => p.value === developmentPhase)?.label ?? developmentPhase)
+      : undefined;
+
+    const lines: string[] = [];
+    lines.push("## 0. 开发阶段与页面范围");
+    lines.push("");
+
+    if (phaseLabel) {
+      lines.push(`- **开发阶段**：${phaseLabel}`);
+      lines.push("");
+    }
+
+    // Must build now
+    if (sg.mustBuildNow.length > 0) {
+      lines.push(`### 本阶段必须实现的主页面（${sg.mustBuildNow.length} 个）`);
+      lines.push("");
+      sg.mustBuildNow.forEach((p, i) => {
+        lines.push(`${i + 1}. **${p}** — 独立路由页面`);
+      });
+      lines.push("");
+    }
+
+    // Modules inside pages
+    if (sg.modulesAsComponents.length > 0) {
+      lines.push("### 页面内模块（不作为独立路由）");
+      lines.push("");
+      sg.modulesAsComponents.forEach((m) => {
+        const item = sg.items.find((it) => it.name === m);
+        const hint = item?.reason ? `（${item.reason}）` : "";
+        lines.push(`- **${m}** → 作为主页面内的 Tab、Card、Drawer 或折叠面板实现 ${hint}`);
+      });
+      lines.push("");
+    }
+
+    // Deferred to next phase
+    if (sg.deferToNext.length > 0) {
+      const nextPhase = developmentPhase === "v0.1" ? "v0.2" : developmentPhase === "v0.2" ? "v1.0" : "后续版本";
+      lines.push(`### 暂缓到 ${nextPhase}`);
+      lines.push("");
+      sg.deferToNext.forEach((p) => {
+        lines.push(`- **${p}**`);
+      });
+      lines.push("");
+    }
+
+    // Warnings / scope advice
+    if (sg.warnings.length > 0) {
+      lines.push("### 范围提醒");
+      lines.push("");
+      sg.warnings.forEach((w) => {
+        lines.push(`> ⚠️ ${w}`);
+      });
+      lines.push("");
+    }
+
+    // Core principle
+    lines.push("**核心原则**：当前阶段聚焦最核心的流程。不要为每个模块创建独立页面。模块应作为主页面内的区域来实现，而不是独立路由。");
+    lines.push("");
+
+    return lines.join("\n");
+  }
+
+  const scopeSection = buildScopeSection();
+
   // ---- 1. Full Prompt ----
   const fullPrompt = `# UI 开发提示词 —— ${projectName}
-
+${scopeSection ? `\n${scopeSection}` : ""}
 ## 1. 任务目标与角色
 
 你是一名高级 UI/UX 设计师和 ${techStack[0] ?? "Next.js"} 前端工程师。你的任务是：基于以下项目背景、参考灵感和设计约束，开发一个可落地的高质量前端界面。

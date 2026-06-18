@@ -14,7 +14,7 @@ import { InspirationSelector } from "@/components/prompts/inspiration-selector";
 import { PromptCopyButton } from "@/components/prompts/prompt-copy-button";
 import { ExportMarkdownButton } from "@/components/prompts/export-markdown-button";
 import { generatePrompt, createPromptRecordFromGenerated } from "@/lib/actions/prompts";
-import { projectTypes, defaultStyleTags, defaultTechStack, dislikedStyleExamples } from "@/lib/constants";
+import { projectTypes, defaultStyleTags, defaultTechStack, dislikedStyleExamples, developmentPhases } from "@/lib/constants";
 import { promptTemplates, getPromptTemplate, suggestTemplateId } from "@/lib/prompt-templates";
 import type { Inspiration } from "@/types";
 
@@ -61,6 +61,7 @@ export function PromptWorkspace({ inspirations, recentRecords, aiConfigured, col
   const [activeTab, setActiveTab] = useState("full");
   const [promptTemplateId, setPromptTemplateId] = useState("none");
   const [historyFilter, setHistoryFilter] = useState("all"); // all | favorite | useful | needs_improvement
+  const [developmentPhase, setDevelopmentPhase] = useState("");
 
   // Auto-suggest template when project type or name changes
   function handleProjectTypeChange(v: string | null) {
@@ -90,7 +91,7 @@ export function PromptWorkspace({ inspirations, recentRecords, aiConfigured, col
     if (!pageList.trim()) { toast.error("请填写需要生成的页面"); return; }
     setGenerating(true);
     try {
-      const result = await generatePrompt({ projectName, projectType, targetUsers, selectedInspirationIds: selectedIds, desiredStyle, avoidedStyles, techStack, pageList, additionalNotes, useAI: useAIEnabled, promptTemplateId: promptTemplateId !== "none" ? promptTemplateId : undefined });
+      const result = await generatePrompt({ projectName, projectType, targetUsers, selectedInspirationIds: selectedIds, desiredStyle, avoidedStyles, techStack, pageList, additionalNotes, useAI: useAIEnabled, promptTemplateId: promptTemplateId !== "none" ? promptTemplateId : undefined, developmentPhase: developmentPhase ? (developmentPhase as "v0.1" | "v0.2" | "v1.0") : undefined });
       if (!result.success) { toast.error(result.error ?? "生成失败"); return; }
       setFullPrompt(result.data!.fullPrompt);
       setDesignSystem(result.data!.designSystemPrompt);
@@ -172,6 +173,29 @@ export function PromptWorkspace({ inspirations, recentRecords, aiConfigured, col
                 <label className="mb-1 block text-[12px] font-medium text-foreground">目标用户</label>
                 <Input value={targetUsers} onChange={(e) => setTargetUsers(e.target.value)} placeholder="开发者、设计师" className="h-8 rounded-[10px] text-[13px]" />
               </div>
+            </div>
+
+            {/* v2.1a: Development phase selector */}
+            <div className="mt-3">
+              <label className="mb-1 block text-[12px] font-medium text-foreground">开发阶段 <span className="text-[10px] text-muted-foreground">（可选，用于控制页面范围）</span></label>
+              <Select value={developmentPhase} onValueChange={(v) => setDevelopmentPhase(v ?? "")}>
+                <SelectTrigger className="h-8 rounded-[10px] text-[13px]"><SelectValue placeholder="不限阶段..." /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="">不限阶段</SelectItem>
+                  {developmentPhases.map((p) => (
+                    <SelectItem key={p.value} value={p.value}>{p.label}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {developmentPhase && (
+                <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">
+                  {developmentPhase === "v0.1"
+                    ? "原型阶段聚焦 2-3 个核心页面，模块（Checklist、日志、提醒等）放在主页面内"
+                    : developmentPhase === "v0.2"
+                    ? "功能完善阶段可扩展至 5 个主页面，补充辅助功能"
+                    : "正式版本阶段可规划完整功能页面"}
+                </p>
+              )}
             </div>
           </div>
 

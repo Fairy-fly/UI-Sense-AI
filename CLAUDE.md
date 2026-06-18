@@ -5,7 +5,7 @@
 **UI Sense AI** — 个人 UI 灵感采集、审美偏好学习、Agent 提示词生成平台。
 核心流程：收藏 UI 截图 → 分析设计风格 → 学习个人审美 → 生成 Claude Code / Codex 可执行的高质量 UI 开发 Prompt。
 
-**当前版本：v2.0.3** · 个人本地工具阶段已基本完成。
+**当前版本：v2.1.0** · Scope Guard & Page/Module Split (v2.1a)
 
 目标：减少 AI Agent 生成项目时的廉价感、AI 味、普通后台感。
 
@@ -72,6 +72,8 @@ Copy `.env.example` to `.env.local`. Required: `DATABASE_URL`. Optional: `DEEPSE
 | v2.0.4 | Project memory update after local tool phase completion |
 | v2.0.5 | Add reusable Agent workflow skills document |
 | v2.0.6 | README version display and milestone sync |
+| v2.0.7 | 中文展示标签治理 |
+| v2.1.0 | Scope Guard & Page/Module Split (v2.1a) — prevent prompt scope bloat |
 
 ## Page Map
 

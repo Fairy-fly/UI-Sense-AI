@@ -1,9 +1,9 @@
 ﻿# UI Sense AI — Project Memory
 
-> Last updated: 2026-06-16  
-> Current version: v2.0.6  
+> Last updated: 2026-06-18  
+> Current version: v2.1.0  
 > Default branch: main  
-> Status: Personal local tool — core feature set complete
+> Status: Personal local tool — v2.1a Scope Guard & Page/Module Split
 
 ---
 
@@ -41,6 +41,8 @@ Next.js 15 · TypeScript · Tailwind CSS 4 · shadcn/ui · Prisma + SQLite · De
 | v2.0.4  | Project memory update after local tool phase completion |
 | v2.0.5  | Add reusable Agent workflow skills and clean project memory |
 | v2.0.6  | README version display and milestone sync |
+| v2.0.7  | Normalize Chinese display labels |
+| v2.1.0  | Scope Guard & Page/Module Split — prevent v0.1 prompt bloat |
 
 ## Feature Status
 
@@ -64,6 +66,8 @@ Next.js 15 · TypeScript · Tailwind CSS 4 · shadcn/ui · Prisma + SQLite · De
 | Aesthetic memory generation | ✅ (v1.7) |
 | Prompt history feedback | ✅ (v1.8) |
 | Feedback-driven prompt strategy | ✅ (v1.9) |
+| Development phase selector (v0.1/v0.2/v1.0) | ✅ (v2.1a) |
+| Scope guard — page/module auto-classification | ✅ (v2.1a) |
 | AI image analysis (multimodal) | ✅ (v1.6) |
 | Login / multi-user | ❌ (future) |
 | Cloud storage | ❌ (future) |

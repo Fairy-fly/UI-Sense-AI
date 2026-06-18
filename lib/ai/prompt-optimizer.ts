@@ -11,6 +11,7 @@ import { generatePromptSections, type PromptSections } from "@/lib/prompt-builde
 import { generateWithDeepSeek, isDeepSeekConfigured } from "@/lib/ai/deepseek";
 import { getPromptTemplate } from "@/lib/prompt-templates";
 import { isLegacySeedAnalysis } from "@/lib/ai-analysis-utils";
+import type { DevelopmentPhase, ScopeGuardResult } from "@/lib/scope-guard";
 import type { Inspiration } from "@/types";
 
 export interface OptimizeInput {
@@ -24,6 +25,10 @@ export interface OptimizeInput {
   pageList: string;
   additionalNotes: string;
   promptTemplateId?: string;
+  /** v2.1a: Development phase for scope guard */
+  developmentPhase?: DevelopmentPhase;
+  /** v2.1a: Pre-computed scope guard results */
+  scopeGuard?: ScopeGuardResult;
   aestheticMemory?: {
     summary: string;
     preferredStyles: string[];
@@ -63,6 +68,8 @@ export async function optimizePromptWithAI(input: OptimizeInput): Promise<Optimi
     pageList: input.pageList,
     additionalNotes: input.additionalNotes,
     promptTemplateId: input.promptTemplateId,
+    developmentPhase: input.developmentPhase,
+    scopeGuard: input.scopeGuard,
     aestheticMemory: input.aestheticMemory,
     feedbackInsights: input.feedbackInsights,
     userPreferences: input.userPreferences,
@@ -155,6 +162,14 @@ ${input.techStack.join("、")}
 
 ## 需要生成的页面
 ${input.pageList}
+
+${input.developmentPhase || input.scopeGuard ? `## 开发阶段与页面范围约束
+- 开发阶段：${input.developmentPhase ?? "未指定"}
+${input.scopeGuard ? `- 本阶段主页面（${input.scopeGuard.mustBuildNow.length} 个）：${input.scopeGuard.mustBuildNow.join("、") || "无"}
+${input.scopeGuard.modulesAsComponents.length > 0 ? `- 页面内模块（不作为独立路由）：${input.scopeGuard.modulesAsComponents.join("、")}` : ""}
+${input.scopeGuard.deferToNext.length > 0 ? `- 暂缓到下一阶段：${input.scopeGuard.deferToNext.join("、")}` : ""}
+${input.scopeGuard.warnings.length > 0 ? `- 范围提醒：${input.scopeGuard.warnings.join("；")}` : ""}` : ""}
+> 重要：请严格遵守以上页面范围约束。不要将模块（如 Checklist、Git Log、Risk Notes、Timeline）建议为独立路由页面。模块应放在主页面内作为 Tab、Card、Drawer 或折叠面板实现。` : ""}
 
 ## 需要优化的原始 Prompt
 
