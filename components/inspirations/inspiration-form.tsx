@@ -325,7 +325,7 @@ export function InspirationForm({ mode, initialData }: InspirationFormProps) {
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
                 <label className="mb-1.5 block text-[13px] font-medium text-foreground">项目类型</label>
-                <Select value={projectType || undefined} onValueChange={(v) => setProjectType(v ?? "")}>
+                <Select value={projectType} onValueChange={(v) => setProjectType(v ?? "")}>
                   <SelectTrigger className="rounded-[10px]">
                     <SelectValue placeholder="选择类型..." />
                   </SelectTrigger>

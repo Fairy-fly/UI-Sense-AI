@@ -18,9 +18,9 @@ export default function NewInspirationPage() {
         <summary className="flex cursor-pointer list-none items-center justify-between p-5">
           <div className="flex items-center gap-2">
             <Info className="h-4 w-4 text-muted-foreground" />
-            <span className="text-[14px] font-medium text-foreground">AI 分析预览</span>
+            <span className="text-[14px] font-medium text-foreground">AI 分析说明</span>
             <span className="ml-2 text-[12px] text-muted-foreground">
-              AI 分析功能即将推出
+              保存灵感后，可基于截图、标题、标签和备注生成设计分析。
             </span>
           </div>
           <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform group-open:rotate-180" />
@@ -41,7 +41,7 @@ export default function NewInspirationPage() {
           </div>
           <div className="mt-4 flex items-center justify-between rounded-xl border border-border bg-muted/20 px-4 py-3">
             <p className="text-[12px] text-muted-foreground">
-              配置 API 后可启用真实 AI 分析。
+              保存后可在灵感详情页运行 AI 分析。未配置视觉模型时会自动使用基础文本分析。
             </p>
             <Button variant="outline" size="sm" className="rounded-[10px]" disabled>
               <Sparkles className="h-3 w-3" />

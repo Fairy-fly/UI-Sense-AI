@@ -52,13 +52,13 @@ export function AIAnalysisPanel({ inspirationId, analysis: initialAnalysis }: AI
         <CardHeader className="pb-3">
           <CardTitle className="flex items-center gap-2 text-[13px] font-medium">
             <Sparkles className="h-4 w-4 text-muted-foreground" />
-            AI 基础分析
+            AI 设计分析
           </CardTitle>
-          <CardDescription className="text-[11px]">基础文本分析 · 非视觉识别</CardDescription>
+          <CardDescription className="text-[11px]">基于截图、标题、标签和备注生成设计分析</CardDescription>
         </CardHeader>
         <CardContent>
           <p className="mb-4 text-[12px] leading-relaxed text-muted-foreground">
-            基于灵感标题、标签、备注和项目类型生成初步 UI 分析。当前版本暂未进行真实图片视觉识别。
+            保存后可运行 AI 分析。配置视觉模型时会优先分析截图；否则使用标题、标签和备注进行基础分析。
           </p>
           <Button
             variant="outline"

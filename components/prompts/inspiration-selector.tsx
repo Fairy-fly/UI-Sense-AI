@@ -41,8 +41,9 @@ export function InspirationSelector({
     <div className="max-h-[360px] space-y-1.5 overflow-y-auto">
       {inspirations.map((insp) => {
         const isSelected = selectedIds.includes(insp.id);
-        const previewVariant = insp.previewVariant ?? "linear";
+        const previewVariant = insp.previewVariant && insp.previewVariant !== "linear" ? insp.previewVariant : "generic";
         const hasAnalysis = insp.analysis && !isLegacySeedAnalysis(insp.analysis);
+        const hasRealImage = Boolean(insp.imageUrl);
 
         return (
           <button
@@ -57,7 +58,17 @@ export function InspirationSelector({
             )}
           >
             <div className="h-11 w-[66px] shrink-0 overflow-hidden rounded-lg border border-border">
-              <MockPreview variant={previewVariant} className="h-full w-full rounded-none" />
+              {hasRealImage ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={insp.imageUrl}
+                  alt={insp.title}
+                  className="h-full w-full object-cover"
+                  loading="lazy"
+                />
+              ) : (
+                <MockPreview variant={previewVariant} className="h-full w-full rounded-none" />
+              )}
             </div>
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-1.5">
