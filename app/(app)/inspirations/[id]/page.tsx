@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { Sparkles, ExternalLink, Calendar, Pencil } from "lucide-react";
+import { Sparkles, ExternalLink, Calendar, Pencil, ArrowLeft } from "lucide-react";
 import { PageHeading } from "@/components/layout/page-heading";
 import { InspirationDetail } from "@/components/inspirations/inspiration-detail";
 import { DeleteInspirationButton } from "@/components/inspirations/delete-inspiration-button";
@@ -35,6 +35,10 @@ export default async function InspirationDetailPage({ params }: Props) {
 
   return (
     <>
+      <Link href="/inspirations" className="mb-3 inline-flex items-center gap-1 text-[13px] text-muted-foreground transition-colors hover:text-foreground">
+        <ArrowLeft className="h-3.5 w-3.5" />
+        返回 UI 灵感库
+      </Link>
       <PageHeading
         title={inspiration.title}
         description={

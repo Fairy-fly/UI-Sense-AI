@@ -9,6 +9,12 @@ interface MockPreviewProps {
 }
 
 const variants: Record<string, { bg: string; accent: string; text: string; label: string }> = {
+  generic: {
+    bg: "from-[#F5F5F4] via-[#ECECEA] to-[#F5F5F4]",
+    accent: "bg-zinc-400",
+    text: "bg-zinc-700",
+    label: "UI 预览",
+  },
   linear: {
     bg: "from-[#1A1A1A] via-[#262626] to-[#1A1A1A]",
     accent: "bg-[#5E6AD2]",
@@ -60,7 +66,7 @@ const variants: Record<string, { bg: string; accent: string; text: string; label
 };
 
 export function MockPreview({ variant, className = "" }: MockPreviewProps) {
-  const v = variants[variant] ?? variants.linear;
+  const v = variants[variant] ?? variants.generic;
 
   return (
     <div className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${v.bg} ${className}`}>
@@ -97,7 +103,7 @@ export function getPreviewVariant(id: string): string {
     "insp-007": "arc",
     "insp-008": "github",
   };
-  return map[id] ?? "linear";
+  return map[id] ?? "generic";
 }
 
 /** Get a color label from a tag name */

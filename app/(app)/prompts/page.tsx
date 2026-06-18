@@ -37,7 +37,7 @@ export default async function PromptsPage() {
             <Sparkles className="h-4 w-4 text-accent-foreground" />
           </div>
           <p className="text-[12px] leading-relaxed text-muted-foreground">
-            v1.2 已支持本地模板、DeepSeek AI 优化、Prompt 保存与 Markdown 导出。生成时可选择是否使用 AI 优化。
+            支持本地模板、AI 优化、审美记忆、反馈洞察、Prompt 保存与 Markdown 导出。可按项目需求生成适合 Claude Code / Codex 的开发提示词。
           </p>
         </CardContent>
       </Card>

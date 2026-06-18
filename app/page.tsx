@@ -57,7 +57,7 @@ export default function LandingPage() {
         />
 
         <div className="relative mx-auto max-w-3xl text-center">
-          <Badge variant="secondary" className="mb-8 px-3 py-1 text-xs">v1.2 · 灵感采集与 Prompt 生成</Badge>
+          <Badge variant="secondary" className="mb-8 px-3 py-1 text-xs">v2.0 · 本地 UI 灵感与 Prompt 工具</Badge>
 
           <h1 className="text-4xl font-semibold leading-tight tracking-tight text-foreground sm:text-5xl lg:text-6xl">
             把你的 UI 审美，训练成<br />

@@ -13,7 +13,7 @@ import { getPopularTags } from "@/lib/actions/tags";
 import { getRecentPromptRecords } from "@/lib/actions/prompts";
 import { getUserPreference } from "@/lib/actions/preferences";
 import { defaultStyleTags } from "@/lib/constants";
-import { displayStyleTag } from "@/lib/display-labels";
+import { displayStyleTag, displayLabelInText } from "@/lib/display-labels";
 
 export default async function DashboardPage() {
   const [stats, recentInspirations, tags, promptRecords, preference] = await Promise.all([
@@ -51,12 +51,15 @@ export default async function DashboardPage() {
         </div>
         <div className="min-w-0 flex-1">
           <p className="text-[13px] font-medium text-foreground">欢迎回来</p>
-          <p className="text-[12px] text-muted-foreground">
-            你当前的审美偏好倾向于{" "}
-            <span className="text-foreground">极简 SaaS</span>、{" "}
-            <span className="text-foreground">中性配色</span>，以及{" "}
-            <span className="text-foreground">冷静高效的工具风格</span>。
-          </p>
+          {preference?.aestheticSummary ? (
+            <p className="text-[12px] text-muted-foreground">
+              {displayLabelInText(preference.aestheticSummary)}
+            </p>
+          ) : (
+            <p className="text-[12px] text-muted-foreground">
+              已收藏 {stats.totalInspirations} 个灵感，{stats.highRatedCount} 个高评分参考。继续收藏后可生成审美记忆。
+            </p>
+          )}
         </div>
         <Link
           href="/inspirations/new"

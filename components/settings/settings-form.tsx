@@ -5,7 +5,6 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
 import { saveUserPreference } from "@/lib/actions/preferences";
 import { displayStyleTag, displayColor, displayLayout } from "@/lib/display-labels";
 import type { UserPreferences } from "@/types";
@@ -138,7 +137,6 @@ export function SettingsForm({ initial }: SettingsFormProps) {
             <Input value={defaultUiStyle} onChange={(e) => setDefaultUiStyle(e.target.value)} placeholder="极简 SaaS" className="rounded-[10px]" />
             <p className="mt-1 text-[11px] text-muted-foreground">Prompt 生成时使用的默认视觉风格描述。</p>
           </div>
-          <Separator />
           <Button className="rounded-[10px]" onClick={handleSave} disabled={saving}>
             {saving ? "保存中..." : "保存设置"}
           </Button>
