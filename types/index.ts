@@ -109,6 +109,8 @@ export interface PromptBuilderInput {
   techStack: string;
   pageList: string[];
   additionalNotes: string;
+  /** v2.1a: Development phase for scope guard */
+  developmentPhase?: "v0.1" | "v0.2" | "v1.0";
 }
 
 // ---- Prompt Builder Output ----

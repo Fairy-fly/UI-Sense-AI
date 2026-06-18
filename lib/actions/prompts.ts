@@ -11,6 +11,7 @@ import { promptFormSchema, type PromptFormInput } from "@/lib/validations/prompt
 import { computePromptFeedbackInsights } from "@/lib/prompt-feedback-insights";
 import { optimizePromptWithAI } from "@/lib/ai/prompt-optimizer";
 import { getUserPreference } from "@/lib/actions/preferences";
+import { classifyPageItems } from "@/lib/scope-guard";
 import type { PromptRecord } from "@/types";
 
 // ---- Phase 3 queries ----
@@ -78,6 +79,9 @@ export async function generatePrompt(input: PromptFormInput & { useAI?: boolean 
     // Fetch feedback insights for prompt strategy
     const feedbackInsights = await computePromptFeedbackInsights();
 
+    // v2.1a: Run scope guard to classify pages vs modules
+    const scopeGuard = classifyPageItems(data.pageList, data.developmentPhase);
+
     const sections = await optimizePromptWithAI({
       projectName: data.projectName,
       projectType: data.projectType,
@@ -104,6 +108,8 @@ export async function generatePrompt(input: PromptFormInput & { useAI?: boolean 
       pageList: data.pageList,
       additionalNotes: data.additionalNotes,
       promptTemplateId: data.promptTemplateId,
+      developmentPhase: data.developmentPhase,
+      scopeGuard,
       aestheticMemory,
       feedbackInsights: feedbackInsights ?? undefined,
       userPreferences,

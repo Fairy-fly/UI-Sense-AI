@@ -120,4 +120,11 @@ export const MAX_UPLOAD_SIZE = 10 * 1024 * 1024; // 10MB
 export const ALLOWED_IMAGE_TYPES = ["image/png", "image/jpeg", "image/webp", "image/gif"];
 
 // ---- Current Phase Badge ----
-export const PHASE_BADGE = "v1.2 · UI Sense AI";
+export const PHASE_BADGE = "v2.1 · UI Sense AI";
+
+// ---- Development Phases (v2.1a) ----
+export const developmentPhases = [
+  { value: "v0.1" as const, label: "v0.1 — 原型阶段（2-3 个主页面）", maxPages: 3 },
+  { value: "v0.2" as const, label: "v0.2 — 功能完善（3-5 个主页面）", maxPages: 5 },
+  { value: "v1.0" as const, label: "v1.0 — 正式版本（完整功能）", maxPages: 99 },
+];
