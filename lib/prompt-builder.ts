@@ -374,7 +374,7 @@ ${scopeGuard.modulesAsComponents.map((m) => {
 	      const match = findDetailPage();
 	      if (match) return `- **${m}**：建议放入「${match}」页，作为 Badge Group / Tag Cloud 实现`;
 	    }
-	    if (/灵感详情|灵感信息|详情面板|检查器|inspector|side panel|右侧面板/.test(lower)) {
+	    if (/灵感详情|灵感信息|详情面板|检查器|inspector|side panel|右侧面板|inspiration detail|selected detail/.test(lower)) {
 	      const match = findDetailPage();
 	      if (match) return `- **${m}**：建议放入「${match}」页，作为右侧 Inspector 详情面板实现`;
 	    }
@@ -382,7 +382,7 @@ ${scopeGuard.modulesAsComponents.map((m) => {
 	      const match = findDetailPage();
 	      if (match) return `- **${m}**：建议放入「${match}」页，作为 Favorite Button / Status Badge 实现`;
 	    }
-	    if (/备注|注释/.test(lower)) {
+	    if (/备注|注释|notes|note/.test(lower)) {
 	      const match = findDetailPage();
 	      if (match) return `- **${m}**：建议放入「${match}」页，作为 Notes Card / Textarea 展示 实现`;
 	    }
@@ -390,7 +390,11 @@ ${scopeGuard.modulesAsComponents.map((m) => {
 	      const match = findDetailPage();
 	      if (match) return `- **${m}**：建议放入「${match}」页，作为右上角 Export / Share Button 实现`;
 	    }
-		  		    // Generic fallback matching
+		  		    if (/评分|rating|score/.test(lower)) {
+		      const match = findDetailPage();
+		      if (match) return `- **${m}**：建议放入「${match}」页，作为 Rating Badge / Score Indicator 实现`;
+		    }
+		    		    // Generic fallback matching
 	    const bestPage = pages.find(p =>
 	      m.includes(p) || p.includes(m)
 	    ) || pages[0];

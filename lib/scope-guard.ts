@@ -90,8 +90,12 @@ const PAGE_KEYWORDS = [
  * These are checked before the normal module/page classification.
  */
 const FORCE_MODULE_PATTERNS = [
+  // Chinese
   "灵感详情", "灵感信息", "选中详情",
   "右侧面板", "详情面板", "检查器",
+  // English equivalents (v2.1.4)
+  "inspiration detail", "inspiration info", "selected detail",
+  "detail panel", "inspector detail", "side panel",
 ];
 
 /**
