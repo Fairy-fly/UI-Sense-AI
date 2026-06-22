@@ -9,6 +9,7 @@ import type { Inspiration } from "@/types";
 import { getPromptTemplate } from "@/lib/prompt-templates";
 import { isLegacySeedAnalysis } from "@/lib/ai-analysis-utils";
 import { type DevelopmentPhase, type ScopeGuardResult, classifyPageItems, developmentPhases } from "@/lib/scope-guard";
+import { displayLabel, displayLabelInText } from "@/lib/display-labels";
 
 export interface PromptBuilderInput {
   projectName: string;
@@ -75,6 +76,12 @@ export function generatePromptSections(input: PromptBuilderInput): PromptSection
 
   const pages = pageList.split(/[,，、\n]/).map((p) => p.trim()).filter(Boolean);
 
+  // ---- Helper: translate internal label arrays to Chinese display values ----
+  function translateLabels(values: string[] | undefined): string {
+    if (!values?.length) return "";
+    return values.map((v) => displayLabel(v)).join("、");
+  }
+
   // ---- Helper: format inspirations ----
   const inspRefs = selectedInspirations
     .map(
@@ -116,9 +123,9 @@ ${inspWithAnalysis
       : "";
 
   // ---- Helper: format preferences ----
-  const prefStyles = userPreferences?.preferredStyles?.join("、") || "极简 SaaS、中性配色、冷静高效的工具风格";
-  const prefColors = userPreferences?.preferredColors?.join("、") || "Slate、Neutral、Zinc";
-  const prefLayouts = userPreferences?.preferredLayouts?.join("、") || "Sidebar + Content、Card Grid";
+  const prefStyles = translateLabels(userPreferences?.preferredStyles) || "极简 SaaS、中性配色、冷静高效的工具风格";
+  const prefColors = translateLabels(userPreferences?.preferredColors) || "石板灰、锌灰、中性色";
+  const prefLayouts = translateLabels(userPreferences?.preferredLayouts) || "侧边栏 + 内容、卡片网格";
   const disStyles = [...new Set([...(avoidedStyles ?? []), ...(userPreferences?.dislikedStyles ?? [])])];
 
   // ---- Helper: build §0 Scope Guard section (v2.1a) ----
@@ -273,15 +280,15 @@ ${aestheticMemory ? `## 4.5. 我的审美记忆
 
 以下是 UI Sense AI 根据你的灵感收藏、评分和 AI 分析自动总结的长期审美偏好：
 
-${aestheticMemory.summary ? `**审美摘要**：${aestheticMemory.summary}` : ""}
-${aestheticMemory.preferredStyles?.length ? `**偏好风格**：${aestheticMemory.preferredStyles.join("、")}` : ""}
-${aestheticMemory.preferredColors?.length ? `**偏好配色**：${aestheticMemory.preferredColors.join("、")}` : ""}
-${aestheticMemory.preferredLayouts?.length ? `**偏好布局**：${aestheticMemory.preferredLayouts.join("、")}` : ""}
-${aestheticMemory.preferredComponents?.length ? `**偏好组件**：${aestheticMemory.preferredComponents.join("、")}` : ""}
-${aestheticMemory.avoidedStyles?.length ? `**避免风格**：${aestheticMemory.avoidedStyles.join("、")}` : ""}
+${aestheticMemory.summary ? `**审美摘要**：${displayLabelInText(aestheticMemory.summary)}` : ""}
+${aestheticMemory.preferredStyles?.length ? `**偏好风格**：${translateLabels(aestheticMemory.preferredStyles)}` : ""}
+${aestheticMemory.preferredColors?.length ? `**偏好配色**：${translateLabels(aestheticMemory.preferredColors)}` : ""}
+${aestheticMemory.preferredLayouts?.length ? `**偏好布局**：${translateLabels(aestheticMemory.preferredLayouts)}` : ""}
+${aestheticMemory.preferredComponents?.length ? `**偏好组件**：${translateLabels(aestheticMemory.preferredComponents)}` : ""}
+${aestheticMemory.avoidedStyles?.length ? `**避免风格**：${translateLabels(aestheticMemory.avoidedStyles)}` : ""}
 
 ${aestheticMemory.agentInstruction ? `**Agent 审美指令**：
-${aestheticMemory.agentInstruction}` : ""}
+${displayLabelInText(aestheticMemory.agentInstruction)}` : ""}
 
 > 这段审美记忆用于保持后续生成 UI 的一致性。请把它作为长期偏好参考，不要覆盖项目模板和当前参考灵感。` : ""}
 
@@ -302,6 +309,39 @@ ${techStack.map((t) => `- ${t}`).join("\n")}
 
 ## 6. 页面结构建议
 
+${scopeGuard && scopeGuard.mustBuildNow.length > 0 ? `
+根据项目类型${template ? `（${template.name}）` : ""}和开发阶段（${developmentPhase ?? "未指定"}），本阶段只实现 ${scopeGuard.mustBuildNow.length} 个主页面：
+
+${scopeGuard.mustBuildNow.map((p, i) => `### 页面 ${i + 1}：${p}
+- 明确此页面的核心目标和用户任务
+- 使用 AppShell 统一布局（Sidebar + Header + Content）
+- 内容区 max-width: 1280px，合理留白
+- 顶部放 PageHeading（标题 + 描述 + 操作按钮）
+- 按信息层级组织内容区块，优先展示最重要的数据
+- 空状态：虚线边框卡片 + 引导文案 + 行动按钮
+- 加载状态：Skeleton 占位，避免闪烁
+- 响应式：桌面优先，移动端基本可用`).join("\n\n")}
+
+${scopeGuard.modulesAsComponents.length > 0 ? `### 页面内模块安排
+
+以下内容不要创建独立路由，而应放入主页面内部：
+
+${scopeGuard.modulesAsComponents.map((m) => {
+    const bestPage = scopeGuard.mustBuildNow.find(p =>
+      m.includes(p) || p.includes(m) ||
+      (m.includes("仪表") && p.includes("仪表")) ||
+      (m.includes("项目") && p.includes("项目")) ||
+      (m.includes("Prompt") && p.includes("Prompt"))
+    ) || scopeGuard.mustBuildNow[0];
+    return `- **${m}**：建议放入「${bestPage}」页，作为 Card / Tab / Drawer 实现`;
+  }).join("\n")}` : ""}
+
+${scopeGuard.deferToNext.length > 0 ? `### 暂缓页面
+
+以下页面暂缓到${developmentPhase === "v0.1" ? " v0.2" : developmentPhase === "v0.2" ? " v1.0" : " 后续版本"}，本阶段不要创建路由：
+
+${scopeGuard.deferToNext.map((p) => `- **${p}**`).join("\n")}` : ""}
+` : `
 根据项目类型${template ? `（${template.name}）` : ""}，请按以下结构实现页面：
 
 ${pages.map((p, i) => `### 页面 ${i + 1}：${p}
@@ -312,7 +352,7 @@ ${pages.map((p, i) => `### 页面 ${i + 1}：${p}
 - 按信息层级组织内容区块，优先展示最重要的数据
 - 空状态：虚线边框卡片 + 引导文案 + 行动按钮
 - 加载状态：Skeleton 占位，避免闪烁
-- 响应式：桌面优先，移动端基本可用`).join("\n\n")}
+- 响应式：桌面优先，移动端基本可用`).join("\n\n")}`}
 
 ${template ? `### 模板专属建议
 ${template.structureHints.map((h) => `- ${h}`).join("\n")}` : ""}
@@ -330,7 +370,7 @@ ${template.structureHints.map((h) => `- ${h}`).join("\n")}` : ""}
 
 ## 8. 严格禁止
 
-${disStyles.length > 0 ? disStyles.map((s) => `- ❌ ${s}`).join("\n") : `- ❌ 廉价蓝白后台
+${disStyles.length > 0 ? disStyles.map((s) => `- ❌ ${displayLabel(s)}`).join("\n") : `- ❌ 廉价蓝白后台
 - ❌ 大面积亮蓝色
 - ❌ 过度渐变
 - ❌ 大阴影（>4px blur）
@@ -454,12 +494,13 @@ ${disStyles.length > 0 ? disStyles.map((s) => `- ❌ ${s}`).join("\n") : `- ❌ 
 
 ## 禁止风格
 
-${disStyles.length > 0 ? disStyles.map((s) => `- ❌ ${s}`).join("\n") : "- ❌ 廉价蓝白后台、大面积亮蓝、过度渐变、大阴影"}`;
+${disStyles.length > 0 ? disStyles.map((s) => `- ❌ ${displayLabel(s)}`).join("\n") : "- ❌ 廉价蓝白后台、大面积亮蓝、过度渐变、大阴影"}`;
 
   // ---- 3. Page Level Prompt ----
+  const pageLevelPages = scopeGuard?.mustBuildNow?.length ? scopeGuard.mustBuildNow : pages;
   const pageLevelPrompt = `# 页面设计要求 —— ${projectName}
 
-${pages
+${pageLevelPages
     .map(
       (p, i) => `## ${i + 1}. ${p}
 
