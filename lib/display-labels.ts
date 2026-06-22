@@ -37,6 +37,7 @@ const layoutMap: Record<string, string> = {
   "Sidebar + Content": "侧边栏 + 内容",
   "Card Grid": "卡片网格",
   "Split Panel": "分栏面板",
+  "Content": "内容区",
 };
 
 const projectTypeMap: Record<string, string> = {
