@@ -132,7 +132,7 @@ ${inspWithAnalysis
   function buildScopeSection(): string {
     if (!developmentPhase && !scopeGuard) return "";
 
-    const sg = scopeGuard ?? classifyPageItems(pageList, developmentPhase);
+    const sg = scopeGuard ?? classifyPageItems(pageList, developmentPhase, additionalNotes);
     const phaseLabel = developmentPhase
       ? (developmentPhases.find((p) => p.value === developmentPhase)?.label ?? developmentPhase)
       : undefined;
@@ -329,6 +329,12 @@ ${scopeGuard.modulesAsComponents.length > 0 ? `### 页面内模块安排
 ${scopeGuard.modulesAsComponents.map((m) => {
 	    const lower = m.toLowerCase();
 	    const pages = scopeGuard.mustBuildNow;
+		    // Helper: find the best detail page — prioritize "详情/detail" over generic "board/情绪板"
+		    function findDetailPage() {
+		      return pages.find(p => /详情|detail/i.test(p))
+		        || pages.find(p => /情绪板|board/i.test(p) && !/列表|list|gallery|overview/i.test(p))
+		        || pages[0];
+		    }
 	    // Smart matching: specific keywords → specific pages
 	    if (/checklist|验收|清单/.test(lower)) {
 	      const match = pages.find(p => /项目|详情|project/i.test(p)) || pages.find(p => /仪表|dashboard/i.test(p));
@@ -354,7 +360,37 @@ ${scopeGuard.modulesAsComponents.map((m) => {
 	      const match = pages.find(p => /prompt|提示词|库|library/i.test(p)) || pages[0];
 	      if (match) return `- **${m}**：建议放入「${match}」页，作为 Card / Tab 实现`;
 	    }
-	    // Generic fallback matching
+	    
+	    // Design tool / moodboard modules (v2.1.4)
+	    if (/色卡|色彩|配色|主色|辅助色|色板|调色板|palette|color|swatch/.test(lower)) {
+	      const match = findDetailPage();
+	      if (match) return `- **${m}**：建议放入「${match}」页，作为 Color Palette / Swatch Card 实现`;
+	    }
+	    if (/字体|font|typography|字体偏好|字体预览|字体感受/.test(lower)) {
+	      const match = findDetailPage();
+	      if (match) return `- **${m}**：建议放入「${match}」页，作为 Typography Preview Card 实现`;
+	    }
+	    if (/风格标签|style tag/.test(lower)) {
+	      const match = findDetailPage();
+	      if (match) return `- **${m}**：建议放入「${match}」页，作为 Badge Group / Tag Cloud 实现`;
+	    }
+	    if (/灵感详情|灵感信息|详情面板|检查器|inspector|side panel|右侧面板/.test(lower)) {
+	      const match = findDetailPage();
+	      if (match) return `- **${m}**：建议放入「${match}」页，作为右侧 Inspector 详情面板实现`;
+	    }
+	    if (/收藏|favorite|saved|收藏状态/.test(lower)) {
+	      const match = findDetailPage();
+	      if (match) return `- **${m}**：建议放入「${match}」页，作为 Favorite Button / Status Badge 实现`;
+	    }
+	    if (/备注|注释/.test(lower)) {
+	      const match = findDetailPage();
+	      if (match) return `- **${m}**：建议放入「${match}」页，作为 Notes Card / Textarea 展示 实现`;
+	    }
+	    if (/导出|export|导出卡片|分享卡片|share card/.test(lower)) {
+	      const match = findDetailPage();
+	      if (match) return `- **${m}**：建议放入「${match}」页，作为右上角 Export / Share Button 实现`;
+	    }
+		  		    // Generic fallback matching
 	    const bestPage = pages.find(p =>
 	      m.includes(p) || p.includes(m)
 	    ) || pages[0];
