@@ -129,7 +129,7 @@ export function classifyPageItems(
 
   if (phase === "v0.1" && mainPages.length > 3) {
     warnings.push(
-      `v0.1 原型阶段建议最多 2-3 个主页面，当前检测到 ${mainPages.length} 个（${mainPages.slice(0, 3).join("、")}...）。多余页面将标记为暂缓到 v0.2。`,
+      `原始输入包含 ${mainPages.length} 个页面候选，v0.1 已收口为 ${maxPages} 个主页面（${mainPages.slice(0, maxPages).join("、")}），${mainPages.length > maxPages ? `其余 ${mainPages.length - maxPages} 个暂缓到 v0.2` : "当前在 v0.1 范围内"}。`,
     );
   } else if (phase === "v0.2" && mainPages.length > 5) {
     warnings.push(
