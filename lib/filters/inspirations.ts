@@ -41,9 +41,15 @@ export function filterInspirations(inspirations: Inspiration[], filters: Inspira
     });
   }
 
-  // Project type filter
+  // Project type filter — match both raw English values and Chinese display labels
   if (filters.projectType) {
-    result = result.filter((insp) => insp.projectType === filters.projectType);
+    const filterLower = filters.projectType.trim().toLowerCase();
+    const filterDisplayLower = displayProjectType(filters.projectType).trim().toLowerCase();
+    result = result.filter((insp) => {
+      const rawLower = (insp.projectType ?? "").trim().toLowerCase();
+      const displayLower = displayProjectType(insp.projectType ?? "").trim().toLowerCase();
+      return rawLower === filterLower || displayLower === filterDisplayLower;
+    });
   }
 
   // Tag filter (AND — inspiration must have ALL selected tags)
