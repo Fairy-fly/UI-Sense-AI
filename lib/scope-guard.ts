@@ -46,11 +46,24 @@ const MODULE_KEYWORDS = [
   "notification", "activity", "status-badge", "reminder", "suggestion",
   "history", "changelog", "quick-action", "onboarding", "wizard-step",
   "chat", "thread", "review",
+  // Design tool / moodboard (v2.1.4)
+  "palette", "color palette", "swatch", "typography",
+  "font", "fonts", "style tags", "side panel", "notes",
+  "favorite", "saved", "export", "share card",
   // Chinese
   "清单", "验收", "日志", "笔记", "备注", "提醒", "风险",
   "下一步", "建议", "通知", "动态", "评论", "讨论",
   "快捷操作", "引导", "状态", "时间线", "阶段", "版本",
   "提交记录", "最近", "更新", "记录",
+  // Design tool / moodboard Chinese (v2.1.4)
+  "色卡", "色彩", "配色", "主色", "辅助色", "色板", "调色板",
+  "颜色提取", "色卡提取",
+  "字体", "字体偏好", "字体预览", "字体感受",
+  "标签", "风格标签",
+  "灵感详情", "灵感信息",
+  "检查器", "右侧面板", "详情面板",
+  "收藏", "收藏状态", "评分",
+  "导出", "导出卡片", "分享卡片",
 ];
 
 /**
@@ -72,17 +85,38 @@ const PAGE_KEYWORDS = [
 ];
 
 /**
+ * Specific phrases that are ALWAYS in-page modules, even if they also
+ * match broad PAGE_KEYWORDS like "详情" or "灵感".
+ * These are checked before the normal module/page classification.
+ */
+const FORCE_MODULE_PATTERNS = [
+  "灵感详情", "灵感信息", "选中详情",
+  "右侧面板", "详情面板", "检查器",
+];
+
+/**
+ * Keywords in user's additionalNotes that signal "keep these as modules".
+ */
+const USER_HINT_MODULE_SIGNALS = [
+  "作为页面内模块", "不要拆成独立页面", "不要创建独立路由",
+  "放入右侧", "放入详情页", "页面内模块",
+];
+
+/**
  * Classify a raw page list string into main pages and modules.
  *
  * Heuristics:
  * 1. Split by comma / ideographic comma / Chinese comma / newline
- * 2. If an item matches MODULE_KEYWORDS but not PAGE_KEYWORDS → module
- * 3. Otherwise → main page (default safe classification)
- * 4. Apply phase constraints for mustBuildNow / deferToNext
+ * 2. If an item matches FORCE_MODULE_PATTERNS → always module
+ * 3. If an item matches MODULE_KEYWORDS but not PAGE_KEYWORDS → module
+ * 4. If contextText contains module hints AND item matches MODULE_KEYWORDS → module (overrides PAGE_KEYWORDS)
+ * 5. Otherwise → main page (default safe classification)
+ * 6. Apply phase constraints for mustBuildNow / deferToNext
  */
 export function classifyPageItems(
   rawInput: string,
   phase?: DevelopmentPhase,
+  contextText?: string,
 ): ScopeGuardResult {
   const rawItems = rawInput
     .split(/[,，、\n]/)
@@ -109,15 +143,38 @@ export function classifyPageItems(
     };
   }
 
+  // Detect user-specified module hints in contextText
+  const userWantsModulesInline = contextText
+    ? USER_HINT_MODULE_SIGNALS.some((signal) => contextText.includes(signal))
+    : false;
+
   const items: ScopeItem[] = [];
   const mainPages: string[] = [];
   const modules: string[] = [];
 
   for (const item of rawItems) {
     const lower = item.toLowerCase();
+
+    // Step 1: Force-module patterns always win
+    const isForceModule = FORCE_MODULE_PATTERNS.some((kw) => lower.includes(kw.toLowerCase()));
+    if (isForceModule) {
+      items.push({ name: item, type: "module", reason: "匹配强制模块关键词" });
+      modules.push(item);
+      continue;
+    }
+
     const matchedModule = MODULE_KEYWORDS.some((kw) => lower.includes(kw.toLowerCase()));
     const matchedPage = PAGE_KEYWORDS.some((kw) => lower.includes(kw.toLowerCase()));
 
+    // Step 2: If user explicitly wants modules inline, module keywords override page keywords
+    if (userWantsModulesInline && matchedModule) {
+      const triggeringKw = MODULE_KEYWORDS.find((kw) => lower.includes(kw.toLowerCase()));
+      items.push({ name: item, type: "module", reason: triggeringKw ? `匹配模块关键词「${triggeringKw}」（用户已指定模块内聚）` : undefined });
+      modules.push(item);
+      continue;
+    }
+
+    // Step 3: Normal classification
     if (matchedModule && !matchedPage) {
       const triggeringKw = MODULE_KEYWORDS.find((kw) => lower.includes(kw.toLowerCase()));
       items.push({ name: item, type: "module", reason: triggeringKw ? `匹配模块关键词「${triggeringKw}」` : undefined });

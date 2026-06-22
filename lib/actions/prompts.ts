@@ -80,7 +80,7 @@ export async function generatePrompt(input: PromptFormInput & { useAI?: boolean 
     const feedbackInsights = await computePromptFeedbackInsights();
 
     // v2.1a: Run scope guard to classify pages vs modules
-    const scopeGuard = classifyPageItems(data.pageList, data.developmentPhase);
+    const scopeGuard = classifyPageItems(data.pageList, data.developmentPhase, data.additionalNotes);
 
     const sections = await optimizePromptWithAI({
       projectName: data.projectName,
