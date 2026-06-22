@@ -87,7 +87,15 @@ export function classifyPageItems(
   const rawItems = rawInput
     .split(/[,，、\n]/)
     .map((p) => p.trim())
-    .filter(Boolean);
+    .filter((p) => {
+      if (!p) return false;
+      // Filter out section headers / description lines (ending with colon)
+      if (/[：:]$/.test(p)) return false;
+      // Filter out known metadata labels that aren't page names
+      const headerPatterns = /^(页面列表|页面清单|页面|主页面|模块|Pages?|Page List|Page)$/i;
+      if (headerPatterns.test(p)) return false;
+      return true;
+    });
 
   if (rawItems.length === 0) {
     return {
@@ -145,7 +153,7 @@ export function classifyPageItems(
 
   if (mainPages.length > 0 && modules.length > mainPages.length) {
     warnings.push(
-      `模块数量（${modules.length}）超过主页面数量（${mainPages.length}），请确认是否所有模块都需要独立展示。`,
+      `模块数量（${modules.length}）较多（超过本阶段主页面数量），建议优先作为页面内 Tab、Card、Drawer 或折叠面板承载，不要拆成独立路由。`,
     );
   }
 

@@ -134,7 +134,16 @@ ${inspWithAnalysis
 7. 增强设计系统细节的具体性
 8. 增强页面要求的可执行性
 9. 增强组件规范的实用性
-10. 增强禁止风格的明确性`;
+10. 增强禁止风格的明确性
+
+【锁定规则 — 必须严格遵守】
+- §0（开发阶段与页面范围）和 §6（页面结构建议 / 页面内模块安排 / 暂缓页面）是锁定内容。
+- 不得新增、删除、重排序、重命名 mustBuildNow（本阶段主页面）、modulesAsComponents（页面内模块）、deferToNext（暂缓页面）中的任何条目。
+- 不得将"页面列表："这类说明文字当作页面。
+- 不得将页面内模块提升为独立路由页面。
+- 不得将 mustBuildNow 中的主页面移动到 deferToNext。
+- 你只能润色 §0 和 §6 的语言表达，不能改变其结构决策。
+- 你主要优化 §1-§5 和 §7-§10（视觉语言、组件建议、验收标准等）。`;
 
   const userPrompt = `请优化以下 UI 开发提示词。
 
@@ -218,7 +227,7 @@ ${baseline.fullPrompt}
     }
 
     return {
-      fullPrompt: parsed.fullPrompt,
+      fullPrompt: enforceScopeGuardSections(parsed.fullPrompt, baseline.fullPrompt),
       designSystemPrompt: parsed.designSystemPrompt,
       pageLevelPrompt: parsed.pageLevelPrompt,
       componentLevelPrompt: parsed.componentLevelPrompt,
@@ -228,4 +237,62 @@ ${baseline.fullPrompt}
   } catch {
     return { ...baseline, usedAI: false, fallbackReason: "AI 返回 JSON 解析失败，已使用本地模板" };
   }
+}
+
+/**
+ * v2.1.2: Lock §0 and §6 to canonical versions from the local baseline.
+ * AI may try to re-classify pages or move modules — this undoes any such changes.
+ *
+ * Strategy: extract canonical §0 and §6 from baseline, replace in AI output.
+ * §0 = "## 0. 开发阶段与页面范围" through next "## "
+ * §6 = "## 6. 页面结构建议" through next "## "
+ */
+function enforceScopeGuardSections(aiPrompt: string, canonicalPrompt: string): string {
+  // Extract canonical §0
+  const canonSection0 = extractSection(canonicalPrompt, "## 0. 开发阶段与页面范围");
+  // Extract canonical §6
+  const canonSection6 = extractSection(canonicalPrompt, "## 6. 页面结构建议");
+
+  let result = aiPrompt;
+
+  if (canonSection0) {
+    result = replaceSection(result, "## 0. 开发阶段与页面范围", canonSection0);
+  }
+  if (canonSection6) {
+    result = replaceSection(result, "## 6. 页面结构建议", canonSection6);
+  }
+
+  return result;
+}
+
+/** Extract a section from heading to the next "## " heading (or end of string). */
+function extractSection(text: string, heading: string): string | null {
+  const startIdx = text.indexOf(heading);
+  if (startIdx === -1) return null;
+
+  const afterHeading = startIdx + heading.length;
+  const nextHeadingIdx = text.indexOf("\n## ", afterHeading);
+  const endIdx = nextHeadingIdx === -1 ? text.length : nextHeadingIdx;
+
+  return text.substring(startIdx, endIdx);
+}
+
+/** Replace a section in aiPrompt with the canonical version. Section is identified by heading. */
+function replaceSection(text: string, heading: string, canonical: string): string {
+  const startIdx = text.indexOf(heading);
+  if (startIdx === -1) {
+    // Section not found in AI output — prepend/insert canonical version
+    // Find a good insertion point: after the title line, before §1
+    const titleEnd = text.indexOf("\n## 1.");
+    if (titleEnd !== -1) {
+      return text.substring(0, titleEnd) + "\n" + canonical + "\n" + text.substring(titleEnd);
+    }
+    return text; // Can't find insertion point, give up
+  }
+
+  const afterHeading = startIdx + heading.length;
+  const nextHeadingIdx = text.indexOf("\n## ", afterHeading);
+  const endIdx = nextHeadingIdx === -1 ? text.length : nextHeadingIdx;
+
+  return text.substring(0, startIdx) + canonical + text.substring(endIdx);
 }

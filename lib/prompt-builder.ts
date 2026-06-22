@@ -327,16 +327,42 @@ ${scopeGuard.modulesAsComponents.length > 0 ? `### 页面内模块安排
 以下内容不要创建独立路由，而应放入主页面内部：
 
 ${scopeGuard.modulesAsComponents.map((m) => {
-    const bestPage = scopeGuard.mustBuildNow.find(p =>
-      m.includes(p) || p.includes(m) ||
-      (m.includes("仪表") && p.includes("仪表")) ||
-      (m.includes("项目") && p.includes("项目")) ||
-      (m.includes("Prompt") && p.includes("Prompt"))
-    ) || scopeGuard.mustBuildNow[0];
-    return `- **${m}**：建议放入「${bestPage}」页，作为 Card / Tab / Drawer 实现`;
-  }).join("\n")}` : ""}
+	    const lower = m.toLowerCase();
+	    const pages = scopeGuard.mustBuildNow;
+	    // Smart matching: specific keywords → specific pages
+	    if (/checklist|验收|清单/.test(lower)) {
+	      const match = pages.find(p => /项目|详情|project/i.test(p)) || pages.find(p => /仪表|dashboard/i.test(p));
+	      if (match) return `- **${m}**：建议放入「${match}」页，作为 Checklist Card 或 Tab 实现`;
+	    }
+	    if (/git|版本|提交|commit/.test(lower)) {
+	      const match = pages.find(p => /项目|详情|project/i.test(p)) || pages[0];
+	      if (match) return `- **${m}**：建议放入「${match}」页，作为 Timeline / Activity Card 实现`;
+	    }
+	    if (/时间线|阶段|timeline/.test(lower)) {
+	      const match = pages.find(p => /项目|详情|project/i.test(p)) || pages[0];
+	      if (match) return `- **${m}**：建议放入「${match}」页，作为 Timeline Section 实现`;
+	    }
+	    if (/风险|提醒|alert|risk/.test(lower)) {
+	      const match = pages.find(p => /仪表|dashboard/i.test(p)) || pages.find(p => /项目|详情|project/i.test(p)) || pages[0];
+	      if (match) return `- **${m}**：建议放入「${match}」页，作为 Alert / Status Card 实现`;
+	    }
+	    if (/下一步|建议|suggestion|next step/.test(lower)) {
+	      const match = pages.find(p => /仪表|dashboard/i.test(p)) || pages[0];
+	      if (match) return `- **${m}**：建议放入「${match}」页，作为 Next Action Card 实现`;
+	    }
+	    if (/prompt|提示词/.test(lower)) {
+	      const match = pages.find(p => /prompt|提示词|库|library/i.test(p)) || pages[0];
+	      if (match) return `- **${m}**：建议放入「${match}」页，作为 Card / Tab 实现`;
+	    }
+	    // Generic fallback matching
+	    const bestPage = pages.find(p =>
+	      m.includes(p) || p.includes(m)
+	    ) || pages[0];
+	    return `- **${m}**：建议放入「${bestPage}」页，作为 Card / Tab / Drawer 实现`;
+	  }).join("\n")}` : ""}
 
-${scopeGuard.deferToNext.length > 0 ? `### 暂缓页面
+${scopeGuard.deferToNext.length > 0 ? `
+### 暂缓页面
 
 以下页面暂缓到${developmentPhase === "v0.1" ? " v0.2" : developmentPhase === "v0.2" ? " v1.0" : " 后续版本"}，本阶段不要创建路由：
 
